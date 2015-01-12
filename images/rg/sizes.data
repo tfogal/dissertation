@@ -1,0 +1,6 @@
+# dset size-uncompressed size-compressed
+Dataset    Uncompressed Compressed
+#Bonsai     24736070 5481493
+Aneurysm   383755871 179188889
+RMI        11213913873 2154539581
+Wholebody  2337624901 1226478880

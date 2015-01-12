@@ -1,4 +1,20 @@
 \documentclass[12pt]{report}
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{caption} % vgtc depends on this but doesn't include it.  grr.
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[usenames]{color}
+\usepackage[table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[bookmarks,backref=true,linkcolor=black]{hyperref} %,colorlinks
+
+\include{macros/jens-macros}
+
+\title{Large data visualization}
 
 \begin{document}
 
@@ -21,5 +37,8 @@
 
 \chapter{Data parameter inference}
 \input{freeprocessing}
+
+\bibliographystyle{unsrt}
+\bibliography{vr}
 
 \end{document}
