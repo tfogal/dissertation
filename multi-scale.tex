@@ -23,6 +23,7 @@ in a GPU-accelerated, distributed memory setting, and present
 performance charactersitcs when scaling to extremely large data sets.
 
 \section{Introduction}
+\label{sec:introduction}
 
 Visualization and analysis algorithms, volume rendering in particular,
 require extensive compute power relative to data set size.  One
@@ -314,5 +315,386 @@ compositing order.
 \section{Evaluation}
 \label{sec:eval}
 
+We implemented and tested our system on \textit{Lens}, a GPU-accelerated
+visualization cluster housed at ORNL.  However, we were only able to access 16
+GPUs on that machine.  In order to access a larger number of GPUs, we
+transitioned to \textit{Longhorn}, a larger cluster housed at the Texas
+Advanced Computing Cluster (TACC).  Specifications for each cluster are listed
+in Table~\ref{tbl:clusters}.  Due to machine availability and configuration, we
+were not able to fully utilize either machine.
+
+\subsection{Rendering times}
+
+The two dominant factors in distributed memory visualization
+performance are the time taken to render the data and the time taken
+to composite the resulting sub-images.  These have the largest impact
+on usability because they comprise the majority of the latency a user
+experiences: the time between when the user interacts with the data and
+when the result of that interaction are displayed.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/multiscale/rtime}
+
+  \caption{Overal rendering time when rendering to a 1024x768 viewport
+  on Longhorn.  This incorporates both rendering and compositing, and
+  therefore shows the delay a user would experience if they used the
+  system on a local network. Data points are the average across many
+  frames, and error bars indicate the rendering timesor the slwoest and
+  quickest frames, respectively.  For these results we used a domain
+  consisteing of $13^3$ bricks (varying brick size) with the exceptions
+  that all runs in the 128 GPU cases used $8^3$ bricks, and the run for
+  the $8192^3$ data set was done using $32^3$ bricks.}
+  \label{fig:rtime}
+\end{figure}
+
+Our data originated from a simulation performed by the Center for Simulation of
+Accidental Fires and Exploisions (C-SAFE), desinged to study the instabilities
+in a burning helum flame.  In order to study performance at varying
+resolutions, we resampled this data to $1024^3$, $2048^3$, $4096^3$, and
+$8192^3$, at a variety of bricks sizes.  We then performed tests, varying data
+resolution, image resolution, choice of brick size, and number of GPUs, up to
+256.  Unless noted otherwise, we divided the data into a grid of $8x8x8$ bricks
+for parallel processing (larger data sets used larger bricks), and rendered
+into a 1024x768 viewport.
+
+Figure~\ref{fig:rtime} shows the scalability on the \textit{Longhorn}
+cluster.  The principal input that affects rendering time is the data
+set size, as one might expect.  These runs were all done using 2 GPUs
+per node, except the ``128 GPUs, 1 GPU/node'' case, which was run on
+128 nodes, each accessing a single GPU.  With very large data, there is
+a modest increase in performance for this experimental setup.
+
+\begin{figure}
+  %\includegraphics[width=\linewidth]{images/multiscale/bsize}
+
+  \caption{Rendering time as a function of brick size.  Error bars
+  indicate the minimum and maximum times recorded, across all nodes,
+  for that particular brick size; high diswparity indicates the
+  rendering time per-brick was highly variable, and load imbalance
+  was therefore likely.  All tests were done with a $4096^3$ data
+  set statically laod balanced across 128 GPUs on 64 nodes, using a
+  scripted camera that requested the same viewpoints each run.  Note
+  that the choice of brick size matters little in the average case, but
+  bricks using non-power-of-two sizes give widely varying performance.
+  Though raw data shows it is only hundreths of a second faster than
+  $256^3$.}
+  \label{fig:bsize}
+\end{figure}
+
+As can be seen in Figure~\ref{fig:bsize}, the brick size
+\emph{generally} has little impact on performance.  A parallel volume
+renderer's performance is, however, dictated by the slowest component,
+and therefore the average rendering time is less important than the
+maximum rendering time.  Taking that into account, it is clear that
+brick sizes that are not a power of two are poor choices.  Dropping
+down to $128^3$, we can see that per-brick overhead begins to become
+noticeable, impacting overall rendering times.  We found larger bricks
+sizes of $512^3$ give the absolute best performance, with $256^3$ a
+good choice as well, as the differences are minor enough that they may
+almost be considered sampling error.  Of course, such recommendations
+may be specific to the GPUs
+used in \textit{Longhorn}
+
+We were initially surprised to find that the image resolution, while
+relevant, was not a significant factor in the overall rendering
+time.  When developing single GPU applications that run on a user's
+desktop, our experience was the opposite: that image size does play a
+significant role in performance.  We at first thought this was due to
+skipping bricks that were `empty' under our transfer function---our
+domain is perfectly cubic, yet as is displayed in
+Figure~\ref{fig:sample} very little of the domain is actually
+visible---but even after changing to a transfer function with no ``0''
+values in the opacity map, rendering times changed very little.  We
+concluded that the data sizes are so large compared to the number of
+pixels rendered that the image size is dwarfed by comparison.
+
+In our initial implementaion on \textit{Lens}, we noticed that we
+began to strain the memory allocators while rendering a $3000^3$ data
+set, as we approached low memory conditions.  Our volume renderer
+automatically accounts for low memory conditions and attempts to free
+unused bricks before failing outright.  However, an operating system
+will thrash excessively before finally deciding to fail an allocation,
+and therefore during the time leading up to a failed allocation,
+performance will drop considerably.  Worse, we are working in a large
+existing code base, and attempting to manage allocations outside our
+own subsystems would prove unwieldy.  As such, we found the original
+scheme to be unstable; the rendering system would create memory
+pressure, causing other subsystems to fail an allocation in areas where
+it may be difficult or impossible to ask our volume renderer to free up
+memory.
+
+To solve this problem, we render the data in a true out-of-core
+fashion: bricks are given to the renderer, rendered into a framebuffer object,
+and immediately thrown away.  One might expect that out-of-core algorithms would
+have more per-block overhead and therefore be slower than an in-core algorithm.
+As shown in Figure~\ref{fig:ooc}, the out-of-core approach actually
+outperforms the analogous in-core approach even when there is
+sufficient memory to hold the data set at once.  The reasoning
+turned out to be that bricks were searched for in a logarithmic data
+structure; the conservative approach taken by the out-of-core algorithm
+meant that the container maxed out at a single element, accounting for
+a minor performance improvement.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/multiscale/ooc}
+  \caption{Rendering times, per frame, for the in-core and out-of-core
+  approaches to rendering a $1024^3$ data set (which fits comfortably
+  in memory) across $16$ GPUs.  Additional processing in the
+  out-of-core case doeds not negatively impact performance.}
+  \label{fig:ooc}
+\end{figure}
+
+\subsubsection{Readback and compositing}
+
+In earlier results, particularly with GPU-based rendering
+architectures, the community was generally concerned with the time
+required to read the resulting
+image data from the GPU and into the host's memory~\cite{MMD08}.  Our
+study did not provide corroboration of this concern, which we interpret
+as a positive data point with respect to evolving graphics subsystems.
+Our system did demonstrate that this time increased as the resolution
+grew, but as can be seen
+in Table~\ref{tbl:breakdown}, even at 1024x768 this step took only
+thousandths of a second.
+
+The time required for image composition is significantly reduced when
+taking advantage of the GPUs available in the visualization vluster.
+Since a GPU can render much faster than a software-based renderer, one
+can achieve acceptable rendering performance using far fewer nodes.
+Compositing, as it scales with the number of nodes involved in the
+compositing process, improves significantly by utilizing many fewer
+nodes.
+
+\subsection{Load balancing}
+
+We also sought to examine the utility of load balancing algorithms for
+our system. We have implemented the algorithms as presented in two
+recent parallel volume rendering papers, and compared rendering times
+to each other and to a
+statically balanced case.  Figure~\ref{fig:balance} illustrates
+the comparisons, where the times shown are the maximum across all
+processes.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/multiscale/balance}
+  \caption{The maximum rendering time across all nodes under various
+  load balancing algorithms.  The numbers after the `Marchesin'
+  algorithms indicate thresholds: rendering disparity under these
+  thresholds is ignored.}
+  \label{fig:balance}
+\end{figure}
+
+We did a variety of experiments with multiple load balancer
+implementations, using 8 or 16 GPUs.  Our initiali flythrough dequence
+proved to be inappropriate for the application of a load balancer, as
+there was not enough imbalance in the system to observe a significant
+benefit.  We then attempted to
+a `zoom out' flythrough, but rendering times decreasing on \emph{all}
+nodes was not a case the the balancers we implemented could effectively
+deal with: we found many cases where the balancers would shift data
+to a node that was previously idle or at least doing very little
+work, and a frame or two later the workload on such nodes would
+spike.  This occurred because these nodes had both 1) received new
+data as part of the balance and, 2) retained old data as part of the
+initial decomposition or previous balancing processes.  The sudden
+additional workload of previously invisible bricks caused these nodes
+to overcompensate, sending data to other ``idle'' nodes---nodes that
+would experience the sample problem in subsequent frames.
+
+In previous work, authors have praised the effect load balancing has
+when
+zooming \emph{in} to a data set.  This naturally creates imbalance, as
+some nodes end up with data that are not rendered under the current
+camera configuration, and therefore the node has no work to do.
+
+With the implementations we recreated as faithfully as possible, we did
+find that zooming in to the data set was a task that was well-suited
+for load balancing.  Still, we encountered issues even with this case.
+For the
+algorithm given in~\cite{MMD06}, we observed that the data would move
+back and forth between nodes quite frequently, having a negative impact
+on overall rendering time.  We therefore introduced a `threshold'
+parmaeter to the existing algorithm, in an attempt to limit this
+`ping-pong' behavior.  As we move up the tree, imbalance between
+the left and right subtrees is subject to this threshold; if it
+does not exceed the threshold, the imbalance is ignored.  This is
+a very useful parameter for ensuring that we do not move data too
+eagerly.  Generally, setting this threshold too high will yield
+behavior equivalent to the static case; setting it to low leads to a
+considerable amount of unnecessary data shifting, and we found that
+this in many cases overcompensated for minor, expected variations (such
+as those one might expect
+from differing brick sizes; see Figure~\ref{fig:bsize}).  For example,
+see
+Figure~\ref{fig:balance}, in which low thresholds display an obvious
+`ping-pong' effect as nodes overcompensate for increased rendering
+load.
+
+M\"uller et al. describe a different balancing system~\cite{MSE06}.
+This system calculates the average cost of rendering a brick, and
+therefore has a clearer idea of what the effect of moving a given set
+of bricks will have on overall system performance.  Further, they
+introduce additional parameters that add some hysteresis to the system,
+and this helped reduce the `ping-pong' effect of nodes sending data
+to a neighbor just to receive it in the next frame when the neighbor
+becomes overloaded.
+
+We found that this algorithm did do intelligent balancing for
+reasonable settings of these parameters, and the additional parametes
+could be successfully used to reduce excess data reorganization.  Still
+we found two issues with the approach: for one, the assumnption that
+`all bricks are equal' did not pan out for our work.  Even assuming
+uniform bricks for a data set (true for our case, but likely not in a
+general system), one can see in
+Figure~\ref{fig:bsize} that the time to render a brick sees variation
+on the orde rof a second.  Secondly, despite experimenting with
+parameter settings, we found it difficult to get the algorithm to
+choose the `best' set of nodes for balancing.  In many cases, we found
+a particular node was an outlier, consistently taking the most time
+to render per frame.  Yet it was common for this algorithm to balance
+different nodes.  While rendering times would generally improve, the
+system's performance is determined by the slowest node, and therefore
+making the fast nodes faster does not help overall performance.
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{images/multiscale/mueller}
+
+  \caption{Per-process rendering times for the `M\"uller' line given in
+  Figure~\ref{fig:balance}}
+  \label{fig:mueller}
+\end{figure}
+
+This was apparent in the tests described in Figure~\ref{fig:balance}:
+the algorithm balanced between some of the nodes, but the slowest node
+was never balanced, and therefore the user-visible performance fror
+this run was
+equivalenty to the static case.  Figure~\ref{fig:mueller} shows a more
+detailed analysis of the execution of the M\"uller algorithm that
+generated the data in
+Figure~\ref{fig:balance}.  The per-node rendering times in
+Figure~\ref{fig:mueller} show that process 7 is usually the last
+process to
+finish and is often \emph{considerably} slower than the next-to-last.
+As evident from the lack of sudden discontinuities in process 7's
+rendering times, however, no bricks from process 7 move to other nodes.
+Rendering times decrease across other nodes, but the maximum rendering
+time does not change.
+
+We theorize that additions to the algorithm to learn weights for each
+individual brick would yield friutful results.  Furthermore, the algorithm
+explicitly attempts to avoid visiting the entire tree, as an attempt to bound
+the maximum time needed to determine a new balancing.  In our work, we did not
+observe cases where iterating through nodes in the tree had a measurable
+impact on performance, and feel that  by doing so the algorithm could obtain
+the global knowledge it needs to balance data effectively.  Both of these
+extensions are left for future work.
+
+In Section~\ref{sec:introduction} we noted a variety of quesitons that the
+design of our system allows us to answer.
+
+\begin{itemize}
+
+  \item \textit{Rendering vs. compositing}.  As shown in
+  Table~\ref{tbl:breakdown}, subsecond rendering times are achieved
+  using a very small number of nodes, relative to previous work.  This
+  relieves a significant source of work for compositing algorithms.
+
+  \item \textit{Overhead of GPU transfer}.  Table~\ref{tbl:breakdown}
+  shows readback time to be on the order of thousandths of a second for
+  common image sizes.  Measuring texture upload rates is difficult due
+  to the asynchronous nature of OpenGL and current drivers, but we did
+  not find evidence to suggest this was a bottleneck.
+
+  \item \textit{Importance of load balancing}.  A dynamic load balancer
+  can have a worthwhile impact on perfprmance.  However, it can also
+  lower the performance of the system.  Load balancers generally come
+  with some number of tunable parameters, and useful settings for
+  these parametrs are difficult to determine \textit{a priori}, and
+  likely impossible for an end-user to effectively set.  We observed
+  that dynamic load balancing for volume rendering struggled in cases
+  often encountered in real-world environments and, for this reason,
+  believe there is still a gap before deploying these techniques in
+  \emph{production} systems.  There is a great opportunity for future
+  work in this area.
+
+  \item \textit{Viability}.  As displayed in Figure~\ref{fig:rtime} and
+  Table~\ref{tbl:breakdown}, rendering extremely large data sets---up
+  to $8192^3$ voxels---is possible on relatively few nodes.  Further,
+  data sets up to $2048^3$ can be rendered at an interactive two frames
+  per second.
+
+\end{itemize}
+
 \section{Conclusions}
 \label{sec:conclusions}
+
+With this study, we demonstrated that GPU accelerated rendering
+provides compelling performance for large scale data sets.
+Figure~\ref{fig:rtime} demonstrates our system rendering data sets
+that are among some of the largest reported thus far, using far fewer
+nodes than previous work.  This work shows that a multi-GPU node is a
+great fojundational `building block' to compose larger systems cpaable
+of rendering very large data.  As the price-performance ratio of a
+GPU is better (provided it can effectively parallelize the workload)
+than CPU-based solutions, this work makes the case for spending more
+visualization supercomputing capital on hardware accleration, and
+acquiring smaller yet more performant clusters.
+
+Reports on the time taken for various pipeline stages demonstrate that
+PCI-E bus speeds are fast enough that readback performance is not as
+great of a concern as it was a few years ago.  HoweeverÂ, it remains to
+be seen if contention will become an issue if individual nodes are made
+`fatter', utilizing additional GPUs.  The 1 GPU per node given in
+Figure~\ref{fig:rtime} suggest that multiple GPUs do contend for
+resources, but at this scale the differences are not yet significant
+enough for warrant moving away form the more cost-effective `fat'
+node architecture.  Given the relatively few nodes needed for good
+performance on large data, and external work scaling compositing
+worklaod out to tens of thousands of cores, it seems likely that the
+relatively `thin' 2-GPU-per-system archietcture can be made to scale
+to even larger systems.
+
+We would like to study our system with higher image resolutions, such
+as those available on a display wall, and larger numbers of GPUs. At
+some point, we expect compositing to become a significant factor in
+the amount of time needed to volume render large data, but we have
+not approached the cross-over point in this work, due to the use of
+`desktop' image resolutions and low numbers of cores.
+
+Our system allows substituting a Mesa-based software renderer when
+a GPU is not available. This provided a convenient means of
+implementation for an existing large software system, in particular
+because it allows pipeline execution to proceed unmodified through
+the rendering and compositing stages. However, tests very quickly
+showed that using software renderers when a GPU was available was
+not worthwhile, and usually ended up hurting performance more than
+helping. Therefore, we traded access to more cores for the guarantee
+that we will obtain GPUs for each core we do get.
+
+An alternate system architecture would be to decouple the rendering
+process from the other work involved in visualization and analysis,
+such as data I/O, processing, and other pipeline execution steps. In
+this architecture, all nodes would read and process data, but
+processed, visualizable data would be forwarded to a subset of nodes
+for rendering and compositing. The advantage gained is the ability to
+tailor the available parallelism to the visualization tasks of data
+processing and rendering, which, as we have found, can benefit from
+vastly different parallel decompositions. The disadvantages are the
+overhead of data redistribution, and the wasted resources that arise
+from allowing non-GPU processes to sit idle while rendering.
+
+Our compositing algorithm assumes that the images from individual
+processors can be ordered in a back-to-front fashion to generate the
+correct image. For this paper, we met this requirement by using regular
+grids, which are easy to load balance in this manner. It should be
+possible to also handle certain types of curvilinear grids and perhaps
+AMR grids.  Extensions to handle unstructured grids would be difficult,
+but represent an interesting future direction.
+
+Load balancing is an extremely difficult problem, and we have just
+scratched the surface here. The principal difficulty in load balancing
+is identifying good parameters to control how often and to what extent
+the balancing occurs. We would like to see ideas and algorithms
+which move in the direction of user-friendliness: determining the
+most relevant parameters and deriving appropriate values for them
+automatically.

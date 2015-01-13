@@ -1,16 +1,16 @@
-\documentclass[12pt]{report}
-\usepackage{mathptmx}
-\usepackage{graphicx}
-\usepackage{times}
-\usepackage{caption} % vgtc depends on this but doesn't include it.  grr.
+\documentclass[12pt,twoside,headsepline,titlepage]{thesis}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{caption}
 \usepackage[usenames]{color}
 \usepackage[table]{xcolor}
-\usepackage[utf8]{inputenc}
-\usepackage{booktabs}
-\usepackage{multirow}
+\usepackage{graphicx}
 \usepackage[bookmarks,backref=true,linkcolor=black]{hyperref} %,colorlinks
+\usepackage{listings}
+\usepackage{mathptmx}
+\usepackage[absolute]{textpos}
+\usepackage{times}
+\usepackage{tikz}
 
 \include{macros/jens-macros}
 
@@ -18,6 +18,7 @@
 
 \begin{document}
 
+\input{cover}
 \input{header}
 
 \chapter{An architecture for large-scale volume rendering}
@@ -35,8 +36,8 @@
 \chapter{Freeprocessing}
 \input{freeprocessing}
 
-\chapter{Data parameter inference}
-\input{freeprocessing}
+\chapter{Metadata inference for \textit{in situ} visualization}
+\input{inference}
 
 \bibliographystyle{unsrt}
 \bibliography{vr}

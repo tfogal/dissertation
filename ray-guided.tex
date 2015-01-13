@@ -1247,21 +1247,22 @@ center, right).
   dataset dependent.}
   \label{tbl:timings}
   \rowcolors{4}{gray!20}{white}
-  \begin{tabular*}{\linewidth}{|p{0.24\linewidth}|p{0.09\linewidth}|p{0.09\linewidth}|p{0.09\linewidth}|p{0.09\linewidth}|p{0.09\linewidth}|}\hline
+
+  \begin{tabular*}{\linewidth}{|p{0.25825\linewidth}|p{0.11\linewidth}|p{0.11\linewidth}|p{0.11\linewidth}|p{0.11\linewidth}|p{0.11\linewidth}|}\hline
     & \multicolumn{5}{c|}{\textbf{Rendering Time (ms)}}\\
     \cline{2-6}
     \multicolumn{1}{|l|}{\textbf{Dataset}}
                   & $16^3$ & $32^3$ & $64^3$ & $128^3$ & $256^3$ \\\hline
-    Bonsai        & \textbf{16}     & 20     & 26      & 31      & 28     \\
-    Head Aneurysm & \textbf{27}     & 34     & 40      & 55      & 85     \\
-    Whole Body    & 140    & 94     & 82     & 77      & \textbf{67}      \\
-    Velocity      & 376    & 208    & 146    & 118     & \textbf{110}     \\
-    Magnitude     & 132    & 93     & \textbf{80}     & 82      & 85      \\
-    RMI           & \textbf{60}     & 64     & 61     & 67      & 67      \\
-    Visible Human & \textbf{34}     & 37     & 47     & 67      & 123     \\
-    Mandelbulb1k  & \textbf{21}     & \textbf{21} & \textbf{21} & 22      & 25      \\
-    Mandelbulb4k  & \textbf{27}     & 30     & 37     & 47      & 47      \\
-    Mandelbulb8k  & \textbf{33}     & 37     & 45     & 60      & 78      \\\hline
+    Bonsai        & {\bf 16} & 20     & 26         & 31  & 28        \\
+    Head Aneurysm & {\bf 27} & 34     & 40         & 55  & 85        \\
+    Whole Body    & 140      & 94     & 82         & 77  & {\bf 67}  \\
+    Velocity      & 376      & 208    & 146        & 118 & {\bf 110} \\
+    Magnitude     & 132      & 93     & {\bf 80}   & 82  & 85        \\
+    RMI           & {\bf 60} & 64     & 61         & 67  & 67        \\
+    Visible Human & {\bf 34} & 37     & 47         & 67  & 123       \\
+    Mandelbulb1k  & {\bf 21} & {\bf 21} & {\bf 21} & 22  & 25        \\
+    Mandelbulb4k  & {\bf 27} & 30     & 37         & 47  & 47        \\
+    Mandelbulb8k  & {\bf 33} & 37     & 45         & 60  & 78        \\\hline
   \end{tabular*}
 \end{table}
 
@@ -1271,7 +1272,7 @@ center, right).
   \label{tbl:sizes}
   % color breaks the r@{sep} stuff.  great! <3 TeX.
   %\rowcolors{2}{gray!20}{white}
-  \begin{tabular*}{\linewidth}{|p{0.24\linewidth}|p{0.085\linewidth}@{$\times$}p{0.085\linewidth}@{$\times$}p{0.085\linewidth}p{0.099\linewidth}@{\quad}|p{0.13\linewidth}|}\hline
+  \begin{tabular*}{\linewidth}{|p{0.27\linewidth}|p{0.091\linewidth}@{$\times$}p{0.091\linewidth}@{$\times$}p{0.091\linewidth}p{0.105\linewidth}@{\quad}|p{0.16175\linewidth}|}\hline
     \multicolumn{1}{|l|}{\textbf{Dataset}} &
     \multicolumn{4}{c|}{\textbf{Resolution}} &
     \multicolumn{1}{c|}{\textbf{Size}}\\\hline

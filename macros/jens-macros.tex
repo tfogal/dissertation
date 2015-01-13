@@ -1,0 +1,94 @@
+%
+% jens-macros.tex
+%
+
+%% Jens: improve typesetting quality
+\usepackage{microtype}
+
+%% Jens: Color include, needed for some of the macros below
+\usepackage[usenames]{color}
+%% Jens: The \anonymizeForReview macro automatically replaces text with the word
+%%       "anonymized" in bold gray if a "review" documentclass is choosen
+%%        otherwise it's a NOOP
+%\ifreviewelse{\newcommand{\anonymizeForReview}[1]{\textcolor[rgb]{0.50,0.50,0.50}{\textbf{anonymized}}}}{\newcommand{\anonymizeForReview}[1]{#1}}
+%% Jens: The \TODO macro is used to flag text that should
+%%       not make it into the submitted version, it is
+%%       compiled to red text and should also be easy to
+%%       find by a search call in the tex file before
+%%       submission.
+\newcommand{\TODO}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\todo}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+%\newcommand{\TODO}[1]{}
+%% Jens: Helper for the \CE macro below
+\makeatletter
+\def\ifEmpty#1{\def\@temp{#1}\ifx\@temp\@empty}
+\makeatother
+%% Jens: The the \isDraft macro to true to replace all images by
+%%       (correctly sized) boxes for faster preview
+\newcommand{\isDraft}{false}
+%% Jens: for align environment
+\usepackage{amsmath,amsfonts,amssymb}
+%% for using urls
+\definecolor{darkblue}{rgb}{0,0,0.75}
+%% Jens: get rid of the ifpdf clash (needed for the hyperrefs below)
+\makeatletter
+\let\saved@ifpdf\ifpdf
+\let\ifpdf\@undefined
+\usepackage{ifpdf}
+%\let\ifpdf\saved@ifpdf
+%\makeatother
+%% Jens: turn refs into links and give them a blue color (remove for print version)
+%%\usepackage[colorlinks=true,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkblue]{hyperref}
+%% Jens: Define a new 'tinyurl' style for the package that will use a smaller font.
+%%       this can be activated in the references by inserting: \urlstyle{tinyurl}
+%\makeatletter
+
+\usepackage{graphics,graphicx}
+
+% Math Commands
+\newcommand{\mat}[1] {\boldsymbol{#1}} %{#1}
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\uvect}[1]{\boldsymbol{\hat{#1}}}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\transp}[1]{{#1}^\top}
+\newcommand{\invtransp}[1]{{#1}^{-\top}}
+\newcommand{\inv}[1]{{#1}^{-1}}
+\newcommand{\scprod}[2]{#1\cdot#2}
+\newcommand{\inprod}[2]{\left<#1,#2\right>}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\rthree}{\reel^3}
+\newcommand{\cmplx}{\mathbb{C}}
+\newcommand{\ints}{\mathbb{Z}}
+\newcommand{\conj}[1]{\overline{#1}}
+
+\newcommand{\SC}[1]{Sec.~\ref{#1}}
+\newcommand{\SCp}[1]{Section~\ref{#1} on page~\pageref{#1}}
+\newcommand{\EQWB}[1]{(Eq.~\ref{#1})}
+\newcommand{\EQ}[1]{Eq.~\ref{#1}}
+\newcommand{\EQp}[1]{Equation~\ref{#1} on page~\pageref{#1}}
+\newcommand{\FG}[1]{Fig.~\ref{#1}}
+\newcommand{\FGp}[1]{Figure~\ref{#1} on page~\pageref{#1}}
+\newcommand{\TA}[1]{Table~\ref{#1}}
+\newcommand{\TAp}[1]{Table~\ref{#1} on page~\pageref{#1}}
+\newcommand{\AL}[1]{Algorithm~\ref{#1}}
+\newcommand{\ALp}[1]{Algorithm~\ref{#1} on page~\pageref{#1}}
+
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\mmid}{mid}
+\DeclareMathOperator{\sincBCC}{sincBCC}
+\DeclareMathOperator{\ramp}{\mathcal{R}}
+\DeclareMathOperator{\boxx}{\mathcal{B}}
+\DeclareMathOperator{\step}{\mathcal{H}} %{Heaviside}
+\DeclareMathOperator{\tesseract}{\mathcal{T}}
+\DeclareMathOperator{\hatfcn}{\Lambda}
+\DeclareMathOperator{\grad}{\nabla}
+\newcommand{\Fourier}[1]{\mathcal{F}\{#1\}}
+\newcommand{\shah}{{\textstyle \amalg{\kern-4.pt\amalg}}}
+\newcommand{\myx}[1]{{x}_#1}
+\newcommand{\myy}[1]{{y}_#1}
+\newcommand{\myz}[1]{\mathrm{z}_#1}
+\newcommand{\myw}[1]{\mathrm{w}_#1}
+\newcommand{\myxi}[1]{\vect{\xi}_#1^\perp}
+% I really hate TeX sometimes.
+\newcommand{\tjftilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
