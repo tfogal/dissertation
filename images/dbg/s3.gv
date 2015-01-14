@@ -1,0 +1,28 @@
+digraph smooth3 {
+	ranksep="0.2 equally";
+	ratio=0.7;
+	"0x00400beb" [label = "smooth3\nDepth: 0", color="#000000"];
+	"0x00400beb" -> "0x00400dad";
+	"0x00400dad" [label = "0x00400dad\nDepth: 0\nLoop header", color="#000000"];
+	"0x00400dad" -> "0x00400c00";
+	"0x00400dad" -> "0x00400dc5";
+	"0x00400c00" [label = "0x00400c00\nDepth: 1", color="#000055"];
+	"0x00400c00" -> "0x00400d90";
+	"0x00400d90" [label = "0x00400d90\nDepth: 1\nLoop header", color="#000055"];
+	"0x00400d90" -> "0x00400c0d";
+	"0x00400d90" -> "0x00400da8";
+	"0x00400c0d" [label = "0x00400c0d\nDepth: 2", color="#0000aa"];
+	"0x00400c0d" -> "0x00400d73";
+	"0x00400d73" [label = "0x00400d73\nDepth: 2\nLoop header", color="#0000aa"];
+	"0x00400d73" -> "0x00400c1a";
+	"0x00400d73" -> "0x00400d8b";
+	"0x00400c1a" [label = "0x00400c1a\nDepth: 3", color="#0000ff"];
+	"0x00400c1a" -> "0x00400d73";
+	"0x00400d8b" [label = "0x00400d8b\nDepth: 2", color="#0000aa"];
+	"0x00400d8b" -> "0x00400d90";
+	"0x00400da8" [label = "0x00400da8\nDepth: 1", color="#000055"];
+	"0x00400da8" -> "0x00400dad";
+	"0x00400dc5" [label = "0x00400dc5\nDepth: 0", color="#000000"];
+	"0x00400dc5" -> "0xffffffffffffffff";
+	"0xffffffffffffffff" [label = "0xffffffffffffffff\nDepth: 0", color="#000000"];
+}

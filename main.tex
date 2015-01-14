@@ -11,6 +11,14 @@
 \usepackage[absolute]{textpos}
 \usepackage{times}
 \usepackage{tikz}
+\usetikzlibrary{arrows,positioning,shadows,shapes}
+\usepackage{url}
+
+\tikzstyle{state} = [draw, fill=blue!10, text width=4.00em, text
+                     centered, node distance=2.6cm, inner sep=0.5em, rounded
+%                     corners, minimum height=3em, circular drop shadow]
+                     corners, minimum height=3em, drop shadow]
+\tikzstyle{line} = [draw, ultra thick, -latex]
 
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \include{macros/jens-macros}
@@ -42,6 +50,6 @@
 \input{inference}
 
 \bibliographystyle{unsrt}
-\bibliography{alt,vr,iorefs,us}
+\bibliography{alt,analysis,insitu,iorefs,understanding,us,vr}
 
 \end{document}

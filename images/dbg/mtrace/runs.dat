@@ -1,0 +1,26 @@
+RUNTYPE "Uninstrumented"
+PsiPhi 56.32
+Relax 1.13
+linpack 1.28
+allocs 0.00
+
+
+RUNTYPE "Trace"
+PsiPhi 285.47
+Relax 1.17
+linpack 1.50
+allocs 8.43
+
+
+RUNTYPE "Allocations"
+PsiPhi 347.26
+Relax 1.21
+linpack 1.5025
+allocs 10.24
+
+
+RUNTYPE "Full"
+PsiPhi 230.03
+Relax 1.20
+linpack 1.51
+allocs 19.33
