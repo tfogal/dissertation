@@ -1,5 +1,3 @@
-multi-scale lorem ipsum dolor sit amet
-
 \section{Abstract}
 
 Data sets of immense size are regularly generated on large scale
@@ -176,7 +174,7 @@ multiple GPUs.  Strengert et al. developed a system that used wavelet
 compression and adaptively decompressed the data on small GPU
 clusters~\cite{SMW:2004:???}.  Marchesin et al. compared a volume that
 ran on two different two-GPU configurations: two GPUs on one system,
-and one GPU on two networked systems~\cite{Marchesin:2008:???}.  The
+and one GPU on two networked systems~\cite{Marchesin:2008:MultiGPU}. The
 use of just one or two systems, coupled with an in-core renderer,
 artificially constrained the data set size.  M\"uller et al. developed
 a distributed memory volume renderer that ran on
@@ -247,7 +245,7 @@ variety of reasons:
   based on a \emph{master} node that tells slaves to process a brick,
   waits for the slaves' completion, and then sends them a new brick to
   process.  We implemented a flat hierarchy, as seems to be more common
-  in recent literature~\cite{Marchesin:2008:MultiGPU, MSE06}.
+  in recent literature~\cite{Marchesin:2006:???, MSE06}.
 
   \item \textbf{Compositing} \emph{Most importantly}, for our
   object-based decomposition to work correctly, we needed a defined
@@ -292,7 +290,7 @@ gave significantly better results.
 
 In order to compare different implementations, we implemented multiple
 load balancing algorithms, notably those described in Marchesin et al.
-and M\"uller et al.'s work~\cite{MMD06, MSE06}.  In both cases, leaf
+and M\"uller et al.'s work~\cite{Marchesin:2006:???, MSE06}.  In both cases, leaf
 nodes represent processes, and each process has some number of bricks
 assigned to it.  In the Marchesin-based approach, we start at the
 parents of the leaf nodes and work our way up the tree, searching for
@@ -512,7 +510,7 @@ With the implementations we recreated as faithfully as possible, we did
 find that zooming in to the data set was a task that was well-suited
 for load balancing.  Still, we encountered issues even with this case.
 For the
-algorithm given in~\cite{Marchesin:2008:MultiGPU}, we observed that the
+algorithm given in~\cite{Marchesin:2006:???}, we observed that the
 data would move back and forth between nodes quite frequently, having
 a negative impact on overall rendering time.  We therefore introduced
 a `threshold' parmaeter to the existing algorithm, in an attempt to
