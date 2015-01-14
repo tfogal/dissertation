@@ -247,7 +247,7 @@ variety of reasons:
   based on a \emph{master} node that tells slaves to process a brick,
   waits for the slaves' completion, and then sends them a new brick to
   process.  We implemented a flat hierarchy, as seems to be more common
-  in recent literature~\cite{MMD06, MSE06}.
+  in recent literature~\cite{Marchesin:2008:MultiGPU, MSE06}.
 
   \item \textbf{Compositing} \emph{Most importantly}, for our
   object-based decomposition to work correctly, we needed a defined
@@ -448,12 +448,13 @@ a minor performance improvement.
 
 In earlier results, particularly with GPU-based rendering
 architectures, the community was generally concerned with the time
-required to read the resulting
-image data from the GPU and into the host's memory~\cite{MMD08}.  Our
-study did not provide corroboration of this concern, which we interpret
-as a positive data point with respect to evolving graphics subsystems.
-Our system did demonstrate that this time increased as the resolution
-grew, but as can be seen
+required to read the resulting image data from the GPU and into the
+host's
+memory~\cite{Marchesin:2008:MultiGPU}.  Our study did not provide
+corroboration of this concern, which we interpret as a positive data
+point with respect to evolving graphics subsystems.  Our system did
+demonstrate that this time increased as the resolution grew, but as can
+be seen
 in Table~\ref{tbl:breakdown}, even at 1024x768 this step took only
 thousandths of a second.
 
@@ -511,15 +512,15 @@ With the implementations we recreated as faithfully as possible, we did
 find that zooming in to the data set was a task that was well-suited
 for load balancing.  Still, we encountered issues even with this case.
 For the
-algorithm given in~\cite{MMD06}, we observed that the data would move
-back and forth between nodes quite frequently, having a negative impact
-on overall rendering time.  We therefore introduced a `threshold'
-parmaeter to the existing algorithm, in an attempt to limit this
-`ping-pong' behavior.  As we move up the tree, imbalance between
-the left and right subtrees is subject to this threshold; if it
-does not exceed the threshold, the imbalance is ignored.  This is
-a very useful parameter for ensuring that we do not move data too
-eagerly.  Generally, setting this threshold too high will yield
+algorithm given in~\cite{Marchesin:2008:MultiGPU}, we observed that the
+data would move back and forth between nodes quite frequently, having
+a negative impact on overall rendering time.  We therefore introduced
+a `threshold' parmaeter to the existing algorithm, in an attempt to
+limit this `ping-pong' behavior.  As we move up the tree, imbalance
+between the left and right subtrees is subject to this threshold; if
+it does not exceed the threshold, the imbalance is ignored.  This
+is a very useful parameter for ensuring that we do not move data
+too eagerly.  Generally, setting this threshold too high will yield
 behavior equivalent to the static case; setting it to low leads to a
 considerable amount of unnecessary data shifting, and we found that
 this in many cases overcompensated for minor, expected variations (such
