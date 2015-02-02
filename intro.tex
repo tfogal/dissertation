@@ -1,16 +1,64 @@
-We are generating more data than we could possibly analyze.
+%We are generating more data than we could possibly examine.
+%	* growth is huge
+%	* cite fig
+%	* overwhelming ability to analyze/understand
 
+The growth in data-based science has exploded in recent years.  As
+Figure~\ref{fig:growth} shows, the size of the available data to
+analyze increases exponentially.  While the increased fidelity
+enables new levels of understanding, this is only possible if we can
+interrogate and analyze the increased scale of data.
 
-The absurd scale implies that visualization's role will be increasingly
-critical.
+\begin{figure}
+	\includegraphics[width=\linewidth]{images/growth}
 
+  \caption{The growth of data in recent years.  Hardware capabilities
+  have not kept pace with the exponential pace of data growth.}
+
+	\label{fig:growth}
+\end{figure}
+
+Humans are effective pattern recognizers, but error-prone with
+repetitive tasks and inherently visual thinkers.  Among even small sets
+of data, it is much easier for us to apprehend a change in color than
+it is a digit in the third decimal place of a repeated sequences of
+numbers.  Mapping raw numbers to color or another visual representation
+is thus an effective way to take advantage of the pattern recognition
+capabilities of the human visual system.  The growth of data only
+increases the need for data visualization, else we will be left with
+massive piles of numbers with no insight into the mechanisms or
+processes that sourced them.
+
+The best-represented subset of scientific data is regularly gridded
+data.
+	* limit ourselves to scientific data
+	* scientific data has spatial and potentially temporal elements
+	* regularly gridded data is disproportionately represented
+	* one of the Berkeley dwarves (5. structured grids)
+	** also fits 1. dense linear algebra
+
+%Berkeley introduces 13 dwarves.
+%	 1. dense linear algebra: yes
+%	 2. sparse linear alg: no
+%	 3. spectral methods: no
+%	 4. n-body methods: no
+%	 5. structured grids: yes
+%	 6. unstructured grids: no
+%	 7. monte carlo: no
+%	 8. computational logic: no
+%	 9. graph traversal: no
+%	10. dynamic programming: no
+%	11. backtrace, branch+bound: no
+%	12. graphical models: no
+%	13. finite state machines: no
 
 Extreme data sizes as well as established algorithms (in SciVis)
 mean there is increasing focus on constants in algorithmic scaling
 equations.
-
-The best-represented subset of scientific data is regularly gridded
-data.
+	* theres exists a small set of `established' vis algorithms
+	* already well-utilized for understanding structured data
+	* known performance/scaling properties
+	* recent/future research focused on reducing constants
 
 % * vis is important
 %
@@ -25,17 +73,26 @@ data.
 %	* why is it used
 %	* imagevis3d (not tuvok!)
 
-Volume visualization is a useful technique for understanding the
-structure of 3D data.
-
 Volume rendering allows us to see inside data sets.
+	* physically defined for tenuous mediums: fire, smoke, clouds
+	* usually applied elsewhere: CT, MRI, simulation data
+	* can filter out unwanted features
+	* can highlight features of interest
 
+%Volume visualization is a useful technique for understanding the
+%structure of 3D data.
 
 A \emph{transfer function} gives user control over the filtering and
 mapping processes of the visualization pipeline.
-
+	* tfqn assigns colors and opacities to data values
+	* user control of filtering vis stage
+	* user control of mapping vis stage
+	* thus, precise control over the display
 
 Volume rendering is computationally complex.
+	* trilinear interpolation
+	* compositing
+	* in general, $O(n^3)$
 
 \section{Systems opportunities}
 
@@ -46,17 +103,31 @@ algorithmic constants in volume visualization.
 
 The end of Moore's law necessitates a reorganization in software architecture
 to take advantage of novel architectures.
+	* single processor performance increases have peaked
+	* multiprocessor is the new norm
+	* computation is free, communication costs
+	* limited per-core memory available
 
 In part due to the results of this thesis, architecting for
 accelerators as opposed to CPU threads holds greater promise for
 long-term performance scalability.
+	* both leading companies (NVIDIA + intel) have invested in accelerators
+	* accelerator model seems to be here to stay
+	* performance per watt vastly improved
 
 The exact characteristics of accelerators is a current topic of
 industry competition, but the general characteristics are large numbers
 of low-power cores connected to limited but high-bandwidth memory.
+	* memory is where things get expensive
+	* more powerful cores need more power + can't dissipate heat
+	* but more cores are viable
 
 The programmability of future high-performance systems is a competitive
 topic that is presently conflated with that of the hardware.
+	* many library choices
+	** CUDA, OpenCL, Intel TBB, OpenMP, OpenAcc, Cilk, UPC
+	* hardware choices
+	** CPU threads (dead), GPUs, Xeon Phi
 
 %	* GPUs
 %	* versus CPU threads
@@ -69,8 +140,17 @@ topic that is presently conflated with that of the hardware.
 
 The storage hierarchy is the single most limiting architectural
 component.
+	* slowest component by far
+	* gap between disk and memory is the widest HW gulf
+	* huge problem for vis: synchronous!
+	** vis is unique: no help from general HPC community
 
 Parallel storage scalability is not a simple as adding more disks.
+	* data movement is too expensive
+	** must access data intelligently
+	** false sharing
+	* metadata access (storage) is a limiting component
+	* tremendous contention at cluster scales
 
 %* parallel io
 %	* filesystems
@@ -81,14 +161,33 @@ Parallel storage scalability is not a simple as adding more disks.
 
 There are no imminent advances on the horizon for the IO problems
 plaguing modern visualization and analysis software.
+	* SSDs help, but not nearly enough
+	* only going to get more disks
 
 \subsection{\textit{In situ} visualization}
 
 In situ visualization addresses the `too big to read' problem in
 visualization.
+	* beyond a certain size, it no longer makes sense to read data
+  * waiting to read large data progression: sip your coffee, get a
+  coffee, make a pot, drink a cup, teach a class, sleep, forget it.
+	* in situ solves this by obviating the `read' step
 
 In situ visualization exposes difficulties in coupling visualization
 and simulation codes.
+	* typically written by different groups,
+	* in different languages,
+	* with different data models.
+	* visualization software is LARGE and complex
+
+Considerable effort has been focused on scalability and performance.
+	* often serves to make these more complex
+	* cite considerable work in this area
+
+The complexity of modern \textit{in situ} solutions is crippling.
+	* forgotten use case simple code that just wants to do vis
+	* spend more time doing in situ than writing the simulation code
+	* we seem to have forgetten that visualization is a tool to others
 
 %* in situ visualization
 %	* solves
