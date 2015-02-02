@@ -1,37 +1,103 @@
-* vis is important
+We are generating more data than we could possibly analyze.
 
-* performance is critical
 
-* interesting time for this:
-	* GPUs
-	* versus CPU threads
-	* versus Phi?
-	* future architecture of supercomputers defined by current research
-	* programmability
-	* CUDA, OpenCL, OpenMP, OpenAcc
+The absurd scale implies that visualization's role will be increasingly
+critical.
 
-* volume rendering
-	* definition
-	* why is it used
-	* imagevis3d (not tuvok!)
 
-* in situ visualization
-	* solves
-		* data too large to be read
-		* end-to-end 'time-to-insight' performance
-	* problems
-		* how metadata is transferred
-		* vis cannot slow down sim (much)
-		* data access from sim -> vis
-		* difficulty in coupling sim+vis
-		* how often do we update vis
-		* \emph{when} do we update vis
+Extreme data sizes as well as established algorithms (in SciVis)
+mean there is increasing focus on constants in algorithmic scaling
+equations.
 
-* parallel io
-	* filesystems
-	* lustre
-	* MDSs, ODSs or whatever they're called
-	* DDoS metadata
-	* false sharing
+The best-represented subset of scientific data is regularly gridded
+data.
 
-* prevalence of regular grids
+% * vis is important
+%
+% * performance is critical
+%
+% * prevalence of regular grids
+
+\section{Volume visualization}
+
+%* volume rendering
+%	* definition
+%	* why is it used
+%	* imagevis3d (not tuvok!)
+
+Volume visualization is a useful technique for understanding the
+structure of 3D data.
+
+Volume rendering allows us to see inside data sets.
+
+
+A \emph{transfer function} gives user control over the filtering and
+mapping processes of the visualization pipeline.
+
+
+Volume rendering is computationally complex.
+
+\section{Systems opportunities}
+
+There are a number of systems-oriented challenges in the ameloriation of
+algorithmic constants in volume visualization.
+
+\subsection{Hardware \& programmability}
+
+The end of Moore's law necessitates a reorganization in software architecture
+to take advantage of novel architectures.
+
+In part due to the results of this thesis, architecting for
+accelerators as opposed to CPU threads holds greater promise for
+long-term performance scalability.
+
+The exact characteristics of accelerators is a current topic of
+industry competition, but the general characteristics are large numbers
+of low-power cores connected to limited but high-bandwidth memory.
+
+The programmability of future high-performance systems is a competitive
+topic that is presently conflated with that of the hardware.
+
+%	* GPUs
+%	* versus CPU threads
+%	* versus Phi?
+%	* future architecture of supercomputers defined by current research
+%	* programmability
+%	* CUDA, OpenCL, OpenMP, OpenAcc
+
+\subsection{I/O}
+
+The storage hierarchy is the single most limiting architectural
+component.
+
+Parallel storage scalability is not a simple as adding more disks.
+
+%* parallel io
+%	* filesystems
+%	* lustre
+%	* MDSs, ODSs or whatever they're called
+%	* DDoS metadata
+%	* false sharing
+
+There are no imminent advances on the horizon for the IO problems
+plaguing modern visualization and analysis software.
+
+\subsection{\textit{In situ} visualization}
+
+In situ visualization addresses the `too big to read' problem in
+visualization.
+
+In situ visualization exposes difficulties in coupling visualization
+and simulation codes.
+
+%* in situ visualization
+%	* solves
+%		* data too large to be read
+%		* end-to-end 'time-to-insight' performance
+%	* problems
+%		* how metadata is transferred
+%		* vis cannot slow down sim (much)
+%		* data access from sim -> vis
+%		* difficulty in coupling sim+vis
+%		* how often do we update vis
+%		* \emph{when} do we update vis
