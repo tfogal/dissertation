@@ -29,13 +29,24 @@ increases the need for data visualization, else we will be left with
 massive piles of numbers with no insight into the mechanisms or
 processes that sourced them.
 
-The best-represented subset of scientific data is regularly gridded
-data.
-	* limit ourselves to scientific data
-	* scientific data has spatial and potentially temporal elements
-	* regularly gridded data is disproportionately represented
-	* one of the Berkeley dwarves (5. structured grids)
-	** also fits 1. dense linear algebra
+There are a variety of data types we might apply our efforts to.  In
+this thesis, we concentrate on \textit{regular gridded data}, as might
+be output by medical (CT, MRI) scanners or used in simulation software.
+These kinds of strutured grids account for a disproportionately large
+subset of data types used in the scientific and medical domains.  It is
+one of the `important' data types highlighted by a report discussing
+the future scalability of computing in
+science~\cite{Berkeley:2006:View}.  Furthermore, operations on such
+data are easily mappable to promising data-parallel hardware, unlike
+many other data types, suggesting its continued future use at scale.
+
+%The best-represented subset of scientific data is regularly gridded
+%data.
+%	* limit ourselves to scientific data
+%	* scientific data has spatial and potentially temporal elements
+%	* regularly gridded data is disproportionately represented
+%	* one of the Berkeley dwarves (5. structured grids)
+%	** also fits 1. dense linear algebra
 
 %Berkeley introduces 13 dwarves.
 %	 1. dense linear algebra: yes
@@ -52,13 +63,20 @@ data.
 %	12. graphical models: no
 %	13. finite state machines: no
 
-Extreme data sizes as well as established algorithms (in SciVis)
-mean there is increasing focus on constants in algorithmic scaling
-equations.
-	* theres exists a small set of `established' vis algorithms
-	* already well-utilized for understanding structured data
-	* known performance/scaling properties
-	* recent/future research focused on reducing constants
+There are a number of visualization techniques that are widely
+appreciated for such volumetric data.  As the techniques have been
+known for years, much of the effort has been focused in mapping the
+algorithms to novel architectures, identifying special cases of
+interest, and reducing constants in the order of the algorithm's
+execution.
+
+%Extreme data sizes as well as established algorithms (in SciVis)
+%mean there is increasing focus on constants in algorithmic scaling
+%equations.
+%	* theres exists a small set of `established' vis algorithms
+%	* already well-utilized for understanding structured data
+%	* known performance/scaling properties
+%	* recent/future research focused on reducing constants
 
 % * vis is important
 %
@@ -73,26 +91,52 @@ equations.
 %	* why is it used
 %	* imagevis3d (not tuvok!)
 
-Volume rendering allows us to see inside data sets.
-	* physically defined for tenuous mediums: fire, smoke, clouds
-	* usually applied elsewhere: CT, MRI, simulation data
-	* can filter out unwanted features
-	* can highlight features of interest
+Direct volume rendering produces visualizations that accurately model
+tenuous mediums such as fires, smoke, and clouds.  However, it is
+seldom applied for its ability to produce photorealistic imagery.  The
+scientific and medical domains use volume rendering to see
+\emph{inside} a data set and highlight its internal structure.
+This can be extremely useful both in interrogating data as well as
+communicating known features.
+
+%Volume rendering allows us to see inside data sets.
+%	* physically defined for tenuous mediums: fire, smoke, clouds
+%	* usually applied elsewhere: CT, MRI, simulation data
+%	* can filter out unwanted features
+%	* can highlight features of interest
 
 %Volume visualization is a useful technique for understanding the
 %structure of 3D data.
 
-A \emph{transfer function} gives user control over the filtering and
-mapping processes of the visualization pipeline.
-	* tfqn assigns colors and opacities to data values
-	* user control of filtering vis stage
-	* user control of mapping vis stage
-	* thus, precise control over the display
+The precision instrument used to control volume rendering is called the
+\emph{transfer function}.  A transfer function maps the value at every
+datum to colors \emph{and} opacities.  The control of opacity gives
+users an effective mechanism for filtering out data irrelevant to the
+point of interest.  Color control enables the user to specify the
+mapping stage of the visualization pipeline.  In contrast to other
+volume visualization methods, this gives comparatively more power and
+flexibility to the user to communicate a feature exactly as intended.
 
-Volume rendering is computationally complex.
-	* trilinear interpolation
-	* compositing
-	* in general, $O(n^3)$
+Unfortunately this increased flexibility comes at the cost of
+considerable computational complexity as compared to other volume
+visualization techniques.  In the general case, volume rendering is an
+$O(n^3)$ algorithm, requiring the consideration of every voxel in a
+three-dimensional dataset.  Each of these operations typically consists
+of trilinear interpolation coupled with a set of multiply-adds needed
+to compute the volume rendering integral.  For data of even modest
+size, a na\"ive CPU-based computation will be far from interactive.
+
+%A \emph{transfer function} gives user control over the filtering and
+%mapping processes of the visualization pipeline.
+%	* tfqn assigns colors and opacities to data values
+%	* user control of filtering vis stage
+%	* user control of mapping vis stage
+%	* thus, precise control over the display
+
+%Volume rendering is computationally complex.
+%	* trilinear interpolation
+%	* compositing
+%	* in general, $O(n^3)$
 
 \section{Systems opportunities}
 
