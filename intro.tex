@@ -145,33 +145,65 @@ algorithmic constants in volume visualization.
 
 \subsection{Hardware \& programmability}
 
-The end of Moore's law necessitates a reorganization in software architecture
-to take advantage of novel architectures.
-	* single processor performance increases have peaked
-	* multiprocessor is the new norm
-	* computation is free, communication costs
-	* limited per-core memory available
+The end of Moore's law necessitates a reorganization in software
+architecture to continue to see performance gains on novel
+architectures.  Serial algorithms must be amended to identify
+and exploit parallelism, often at multiple scales.  Whereas old
+optimization principles emphasized eschewing computation, new
+strategies must reduce communication instead.
 
-In part due to the results of this thesis, architecting for
-accelerators as opposed to CPU threads holds greater promise for
-long-term performance scalability.
-	* both leading companies (NVIDIA + intel) have invested in accelerators
-	* accelerator model seems to be here to stay
-	* performance per watt vastly improved
+%	* single processor performance increases have peaked
+%	* multiprocessor is the new norm
+%	* computation is free, communication costs
+%	* limited per-core memory available
+
+Some of the recent research in high-performance computing (HPC) has
+been focused on elucidating the appropriate architecture for future HPC
+systems.  In part due to the results of this thesis, this architecture
+is now known to be based on the `fat node' idea: fewer nodes with
+very high levels of shared memory-based concurrency on each node.
+Both companies leading the HPC space, NVIDIA and Intel, have invested
+heavily in an architecture based on accelerator cards: boards with a
+large number of shared memory computational units.  While this is due
+in part due to results such as those contained herein, much of this
+architecture is dictated by the practical concerns of energy and the
+ability to dissipate heat from processing units.
+
+%In part due to the results of this thesis, architecting for
+%accelerators as opposed to CPU threads holds greater promise for
+%long-term performance scalability.
+%	* both leading companies (NVIDIA + intel) have invested in accelerators
+%	* accelerator model seems to be here to stay
+%	* performance per watt vastly improved
 
 The exact characteristics of accelerators is a current topic of
 industry competition, but the general characteristics are large numbers
 of low-power cores connected to limited but high-bandwidth memory.
-	* memory is where things get expensive
-	* more powerful cores need more power + can't dissipate heat
-	* but more cores are viable
+High-powered cores need more power and there are issues dissipating the
+heat they generate, so it is unlikely that this basic component of the
+architecture will change soon.  Memory faces similar problems, and thus
+it seems that the trend of reduced memory per core will continue.
 
-The programmability of future high-performance systems is a competitive
-topic that is presently conflated with that of the hardware.
-	* many library choices
-	** CUDA, OpenCL, Intel TBB, OpenMP, OpenAcc, Cilk, UPC
-	* hardware choices
-	** CPU threads (dead), GPUs, Xeon Phi
+%	* memory is where things get expensive
+%	* more powerful cores need more power + can't dissipate heat
+%	* but more cores are viable
+
+The challenges these new architectures present gives rise to a number
+of programmability concerns.  There are a number of proposals to
+ameloriate this problem, but as of yet no solution has arisen as a
+clear winner.  Conflating the problem are a number of languages,
+libraries, or approaches that are intimately tied with particular
+hardware---including CUDA, OpenCL, Threaded Building Blocks (TBB),
+OpenMP, OpenAcc, Cilk, and UPC---forcing programmability issues to be
+inextricably linked with hardware choices.
+
+%The programmability of future high-performance systems is a competitive
+%topic that is presently conflated with that of the hardware.
+%	* many library choices
+%	** CUDA, OpenCL, Intel TBB, OpenMP, OpenAcc, Cilk, UPC
+%	** DAX, EAVL, Piston
+%	* hardware choices
+%	** CPU threads (dead), GPUs, Xeon Phi
 
 %	* GPUs
 %	* versus CPU threads
@@ -182,19 +214,39 @@ topic that is presently conflated with that of the hardware.
 
 \subsection{I/O}
 
-The storage hierarchy is the single most limiting architectural
-component.
-	* slowest component by far
-	* gap between disk and memory is the widest HW gulf
-	* huge problem for vis: synchronous!
-	** vis is unique: no help from general HPC community
+The storage hierarchy is the single most limiting factor in
+high-performance visualization.  Long term storage is slower than other
+subsystems by many orders of magnitude: far wider than the gap between
+processor and memory speeds, for example.  Furthermore, there is little
+hope that this gap will shrink in the coming years.  This poses a
+pernicious problem for visualization, whose primary interaction with
+the storage hierarchy is via necessarily synchronous read operations.
+Worse, this type of workload is unique to visualization: other
+high-performance computing consumers are unlikely to be allies when
+negotiating architectural tradeoffs for HPC resources.
 
-Parallel storage scalability is not a simple as adding more disks.
-	* data movement is too expensive
-	** must access data intelligently
-	** false sharing
-	* metadata access (storage) is a limiting component
-	* tremendous contention at cluster scales
+%The storage hierarchy is the single most limiting architectural
+%component.
+%	* slowest component by far
+%	* gap between disk and memory is the widest HW gulf
+%	* huge problem for vis: synchronous!
+%	** vis is unique: no help from general HPC community
+
+While parallel storage continues to make significant progress, the
+problems elucidated in recent years are cause for concern.  Parallel
+filesystems must intelligently partition and provide access to a
+distributed set of disks, but the decomposition of the parallel job
+is frequently opaque and only a traditional serial API is presented.
+This presents difficulties in avoiding issues such as false sharing or
+central and thus contentious repositories for metadata.  At the core of
+the issue is the rapidly increasing cost of data movement.
+
+%Parallel storage scalability is not a simple as adding more disks.
+%	* data movement is too expensive
+%	** must access data intelligently
+%	** false sharing
+%	* metadata access (storage) is a limiting component
+%	* tremendous contention at cluster scales
 
 %* parallel io
 %	* filesystems
@@ -203,35 +255,85 @@ Parallel storage scalability is not a simple as adding more disks.
 %	* DDoS metadata
 %	* false sharing
 
-There are no imminent advances on the horizon for the IO problems
-plaguing modern visualization and analysis software.
-	* SSDs help, but not nearly enough
-	* only going to get more disks
+There are no imminent advances on the horizon for the storage hierarchy
+problems plaguing modern high-performance visualization and analysis
+software.  While solid state drives ameloriate some of these concerns,
+from a scalability perspective they have only a minor impact.  Given
+the realities of current and future architectural limitations, we
+must consider alternate approaches to the visualization and analysis
+problems.
+
+%There are no imminent advances on the horizon for the IO problems
+%plaguing modern visualization and analysis software.
+%	* SSDs help, but not nearly enough
+%	* only going to get more disks
 
 \subsection{\textit{In situ} visualization}
 
-In situ visualization addresses the `too big to read' problem in
-visualization.
-	* beyond a certain size, it no longer makes sense to read data
-  * waiting to read large data progression: sip your coffee, get a
-  coffee, make a pot, drink a cup, teach a class, sleep, forget it.
-	* in situ solves this by obviating the `read' step
+\textit{In situ} visualization addresses the `too big to read' problem
+in large-scale visualization and analysis.  The growing size of outputs
+crosses an inflection point relevant to the speed of storage hierarchy.
+The simple act of loading data significantly changes the visualization
+and analysis workflow.  Past this point, the impracticality of loading
+data precludes exploratory visualization and analysis. \textit{In
+situ} visualization solves this by foregoing such use cases entirely:
+instead, all visualization and analysis is `baked into' the simulation
+run itself, running concurrently with the parallel simulation.  The
+advantage of this approach is that it obviates the most expensive step
+in the majority of visualization pipelines: reading data from disk.
 
-In situ visualization exposes difficulties in coupling visualization
-and simulation codes.
-	* typically written by different groups,
-	* in different languages,
-	* with different data models.
-	* visualization software is LARGE and complex
+%In situ visualization addresses the `too big to read' problem in
+%visualization.
+%	* beyond a certain size, it no longer makes sense to read data
+% ** waiting to read large data progression: sip your coffee, get a
+%    coffee, make a pot, drink a cup, teach a class, sleep, forget it.
+%	* in situ solves this by obviating the `read' step
 
-Considerable effort has been focused on scalability and performance.
-	* often serves to make these more complex
-	* cite considerable work in this area
+To achieve this coupling of visualization and simulation requires the
+combination of software from multiple communities, notably simulation
+and visualization \& analysis.  This creates sizable technical and
+social challenges.  First and foremost, these are often distinct
+groups, with varying research motivations, methods for valuating
+engineering contributions, and software processes.  Data models
+are often radically different and must be shared across multiple
+programming languages.  Finally, large-scale visualization software is
+typically large, and both systems tend to have unique but overlapping
+dependency stacks.
 
-The complexity of modern \textit{in situ} solutions is crippling.
-	* forgotten use case simple code that just wants to do vis
-	* spend more time doing in situ than writing the simulation code
-	* we seem to have forgetten that visualization is a tool to others
+%In situ visualization exposes difficulties in coupling visualization
+%and simulation codes.
+%	* typically written by different groups,
+%	* in different languages,
+%	* with different data models.
+%	* visualization software is LARGE and complex
+
+Prior effort into \textit{in situ} visualization is often focused on
+scalability and performance.  At the largest scale---the most promising
+candidates for benefitting from \textit{in situ} techniques---there is
+great concern that visualization will severely impact the execution
+time of highly parallel simulation software.  The scalability of these
+results is promising, but often comes at large increases in software
+complexity and thereby `technical debt'.
+
+%Considerable effort has been focused on scalability and performance.
+%	* often serves to make these more complex
+%	* cite considerable work in this area
+
+This dissertation is perhaps the first to address the concerns
+associated with coupling increasingly complex visualization software
+with the simulations it uses as input.  The starting thesis is that
+embedding visualization into simulation code should not require a
+visualization expert.  It should be possible for the simulation
+author or even user to independently perform this task.  Furthermore,
+we should measure coupling efforts in hours, not weeks or months.
+Starting from
+these premises requires a radically different approach to \textit{in
+situ} visualization than traditional solutions permit.
+
+%The complexity of modern \textit{in situ} solutions is crippling.
+%	* forgotten use case simple code that just wants to do vis
+%	* spend more time doing in situ than writing the simulation code
+%	* we seem to have forgetten that visualization is a tool to others
 
 %* in situ visualization
 %	* solves
