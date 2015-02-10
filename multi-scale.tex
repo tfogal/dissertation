@@ -456,6 +456,29 @@ be seen
 in Table~\ref{tbl:breakdown}, even at 1024x768 this step took only
 thousandths of a second.
 
+\begin{table}
+	\begin{tabular}{|c|ccc|c|}\hline
+	\textbf{Dataset size} & \textbf{Rendering (s)} & \textbf{Readback (s)} &
+		\textbf{Compositing (s)} & \textbf{Total (s)}\\\hline
+	$1024^3$ &  0.06141 & 0.00328 & 0.06141 &  0.12610 \\
+	$2048^3$ &  0.35107 & 0.00377 & 0.07673 &  0.43157 \\
+	$4096^3$ &  2.50984 & 0.00377 & 0.29533 &  2.80894 \\
+	$8192^3$ & 19.60648 & 0.00373 & 0.51799 & 20.12820 \\\hline
+	\end{tabular}
+
+  \caption{Breakdown of different pipeline stages for various data set
+  sizes on 256 GPUs rendering into a $1024 \times 768$ viewport.  All
+  times are in seconds.  The $1024^3$, $2048^3$, and $4096^3$ case used
+  $13^3$ bricks (varying brick size); the $8192^3$ case used $32^3$
+  bricks, making each brick $256^3$ voxels.  Compositing time rises
+  only artificially; if a node finishes rendering before other nodes,
+  the time it must wait was included under `Compositing' due to an
+  artifact of our sampling code.  Thus, the data imply that larger data
+  sets see more load imbalance.}
+
+	\label{tbl:breakdown}
+\end{table}
+
 The time required for image composition is significantly reduced when
 taking advantage of the GPUs available in the visualization vluster.
 Since a GPU can render much faster than a software-based renderer, one
