@@ -346,3 +346,79 @@ situ} visualization than traditional solutions permit.
 %		* difficulty in coupling sim+vis
 %		* how often do we update vis
 %		* \emph{when} do we update vis
+
+\section{Contribution}
+
+The efforts involved in this dissertation redefined the data sizes
+and methods in use to visualize and understand regularly-gridded
+three-dimensional data.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{images/rabbit5tb}
+
+  \caption{ImageVis3D interacting with a 5 terabyte data set of a
+  rabbit eye.  The research in this thesis convinced the community
+  that what was previously considered `large data' could in fact be
+  processed by workstations using commodity hardware.}
+
+	\label{fig:rabbit5tb}
+\end{figure}
+
+Prior to the ImageVis3D desktop volume rendering tool developed in
+relation to the research appearing here, `large data' visualization was
+limited to `big iron' multi-million dollar supercomputing facilities.
+Chapters~\ref{chp:tuvok}~and~\ref{chp:rayguided} demonstrate that it
+is possible to use workstation computing resources to visualize the
+multi-terabyte datasets normally processed on supercomputers, as shown in
+Figure~\ref{fig:rabbit5tb}.  Despite
+using vastly less hardware, the performance and user experience is even
+better than on the large-scale infrastructure.
+Chapter~\ref{chp:multiscale} demonstrates that these techniques can
+still be applied at scale and uses them to produce the largest-ever
+volume renderings, and Chapter~\ref{chp:io} takes that concept further
+by investigating the parallel IO concerns at scale.
+
+Volume visualization is simply a means to an end: that of understanding
+the structures and processes present in a volume data set.  In recent
+years, many have turned to \textit{in situ} visualization to tame the
+growing performance concerns of large-scale visualization.  However,
+engineering groups have long coupled \textit{ad hoc} visualization and
+analysis routines into their simulations to understand their simulation
+\emph{while} it runs.  The work developed here in
+Chapters~\ref{chp:freeprocessing}~and~\ref{chp:conclusions} is the
+first to consider
+\textit{in situ} visualization from the engineers' point of view: quick
+and easy visualization of their data.
+
+Much of this work has been vetted in field-leading conferences and
+journals.
+\begin{itemize}
+
+  \item Chapter~\ref{chp:tuvok} is based on, ``Tuvok, an
+  Architecture for Large Scale Volume Rendering'' that appeared in VMV
+  2010~\cite{Fogal:2010:Tuvok}.
+
+	\item Chapter~\ref{chp:multiscale} is based on, ``Large Data Visualization on
+	Distributed Memory Multi-GPU Clusters'' that appeared at HPG
+	2010~\cite{Fogal:2010:HPG}.
+
+	\item Chapter~\ref{chp:rayguided} is based on, ``An analysis of scalable
+	GPU-based ray-guided volume rendering'' that appeared at LDAV
+	2013~\cite{Fogal:2013:Analysis}.
+
+  \item Chapter~\ref{chp:io} is based on, ``Efficient I/O
+  for Parallel Visualization'' that was presented at EGPGV
+  2011~\cite{Fogal:2011:PracticalIO}.
+
+	\item Chapter~\ref{chp:freeprocessing} is based on,
+	``\textit{Free}processing: Transparent \textit{in situ} visualization via
+	data interception'' that was presented at EGPGV
+	2014~\cite{Fogal:2014:Freeprocessing}.
+
+\end{itemize}
+
+There are also a number of publications by the author that are not considered
+`core' components of this thesis~\cite{Fogal:2009:SizeMatters,
+Fogal:2010:Bridge, Jevremovic:2011:Education, Jovana:2012:Interactive,
+Brownlee:2012:GLuRay, Childs:2012:VisIt, Hermilo:2013:Steering,
+Butson:2013:DBS}.  They are mentioned in the text only peripherally.
