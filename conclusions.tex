@@ -1,20 +1,52 @@
+In this dissertation, we have
+\begin{itemize}
+	\item demonstrated a forward-looking architecture for volume visualization
+	\item supported the approach of ray-guided rendering with extensive benchmarks
+	\item established the multi-scale parallelism architecture that future
+	visualization--and hpc---work is following
+	\item put forward a number of best practices for the now-\#1 problem in
+large-scale visualization: IO
+	\item profoundly simplified the manner with which we perform in situ
+visualization
+\end{itemize}
+
+Tuvok paper ...
+\begin{itemize}
+	\item point1
+	\item point2
+	\item ...
+	\item pointN
+\end{itemize}
+
 Ray-guided volume rendering is the way to do volume rendering: 5 TB
 dataset in under a second!
-	. we have shown how fast such a renderer can be
-	. order of magnitude faster than other methods
-	. speedup comes mostly from only loading data that are needed
+\begin{itemize}
+	\item we have shown how fast such a renderer can be
+	\item order of magnitude faster than other methods
+	\item speedup comes mostly from only loading data that are needed
+\end{itemize}
 
 Reorganizing the data continues to be the bane of high-performance
 volume rendering.
-	. just reading a terabyte on a 100mb/s disk takes 2.9125 hours
-	. reorganization is lots of scattered writes and reads, can't perform well
-	. at heart, data movement: this is only going to get worse
-	. mitigation work is possible, but still no solution on the horizon
+\begin{itemize}
+	\item just reading a terabyte on a 100mb/s disk takes 2.9125 hours
+	\item reorganization is lots of scattered writes and reads, can't perform well
+	\item at heart, data movement: this is only going to get worse
+	\item mitigation work is possible, but still no solution on the horizon
+\end{itemize}
 
-`fat' nodes are the way to go, at scale.
-	. same techniques as desktop work in distributed mem
-	. KD-tree decomposition and binary swap compositing works well enough
-	. compositing is not an issue: don't use so many nodes.
+multi-scale parallelism is necessary for future scalability
+\begin{itemize}
+	\item must parallelize both across and within nodes
+	\item many of the same techniques we use on the desktop can work in dist. mem
+situations
+	\item `fat' nodes are the way to go, at scale
+	\item for volume rendering: compositing isn't a big deal; use fewer nodes
+	\item for volume rendering: load balancing continues to be a sore spot
+\end{itemize}
+
+%	. KD-tree decomposition and binary swap compositing works well enough
+%	. compositing is not an issue: don't use so many nodes.
 
 %readback / pushing data to the GPU is really not an issue, as shown in
 %both HPG2010 as well as LDAV2013.
@@ -23,26 +55,56 @@ volume rendering.
 
 % load balancing *can* help, but in general is not a good idea at scale---yet.
 
-current IO APIs are ill-suited to the task: there is no way to specify
-information that the IO subsystem needs for efficient operation.
-	. need to match IO of distributed file storage to node requesting/using it
-	. current APIs force everything into stream interface
-	. middleware helps, but this needs to interact with VFS, at the core.
+IO remains as and will remain as the major problem in large-scale vis.
+\begin{itemize}
+	\item (get that Ultrascale institute graph of rendering vs. io vs. compositing)
+	-> (make point that the story would be the same if the X axis were research
+	    papers arranged by year published)
+	\item GPUs+CPUs getting very fast / HW is scaling very effectively
+	\item memory is getting smaller, so caches are less effective
+	\item HDs are getting faster (SSDs!), but not keeping pace with other elements
+	\item distributed filesystems seem locked in unscalable stream abstraction
+\end{itemize}
+
+We have described a number of policies for IO code to perform well
+\begin{itemize}
+	\item use large reads or complicated SFCurves to access `nearby' data
+	\item avoid large numbers of smaller files
+	\item stagger implicit IO synchronization points, such as open and close,
+	across all processes in the parallel job
+	\item delay file closure as long as possible
+\end{itemize}
+
+%current IO APIs are ill-suited to the task: there is no way to specify
+%information that the IO subsystem needs for efficient operation.
+%	. need to match IO of distributed file storage to node requesting/using it
+%	. current APIs force everything into stream interface
+%	. middleware helps, but this needs to interact with VFS, at the core.
+
+In situ visualization is playing and will play an increasingly important role
+in high-performance visualization.
+\begin{itemize}
+	\item movement of data from disk to memory is too expensive
+	\item extreme scales preclude other approaches
+	\item many analysts, and data cannot move between sites
+	\item $\leadsto$ centralization of computational resources?
+	\item sampling of analysis is the best---only?---way to limit data sizes
+\end{itemize}
+In the future, we can expect that little to no analysis will be
+performed on data from a previous run: new analysis will imply a new
+simulation run.
 
 In situ visualization is currently complex and difficult.
 \begin{itemize}
 	\item large APIs
-	\item unstable
+	\item instability
 	\item lots of metadata to convey
 	\item when to interrupt sim / balance of sim vs. vis time
 \end{itemize}
 
-We have shown that in situ visualization can be considerably more
-simple than previously expected.
+We have shown that in situ visualization can be considerably easier
+than previously expected.
 \begin{itemize}
 	\item works with normal compiled versions
 	\item majority of metadata is worthless
 \end{itemize}
-
-Soon enough, visualization \& analysis will \emph{only} be done during
-simulation.
