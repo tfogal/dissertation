@@ -1109,7 +1109,7 @@ final resolution quickly, which can cause earlier ray termination.
 \label{sec:conclusion}
 
 In this work, we have introduced an efficient, out-of-core, ray guided
-GPU volume renderer which scales to extremely large data.  The system
+GPU volume renderer that scales to extremely large data.  The system
 pulls inspiration from a patchwork of recent renderers, combining the
 advantages of many and reimplementing some ideas in light of modern GPU
 features.  We have also contributed an evaluation and discussion of the
@@ -1117,16 +1117,16 @@ tradeoffs inherent in the development of a modern ray-guided volume
 renderer.
 
 Based on the data here, we conclude that a ray-guided volume renderer
-should work with bricks which are, on disk, $64^3$ or larger.  This
+should work with bricks that are, on disk, $64^3$ or larger.  This
 minimizes time spent doing IO (Figure~\ref{fig:layout}), and makes
 data layout irrelevant, obviating the need for a complicated component
 of the code.  Since the required memory shrinks with the brick size,
-generating $32^3$ or even $16^3$ bricks on-the-fly is desirable, though
-which size is unfortunately too data-specific to answer generally.
-While `bzlib' gives ideal compression ratios, it is very slow to
-decompress, and therefore most implementations will want to utilize
-`LZ4' compression.  A cache is a boon when data will not fit in GPU
-memory but will fit in the host's memory.
+generating $32^3$ or even $16^3$ bricks on-the-fly is desirable,
+though exactly which size is unfortunately too data-specific to answer
+generally.  While `bzlib' gives ideal compression ratios, it is very
+slow to decompress, and therefore most implementations will want to
+utilize `LZ4' compression.  A cache is a boon when data will not fit in
+GPU memory but will fit in the host's memory.
 
 We have made a best-effort attempt to design both favorable and
 unfavorable conditions with which to test a volume renderer, but it
@@ -1152,12 +1152,12 @@ expounded often enough in the literature.  We hope this paper helps
 to reiterate to the community that the FLOPs may be free, but data
 movement will kill performance.
 
-More importantly, we have contributed an evaluation and discussion
+Most importantly, we have contributed an evaluation and discussion
 of the issues inherent in the development of a ray guided volume
 renderer. As has been demonstrated, many of these choices are not as
 clear as previous reports may have inadvertently implied.  The results
 presented in this work clearly depict the tradeoffs, to aid system
-designers in creating volume renderers which suit their particular
+designers in creating volume renderers that suit their particular
 environment.
 
 We hope to extend this work to more diverse visualization scenarios.
@@ -1292,6 +1292,5 @@ center, right).
 \section{Source Code}
 
 The renderer used in this work is freely available, as part of the
-ImageVis3D~\cite{Fogal:2010:Tuvok} package, which can be obtained
-through a simple web search.  We encourage others to reproduce and
-build upon our results.
+ImageVis3D~\cite{Fogal:2010:Tuvok} package.  We encourage others to
+reproduce and build upon our results.

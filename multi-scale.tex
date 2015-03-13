@@ -666,7 +666,7 @@ acquiring smaller yet more performant clusters.
 
 Reports on the time taken for various pipeline stages demonstrate that
 PCI-E bus speeds are fast enough that readback performance is not as
-great of a concern as it was a few years ago.  HoweeverÂ, it remains to
+great of a concern as it was a few years ago.  However, it remains to
 be seen if contention will become an issue if individual nodes are made
 `fatter', utilizing additional GPUs.  The 1 GPU per node given in
 Figure~\ref{fig:rtime} suggest that multiple GPUs do contend for
@@ -685,15 +685,15 @@ the amount of time needed to volume render large data, but we have
 not approached the cross-over point in this work, due to the use of
 `desktop' image resolutions and low numbers of cores.
 
-Our system allows substituting a Mesa-based software renderer when
-a GPU is not available. This provided a convenient means of
+Our system allows substituting a Mesa-based software renderer
+when a GPU is not available. This provided a convenient means of
 implementation for an existing large software system, in particular
 because it allows pipeline execution to proceed unmodified through
 the rendering and compositing stages. However, tests very quickly
 showed that using software renderers when a GPU was available was
 not worthwhile, and usually ended up hurting performance more than
-helping. Therefore, we traded access to more cores for the guarantee
-that we will obtain GPUs for each core we do get.
+helping. Therefore, for this work we traded access to more cores for
+the guarantee that we will obtain GPUs for each core we do get.
 
 An alternate system architecture would be to decouple the rendering
 process from the other work involved in visualization and analysis,
@@ -711,8 +711,8 @@ Our compositing algorithm assumes that the images from individual
 processors can be ordered in a back-to-front fashion to generate the
 correct image. For this paper, we met this requirement by using regular
 grids, which are easy to load balance in this manner. It should be
-possible to also handle certain types of curvilinear grids and perhaps
-AMR grids.  Extensions to handle unstructured grids would be difficult,
+trivial to extend this work to other grids, such as AMR or curvilinear ones.
+Extensions to handle unstructured grids would be difficult, however,
 but represent an interesting future direction.
 
 Load balancing is an extremely difficult problem, and we have just
