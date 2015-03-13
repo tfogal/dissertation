@@ -251,9 +251,16 @@ good performance is bound to shrink even more, as those drives have a
 significantly smaller `seek' time with only moderately higher transfer
 rates.
 
-Finally, it should once again be stressed that the percentages given above account for maximum theoretically possible optimization potentials if all seek operations could be
-completely avoided and no other additional overhead would come from the layout.
-In reality the speedup that can be gained from a access time optimization will stay below that value. In particular it is worth noting that accessing data via optimized layout schemes does not come for free. Kendall et al.~\cite{Kendall:2009:TDO} demonstrated for distributed memory systems that a random ordering scheme outperforms most space filling curve approaches.
+Finally, it should once again be stressed that the percentages
+given above account for maximum theoretically possible optimization
+potentials if all seek operations could be completely avoided and no
+other additional overhead would come from the layout.  In reality the
+speedup that can be gained from access time optimization will stay
+below that value. In particular it is worth noting that accessing data
+via optimized layout schemes does not come
+for free. Kendall et al.~\cite{Kendall:2009:TDO} demonstrated for
+distributed memory systems that a random ordering scheme outperforms
+most space filling curve approaches.
 
 The takeway:
 
@@ -293,9 +300,9 @@ responds with a small message containing the resulting permissions.
 The situation in Lustre is similar: queries go to a global `metadata
 server' (MDS) which determines access information.  In both systems,
 \emph{the file is not opened}.  Doing so would consume resources on
-the server, particularly due to read-ahead caching, and the request to
-actually read or write the file may be significantly delayed in time --
-or may never come at all!
+the server, particularly due to read-ahead caching, and the request
+to actually read or write the file may be significantly delayed in
+time---or might never come at all!
 
 %\begin{figure}[Htb]
 %  \centering
