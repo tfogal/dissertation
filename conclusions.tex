@@ -1,13 +1,14 @@
-In this dissertation, we have
+In this dissertation, we have:
 \begin{itemize}
-	\item demonstrated a forward-looking architecture for volume visualization
-	\item supported the approach of ray-guided rendering with extensive benchmarks
+	\item demonstrated a forward-looking architecture for volume visualization,
+	\item supported the approach of ray-guided rendering with extensive
+benchmarks,
 	\item established the multi-scale parallelism architecture that future
-	visualization--and hpc---work is following
-	\item put forward a number of best practices for the now-\#1 problem in
-large-scale visualization: IO
-	\item profoundly simplified the manner with which we perform in situ
-visualization
+	visualization---and HPC---work is following,
+	\item identified a number of best practices for the remaining largest
+challenge in high-performance visualization: IO, and
+	\item outlined a method to profoundly simplify the practice of \textit{in
+situ} visualization.
 \end{itemize}
 
 Tuvok paper ...
@@ -18,32 +19,76 @@ Tuvok paper ...
 	\item pointN
 \end{itemize}
 
-Ray-guided volume rendering is the way to do volume rendering: 5 TB
-dataset in under a second!
-\begin{itemize}
-	\item we have shown how fast such a renderer can be
-	\item order of magnitude faster than other methods
-	\item speedup comes mostly from only loading data that are needed
-\end{itemize}
+Chapter~\ref{chp:rayguided} described ray-guided rendering and provided
+a detailed performance analysis using a variety of real-world datasets.
+Comparisons with previous work, including even our own
+(Chapter~\ref{chp:tuvok}), demonstrate that this is the best known
+method for large-scale volume visualization.  The method is capable of
+providing subsecond response times with multi-terabyte datasets on
+workstation hardware, as in Figure~\ref{fig:rabbit5tb}, orders of
+magnitude faster than other volume rendering techniques.  The majority
+of the performance increase comes from obviating the need to load large
+chunks of the data from disk, based on a fine-scale identification of
+early ray termination.
 
-Reorganizing the data continues to be the bane of high-performance
-volume rendering.
-\begin{itemize}
-	\item just reading a terabyte on a 100mb/s disk takes 2.9125 hours
-	\item reorganization is lots of scattered writes and reads, can't perform well
-	\item at heart, data movement: this is only going to get worse
-	\item mitigation work is possible, but still no solution on the horizon
-\end{itemize}
+% Ray-guided volume rendering is the way to do volume rendering: 5 TB
+% dataset in under a second!
+% \begin{itemize}
+% 	\item we have shown how fast such a renderer can be
+% 	\item order of magnitude faster than other methods
+% 	\item speedup comes mostly from only loading data that are needed
+% \end{itemize}
 
-multi-scale parallelism is necessary for future scalability
-\begin{itemize}
-	\item must parallelize both across and within nodes
-	\item many of the same techniques we use on the desktop can work in dist. mem
-situations
-	\item `fat' nodes are the way to go, at scale
-	\item for volume rendering: compositing isn't a big deal; use fewer nodes
-	\item for volume rendering: load balancing continues to be a sore spot
-\end{itemize}
+With the ray-guided rendering solution now known, the major impediment
+to high-performance volume rendering has become the data reorganization
+preprocess.  Simply \emph{reading} a terabyte from a commodity disk
+presently requires ~2.9 hours, and the bricking needed in volume
+rendering consists of a great many scattered reads and writes.  At
+the heart of this process is data movement: a well-known inscalable
+operation.  Our dynamic rebricking technique introduced in
+Chapter~\ref{chp:rayguided} ameliorates this problem, but there is no
+true solution on visible on the horizon.  More work is needed in this
+area.
+
+% Reorganizing the data continues to be the bane of high-performance
+% volume rendering.
+% \begin{itemize}
+% 	\item just reading a terabyte on a 100mb/s disk takes 2.9125 hours
+% 	\item reorganization is lots of scattered writes and reads, can't perform
+% 	\item at heart, data movement: this is only going to get worse
+% 	\item mitigation work is possible, but still no solution on the horizon
+% \end{itemize}
+
+We have established the scalability of desktop volume rendering
+solutions to be far beyond what was believed by the community.  A
+single node solution is, however, unfit for extreme scale data sizes.
+While many of the same techniques developed on the desktop can help,
+Chapter~\ref{chp:multiscale} demonstrates that one must utilize
+multi-scale parallelism, both within and across nodes.  This work
+also established in the community the superiority of the `fat' node
+architecture, where large numbers of cores cooperate on a single node
+as opposed to a plethora of smaller nodes.  The parallelization schemes
+at each scale must be considered distinctly.
+
+%multi-scale parallelism is necessary for future scalability
+%\begin{itemize}
+%	\item must parallelize both across and within nodes
+%	\item many of the same techniques we use on the desktop can work in dist. mem
+%situations
+%	\item `fat' nodes are the way to go, at scale
+%	\item for volume rendering: compositing isn't a big deal; use fewer nodes
+%	\item for volume rendering: load balancing continues to be a sore spot
+%\end{itemize}
+
+Chapter~\ref{chp:multiscale} examined dynamic load balancing for volume
+rendering in detail.  Unfortunately these tests were inconclusive.  In
+many situations dynamic load balancing resulted in similar or even
+worse performance.  Load balancers also include a number of tunable
+parameters that even experts have trouble setting.  More work is needed
+in this area, both to ensure load balancing is beneficial and to
+establish auto-tuned parameters.
+
+% load balancing *can* help, but in general is not a good idea at scale---yet.
 
 %	. KD-tree decomposition and binary swap compositing works well enough
 %	. compositing is not an issue: don't use so many nodes.
@@ -53,9 +98,7 @@ situations
 
 % Mesa-based rendering is wicked slow and never worth it.
 
-% load balancing *can* help, but in general is not a good idea at scale---yet.
-
-IO remains as and will remain as the major problem in large-scale vis.
+IO remains and will remain the major problem in large-scale vis.
 \begin{itemize}
 	\item (get that Ultrascale institute graph of rendering vs. io vs. compositing)
 	-> (make point that the story would be the same if the X axis were research
@@ -66,14 +109,34 @@ IO remains as and will remain as the major problem in large-scale vis.
 	\item distributed filesystems seem locked in unscalable stream abstraction
 \end{itemize}
 
-We have described a number of policies for IO code to perform well
-\begin{itemize}
-	\item use large reads or complicated SFCurves to access `nearby' data
-	\item avoid large numbers of smaller files
-	\item stagger implicit IO synchronization points, such as open and close,
-	across all processes in the parallel job
-	\item delay file closure as long as possible
-\end{itemize}
+IO remains and will remain the major problem in large-scale
+visualization.  Figure~\ref{fixme} shows that the rendering and
+compositing problems are dominated by IO at scale.  While this image
+was from a specific strong scaling study, the story changes little if
+we replace the X axis by year: rendering and compositing times have
+plummeted as hardware capabilities have increased and the fruits of
+research efforts have been realized.  Disk access has unfortunately not
+seen the same improvements.
+
+We described a number of `best practices' for IO-heavy visualization
+code in Chapter~\ref{chp:io}.  One is to use large reads or writes to
+maximize throughput.  If and only if this is impossible should one
+turn to space-filling curve methods to minimize access times.  Despite
+conventional wisdom, the many files created by the `1 file per process'
+regime scales poorly.  Most IO calls involve implicit synchronization,
+and staggering these operations can have a large impact on performance.
+Along the same line, delaying file closures until necessary can provide
+filesystems---especially distributed filesystems---the time needed to
+do effective buffering.
+
+% We have described a number of policies for IO code to perform well
+% \begin{itemize}
+% 	\item use large reads or complicated SFCurves to access `nearby' data
+% 	\item avoid large numbers of smaller files
+% 	\item stagger implicit IO synchronization points, such as open and close,
+% 	across all processes in the parallel job
+% 	\item delay file closure as long as possible
+% \end{itemize}
 
 %current IO APIs are ill-suited to the task: there is no way to specify
 %information that the IO subsystem needs for efficient operation.
