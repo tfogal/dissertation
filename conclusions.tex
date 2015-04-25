@@ -98,16 +98,16 @@ establish auto-tuned parameters.
 
 % Mesa-based rendering is wicked slow and never worth it.
 
-IO remains and will remain the major problem in large-scale vis.
-\begin{itemize}
-	\item (get that Ultrascale institute graph of rendering vs. io vs. compositing)
-	-> (make point that the story would be the same if the X axis were research
-	    papers arranged by year published)
-	\item GPUs+CPUs getting very fast / HW is scaling very effectively
-	\item memory is getting smaller, so caches are less effective
-	\item HDs are getting faster (SSDs!), but not keeping pace with other elements
-	\item distributed filesystems seem locked in unscalable stream abstraction
-\end{itemize}
+%IO remains and will remain the major problem in large-scale vis.
+%\begin{itemize}
+%	\item (get that Ultrascale institute graph of rendering vs. io vs. compositing)
+%	-> (make point that the story would be the same if the X axis were research
+%	    papers arranged by year published)
+%	\item GPUs+CPUs getting very fast / HW is scaling very effectively
+%	\item memory is getting smaller, so caches are less effective
+%	\item HDs are getting faster (SSDs!), but not keeping pace with other elements
+%	\item distributed filesystems seem locked in unscalable stream abstraction
+%\end{itemize}
 
 IO remains and will remain the major problem in large-scale
 visualization.  Figure~\ref{fixme} shows that the rendering and
@@ -144,18 +144,33 @@ do effective buffering.
 %	. current APIs force everything into stream interface
 %	. middleware helps, but this needs to interact with VFS, at the core.
 
-In situ visualization is playing and will play an increasingly important role
-in high-performance visualization.
-\begin{itemize}
-	\item movement of data from disk to memory is too expensive
-	\item extreme scales preclude other approaches
-	\item many analysts, and data cannot move between sites
-	\item $\leadsto$ centralization of computational resources?
-	\item sampling of analysis is the best---only?---way to limit data sizes
-\end{itemize}
-In the future, we can expect that little to no analysis will be
-performed on data from a previous run: new analysis will imply a new
-simulation run.
+\textit{In situ} visualization is playing an increasing role in
+simulation-based sciences.  The widening disparity between memory and
+disk speed necessitates the approach at large scales.  Furthermore, the
+increasingly multidisciplinary analyses performed on simulation runs
+encourages analysts at many different sites to participate, but the
+data are too large to be transferred between sites.  Using knowledge
+of the sampling rate required by the analysis method may be the best
+way of performing otherwise computationally-infeasible analyses.  All
+of these factors suggest a centralization of large-scale computing
+resources, in strict contrast to the decentralization that industry
+has been experiencing.  It is not difficult to imagine a future where
+analysis
+\emph{is} simulation: that all analysis is performed by (re)running
+simulations, as opposed to (re)processing simulation outputs.
+
+%In situ visualization is playing and will play an increasingly important role
+%in high-performance visualization.
+%\begin{itemize}
+%	\item movement of data from disk to memory is too expensive
+%	\item extreme scales preclude other approaches
+%	\item many analysts, and data cannot move between sites
+%	\item $\leadsto$ centralization of computational resources?
+%	\item sampling of analysis is the best---only?---way to limit data sizes
+%\end{itemize}
+%In the future, we can expect that little to no analysis will be
+%performed on data from a previous run: new analysis will imply a new
+%simulation run.
 
 In situ visualization is currently complex and difficult.
 \begin{itemize}
@@ -165,9 +180,51 @@ In situ visualization is currently complex and difficult.
 	\item when to interrupt sim / balance of sim vs. vis time
 \end{itemize}
 
-We have shown that in situ visualization can be considerably easier
-than previously expected.
-\begin{itemize}
-	\item works with normal compiled versions
-	\item majority of metadata is worthless
-\end{itemize}
+Despite the growing importance of \insitu{}, existing visualization
+tools couple with simulation software only with extreme difficulty.
+This heavy
+investment in tool coupling discourages \textit{ad hoc} and exploratory
+solutions.  Authors currently acquiesce this effort only under extreme
+pressure, which today means that data sizes and related IO performance
+exceed a high threshold.  As the IO performance disparity widens, this
+threshold lowers.  Eventually, the HPC community will need to think
+about
+\insitu{} visualization for \emph{all} simulation software.
+
+Adding a new capability (even if it is the same capability) across such
+a large base of installed software is a daunting task.  Much of the
+difficulty comes from the visualization software: large APIs to learn,
+relatively instable software, and complex methodologies for conveying
+metadata.  These sharp edges can be filed down through (currently
+rather large) investments in learning the visualization tools of the
+day.  However, other concerns are simulation-specific as opposed to
+visualization-tool-specific.  These include identifying \emph{where}
+to insert calls into the visualization tool, and striking the correct
+balance between simulation time and visualization/analysis time.
+
+%  Modern tools are suitable for the extreme end of large-scale
+%simulations, but the heavy investment in tool coupling discourages
+%\textit{ad hoc} and exploratory solutions.  Authors of many simulations
+%run acquiesce this cost simply because traditional analysis pipelines
+%are infeasible at the desired scales.
+
+%We have shown that in situ visualization can be considerably easier
+%than previously expected.
+%\begin{itemize}
+%	\item works with normal compiled versions
+%	\item majority of metadata is worthless
+%\end{itemize}
+
+Our work addresses these complexity issues head on.
+Chapters~\ref{chp:freeprocessing} and~\ref{chp:inference} outline
+methods that one can use to immediately solve the issues of
+injecting---at will---visualization and analysis capabilities into an
+entire corpus of simulation software.  Chapter~\ref{chp:inference}
+takes the first steps at eliminating the complex metadata communication
+primitives.  However, we must also ameloriate the untenable model of
+simulation authors learning visualization APIs.  The approaches of both
+chapters put more onus on the efforts of visualization scientists,
+sweeping many visualization details under the rug from the simulation
+author's perspective.  This is perhaps the most important message of
+these approaches: shifting responsibilities away from the simulation
+engineer and towards the visualization engineer.
