@@ -10,14 +10,21 @@ challenge in high-performance visualization: IO, and
 	\item outlined a method to profoundly simplify the practice of \textit{in
 situ} visualization.
 \end{itemize}
+Here we offer some concluding remarks and projections based on the work
+developed here.
 
-Tuvok paper ...
-\begin{itemize}
-	\item point1
-	\item point2
-	\item ...
-	\item pointN
-\end{itemize}
+We began by outlining the volume rendering architecture,
+``\textit{Tuvok}''.  The architecture strikes a balance between
+performance, practicality, and portability that few have done.  Volume
+rendering modules in Voreen~\cite{needed} have since followed a similar
+architecture.  However, academic work tends to focus on particular
+hardware features whereas commercial work is often tied to particular
+platforms.  Tuvok practically utilizes available, modern features of
+GPUs while addressing and falling back to less straightforward methods.
+More importantly, it has seen significant effort working around the
+nonintersecting shortcomings of modern OpenGL drivers, a critical
+component of its applicability.  As such, Tuvok is the volume renderer
+that is most cited outside its field~\cite{needed}.
 
 Chapter~\ref{chp:rayguided} described ray-guided rendering and provided
 a detailed performance analysis using a variety of real-world datasets.
