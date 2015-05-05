@@ -422,16 +422,17 @@ that describes the length of that list is a simple integer.
 
 The 7th and 8th constraints are complex and intertwined.  First, the
 application must write into the the relevant memory block.  Secondly,
-the basic block where the data are written is deeper than another basic
-block that contains a loop header.  That is to say that the data access
-is within a loop.
+the basic block where the data are written must be deeper than another
+basic block that contains a loop header.  That is to say that the data
+access occurs within a loop.
 
 The formulation gives rise to a pattern matching problem.  The
 \texttt{\textbf{class}}es of interest are the patterns, and the space
 to match within is the running process' \texttt{Memory} and
 \texttt{IPtr}.  In Listing~\ref{lst:relaxation}, the parameter bindings are:
 \texttt{data} for \texttt{base}, the size of the allocation (not shown, but
-assumed to be \texttt{dims[0]*dims[1]*sizeof(float)}) for
+assumed to be \texttt{dims[0]} $\times$ \texttt{dims[1]} $\times$
+\texttt{sizeof(float)}) for
 \texttt{length}, \texttt{dims} for \texttt{dims}, and $2$ for
 \texttt{ndims}.
 
@@ -569,10 +570,9 @@ shown in Listing~\ref{lst:malloc}.  When the process attempts to alter
 the data of interest, the memory
 protection hardware traps and our supervisor is notified\footnote{The
 program may also trap because it has a bug that causes an invalid
-memory access.  Such programs are beyond the scope of this work: who
-would want to visualize the calculations of a broken program?  Still,
-we note that we can discern the invalid memory access case and notify
-users of the error's location.}
+memory access.  Such programs are beyond the scope of this work.
+Still, we note that we can discern the invalid memory access case and
+notify users of the error's location.}
 
 %\begin{minipage}{\linewidth}
 \begin{lstlisting}[label=lst:malloc,language=C,caption=Replacement \texttt{malloc}

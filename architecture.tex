@@ -29,22 +29,23 @@ features. In the course of this research multi
 dimensional-~\cite{Kniss:2005:Multidim}
 spatialized-~\cite{Roettger:2005:Spatialized},
 size-based-~\cite{Correa:2008:Size-based}, motion
-controlled-~\cite{Correa:2005:Motion}, topology-based [WDC ∗ 07],
-and style transfer functions [BG07], as well as other focus and
-context enhancing techniques [VGH ∗ 05, WZMK05, KSW06] have been
-developed. For a complete and detailed survey on volume rendering we
-refer the reader to the state of the art report and courses by Engel
-et al. [Eng02,EHK ∗ 04] as well as the text book by Hadwiger et
-al. [HKRs ∗ 06].
+controlled-~\cite{Correa:2005:Motion},
+topology-based~\cite{Weber:2007:Topology},
+and style transfer functions~\cite{Bruckner:2007:Style}, as well as
+other focus and context enhancing
+techniques~\cite{Viola:2005:Illustrative, Wang:2005:Lens,
+Krueger:2006:ClearView} have been developed. For a complete and
+detailed survey on volume rendering we refer the reader to the state of
+the art report, course, and books by Engel et
+al.~\cite{Engel:2002:IHQV, Engel:2004:RTVG, Engel:2006:RTVG}.
 
-Due to this vast body of research a large variety of dif-
-ferent volume rendering systems and prototypes exist both
-in academia as well as in industry. Yet researchers and de-
-velopers often find themselves implementing the same basic
-fundamentals for their new volume rendering application. It
-may seem that there are many different good reasons for not
-reusing existing, proven code, but one can usually categorize
-the decision into one of three cases:
+Due to this vast body of research a large variety of different volume
+rendering systems and prototypes exist both in academia as well as in
+industry. Yet researchers and developers velopers often find themselves
+implementing the same basic fundamentals for their new volume rendering
+application. It may seem that there are many different good reasons for
+not reusing existing, proven code, but one can usually categorize the
+decision into one of three cases:
 
 \begin{itemize}
 
@@ -54,77 +55,71 @@ the decision into one of three cases:
 	bigger issue than re-implementing the entire environment
 	from scratch.
 
-	\item \textbf{Software Environment}: The existing code may be imple-
-	mented in the wrong environment, such as the program-
-	ming environment or graphics APIs. For instance, a Di-
-	rectX implementation will not be suitable for a cross plat-
-	form project. Further, many research prototypes are tailor-made
-	for one system due to the lack of time and need for
-	a more general implementation.
+  \item \textbf{Software Environment}: The existing code may be
+  implemented in the wrong environment, such as the operating system
+  or graphics API. For instance, a DirectX implementation will not
+  be suitable for a cross platform project. Further, many research
+  prototypes are tailor-made for one system due to the lack of time and
+  need for a more general implementation.
 
-	\item \textbf{Licensing}: while largely irrelevant in the academic envi-
-	ronment, license issues often prevent developers in com-
-	mercial environments from reusing existing code. Even
-	code that is released under Open Source conditions may
-	come with untenable requirements, such as the GPL’s stip-
-	ulation that related yet non-derivative code be released un-
-	der the GNU license.
+  \item \textbf{Licensing}: while largely irrelevant in the academic
+  environment, license issues often prevent developers in commercial
+  environments from reusing existing code. Even code that is released
+  under Open Source conditions may come with untenable requirements,
+  such as the GPL's stipulation that related yet non-derivative code be
+  released under the GNU license.
 
 \end{itemize}
 
-Research groups and companies often release their work
-and thus a number of systems for volume rendering struc-
-tured data exist as free or open source programs. One of the
-earliest examples of such an open source volume rendering
-system is Stanford’s VolPack software [Com95]. Unfortu-
-nately it has not been under development for more than a
-decade. A more recent example is the Simian system devel-
-oped by Kniss et al. [KKH02]. Released under a very lib-
-eral open source license, it has a very polished user inter-
-face, and allows the application of multi dimensional trans-
-fer functions. Unfortunately it falls short as far as data import
-is concerned and development ceased years ago; therefore
-no novel render modes are implemented. Other such dis-
-continued frameworks and toolkits are the OGLE [Col02]
-system, optimized for large data, and OpenQVis [RSEH02],
-optimized for fast GPU rendering. A program tailored for
-3D Microscopy, Voxx [Ind09], has been released by Indi-
-ana University; while it has very promising features, includ-
-ing support for 4D data, it is only published in binary form.
-While Bruckner and Gröller’s “volumeshop” [BG05] imple-
-ments unique GPU accelerated illustrative render options, its
-development ceased in 2005 and no current version is avail-
-able. Further, it only supported their proprietary volume for-
-mat and the current license disallows the use of the code in
-commercial environments.
+Research groups and companies often release their work and thus a
+number of systems for volume rendering structured data exist as free
+or open source programs. One of the earliest examples of such an
+open source volume rendering system is Stanford's VolPack software
+[Com95]. Unfortunately it has not been under development for more
+than a decade. A more recent example is the Simian system developed
+by Kniss et al. [KKH02]. Released under a very liberal open source
+license, it has a very polished user inter face, and allows the
+application of multi dimensional transfer functions. Unfortunately it
+falls short as far as data import is concerned and development ceased
+years ago; therefore no novel render modes are implemented. Other such
+dis continued frameworks and toolkits are the OGLE [Col02] system,
+optimized for large data, and OpenQVis [RSEH02], optimized for fast GPU
+rendering. A program tailored for 3D Microscopy, Voxx [Ind09], has been
+released by Indiana University; while it has very promising features,
+including support for 4D data, it is only published in binary form.
+While Bruckner and Gr\"oller's `volumeshop' [BG05] implements unique GPU
+accelerated illustrative render options, its development ceased in 2005
+and no current version is available. Further, it only supported their
+proprietary volume format and the current license disallows the use of
+the code in commercial environments.
 
-For medical applications the MITK [TXD ∗ 08] toolkit de-
-livers many interesting features, including support for large
+For medical applications the MITK [TXD ∗ 08] toolkit 
+delivers many interesting features, including support for large
 data sets and data manipulation routines, but it offers only
-basic transfer function support and slow performance com-
-pared to highly optimized out-of-core GPU volume ren-
-dering systems. Solely on the Apple Mac OS X platform,
+basic transfer function support and slow performance compared
+to highly optimized out-of-core GPU volume rendering
+systems. Solely on the Apple Mac OS X platform,
 OsiriX [Ros09] offers unmatched DICOM support in an
 open source application, but as the tool is tied closely to Ap-
-ple’s Cocoa framework and implemented in Apple-extended
+ple's Cocoa framework and implemented in Apple-extended
 Objective-C, it is nigh-impossible to port to any other plat-
 form.
 
-Instead of using a specialized volume rendering applica-
-tion, existing visualization toolkits can be utilized to ren-
-der volumetric data. The most prominent examples are the
+Instead of using a specialized volume rendering application,
+existing visualization toolkits can be utilized to render
+volumetric data. The most prominent examples are the
 VTK [SML06] and ITK [YAL ∗ 02] systems, which allow
-for extremely versatile and flexible rendering and modifi-
-cation of many types of data sets. The major drawback is
-the lack of support for out-of-core processing, forcing ap-
-plication developers to concoct external strategies to handle
+for extremely versatile and flexible rendering and modification
+of many types of data sets. The major drawback is
+the lack of support for out-of-core processing, forcing
+application developers to concoct external strategies to handle
 large data sets. The ParaView application [AGL05], built on
 top of VTK, addresses this issue and extends the support to
-large data sets but—like the underlying toolkit—does not
-efficiently utilize the capabilities of current graphics cards,
-resulting in interactive performance only at very low qual-
-ity even for modestly sized data sets. Recently, the VisCG
-at the Universität Münster developed the Voreen system
+large data sets but---like the underlying toolkit---does not
+efficiently utilize the capabilities of modern graphics cards,
+resulting in interactive performance only at very low quality
+even for modestly sized data sets. Recently, the VisCG
+at the Universit\"at M\"unster developed the Voreen system
 [MSRMH09], a prototyping environment for volume visual-
 ization. The interface provided exposes the underlying data
 flow network and many visualizations require knowledge as
@@ -134,15 +129,15 @@ mercial visualization toolkits are the OpenDX3 [IBM06]
 system which is no longer under active development, and
 finally the SCIRun [Ins09] and VisIt [CBB ∗ 05] systems. As
 these systems suffered some of the problems of previously
-mentioned solutions (e.g. outdated render modes, slow per-
-formance, or limited support for large data sets) Tuvok is
+mentioned solutions (e.g. outdated render modes, slow
+performance, or limited support for large data sets) Tuvok is
 currently being integrated into these solutions. Besides these
-free \& open source solutions, a number of commercial prod-
-ucts exist such as AVS2, Amira, Ensight, syngo, VGStudio
-Max, or AltaViewer. As these systems are closed source, ob-
-taining detailed information on their operation is difficult;
-the possibility of integrating Tuvok into these systems is in-
-triguing, but we do not discuss them in detail for this work.
+free \& open source solutions, a number of commercial products
+exist such as AVS2, Amira, Ensight, syngo, VGStudio
+Max, or AltaViewer. As these systems are closed source,
+obtaining detailed information on their operation is difficult;
+the possibility of integrating Tuvok into these systems is
+intriguing, but we do not discuss them in detail for this work.
 
 In order to address the aforementioned three issues and to overcome the
 limitations of existing systems, we present \textit{Tuvok}, a system
@@ -150,7 +145,7 @@ built of cleanly separated components that can
 be used together, such as in the \textit{ImageVis3D} application,
 or stand-alone. The entire system is implemented in C++ with OpenGL
 and DirectX graphics bindings and is designed to be completely
-platform independent. When necessary, Tu- vok’s components can be
+platform independent. When necessary, Tuvok's components can be
 compiled into a shared library and accessed from another programming
 language. Tuvok is also released with a modest open source license that
 allows unre- stricted academic and commercial use of the code. Specifi-
@@ -159,12 +154,12 @@ cally, \textit{Tuvok} offers the following benefits:
 \begin{enumerate}
 
 \item \textbf{Large Data Support}
-Given sufficient storage space, the system can theoreti-
-cally handle data sets of up to 16 Exabytes in size.
+Given sufficient storage space, the system can theoretically
+handle data sets of up to 16 Exabytes in size.
 \item \textbf{Modular Design}
 While the application ImageVis3D presents itself to the
-end-user as a single application, it is composed of a col-
-lection of independent Tuvok frameworks.
+end-user as a single application, it is composed of a
+collection of independent Tuvok frameworks.
 \item \textbf{Self contained}
 While ImageVis3D requires Nokia's Qt [Nok09] library
 as an external dependency, \textit{Tuvok} itself does not rely on
@@ -179,9 +174,9 @@ very limited GPU capabilities of older or less capable
 systems.
 \item \textbf{Up To Date Rendering algorithms}
 Besides its support for 2D and 3D texture based slice
-based volume rendering—mostly for older graphics
-hardware—\textit{Tuvok} features GPU based ray casting to in-
-teractively render images of the highest quality.
+based volume rendering---mostly for older graphics
+hardware---\textit{Tuvok} features GPU based ray casting to
+interactively render images of the highest quality.
 \item \textbf{Provenance Support}
 \textit{Tuvok} and \textit{ImageVis3D} provide provenance hooks, with
 provenance recording and playback realized via VisTrails
@@ -189,7 +184,7 @@ provenance recording and playback realized via VisTrails
 \item \textbf{Open Source}
 Tuvok and ImageVis3D are released under the very lib-
 eral MIT license, which means that practically no usage
-restrictions exist—including the use of ImageVis3D or its
+restrictions exist---including the use of ImageVis3D or its
 components in commercial applications.
 
 \end{enumerate}
@@ -198,37 +193,37 @@ The remainder of this chapter is organized as follows. In
 Section~\ref{sec:design} we discuss the design of \textit{Tuvok},
 focusing on the ways in which the library handles large data. To
 demonstrate
-the versatility of \textit{Tuvok} and \textit{ImageVis3D}, we describe exten-
-sions to the system in section \todo{4}, and projects that have in-
-corporated \textit{Tuvok} in section \todo{5}. We conclude the paper with a
-summary of the presented system and future research direc-
-tions.
+the versatility of \textit{Tuvok} and \textit{ImageVis3D}, we describe
+extensions
+to the system in section \todo{4}, and projects that have
+incorporated \textit{Tuvok} in section \todo{5}. We conclude with a
+summary of the presented system and future research directions.
 
 \section{Design}
 \label{sec:design}
 
-The ImageVis3D system is composed of three major com-
-ponents, the Tuvok Volume rendering library, the Tuvok IO
-library, and the Qt based UI toolkit. Note that these com-
-ponents are designed to work well together but can also be
+The ImageVis3D system is composed of three major
+components, the Tuvok Volume rendering library, the Tuvok IO
+library, and the Qt based UI toolkit. Note that these
+components are designed to work well together but can also be
 used separately or replaced by other external libraries (see
-Section \todo{5} for examples). In fact, during the compilation pro-
-cess of Tuvok the subcomponents are compiled as separate
+Section \todo{5} for examples). In fact, during the compilation
+process of Tuvok the subcomponents are compiled as separate
 libraries that are simply linked together. During the design of
 these components care has been taken to create flexible and
-simple interfaces between the subcomponents. As an exam-
-ple of this decoupled design, the communication from the
+simple interfaces between the subcomponents. As an example
+of this decoupled design, the communication from the
 UI to the rendering and IO systems happens through a single
 entity, named the MasterController. This concept makes
 it easy to intercept all the communication to and from the
-UI (see Section \todo{4.2}) and is also the heart of the scripting in-
-terface built into ImageVis3D, which allows programmatic
+UI (see Section \todo{4.2}) and is also the heart of the scripting
+interface built into ImageVis3D, which allows programmatic
 control over the application.
 
 \subsection{The volume rendering library}
 
-The Tuvok volume rendering library contains the core graph-
-ics algorithms to render volumetric data. Currently, a slice
+The Tuvok volume rendering library contains the core graphics
+algorithms to render volumetric data. Currently, a slice
 based volume renderer as well as GPU based ray casting
 renderer are available in OpenGL and DirectX 10. For pure
 software based rendering the system currently relies on the
@@ -243,18 +238,18 @@ works with data sizes greater than 2 terabytes [FCS ∗ 10].
 
 This is achieved using a streaming, progressive rendering
 system guaranteeing interactive frame rates with adaptive
-quality. The generation of full quality imagery is also guar-
-anteed on all configurations, with any data set, but may not
+quality. The generation of full quality imagery is also
+guaranteed on all configurations, with any data set, but may not
 happen interactively.
 
 To achieve this goal Tuvok utilizes a multiresolution level
 of detail (LoD) data representation. It queries the volume
-parameters from the Tuvok IO Library—or an external IO
+parameters from the Tuvok IO Library---or an external IO
 framework through a documented API if the standard IO is
-not used—and uses that information together with the cur-
-rent viewing parameters and system performance history to
-compute a work order for the current render task. More de-
-tails are available in section 3.2.
+not used---and uses that information together with the
+current viewing parameters and system performance history to
+compute a work order for the current render task. More
+details are available in Section~\todo{3.2}.
 
 To achieve goals 4-6 in the list above, renderers contain
 a variety of extra code paths for compatibility settings, as a
@@ -271,17 +266,17 @@ because we found that some drivers would switch to a soft-
 ware path when rendering into a 32-bit FBO.
 
 Table 1 gives timings for multiple data sets on different
-systems, demonstrating the system’s compatibility and scal-
-ability. For these timings the progressive rendering has been
-disabled: only the time to render the maximum quality im-
-age for the given view was measured. With the progressive
+systems, demonstrating the system's compatibility and scalability.
+For these timings the progressive rendering has been
+disabled: only the time to render the maximum quality
+image for the given view was measured. With the progressive
 rendering turned on all data sets render at the chosen refresh
 rates on all systems. Note that the systems used in the test
 cover chipset integrated GPUs as well as also high end PC
 configurations. Timings are presented for small data sets as
 well as reasonably sized CT scans and simulations. Using
-even larger data sets does not significantly impact the per-
-formance of the system, as the amount of data accessed is
+even larger data sets does not significantly impact the
+performance of the system, as the amount of data accessed is
 bounded by the screen resolution.
 
 \begin{table}
@@ -336,27 +331,27 @@ bounded by the screen resolution.
 
 \subsection{Large scale data handling}
 
-While Tuvok can take advantage of recent advances in hard-
-ware capabilities, it is still true that data are growing and
-have been growing faster than modern hardware. Thus, while
-the size of data sets that we can interactively render is in-
-creasing with each hardware revision, we still find that a
-larger percentage of our data sets cannot be rendered interac-
-tively. It would be unreasonable to assume this trend would
-reverse in the coming years. Therefore, it is critical that in-
-teractive visualization systems incorporate progressive ren-
-derers.
+While Tuvok can take advantage of recent advances in hardware
+capabilities, it is still true that data are growing and
+have been growing faster than hardware capabilities. Thus, while
+the size of data sets that we can interactively render is
+increasing with each hardware revision, we still find that a
+larger percentage of our data sets cannot be rendered interactively.
+It would be unreasonable to assume this trend would
+reverse in the coming years. Therefore, it is critical that
+interactive visualization systems incorporate progressive
+renderers.
 
-Tuvok’s progressive renderer is based on overloaded con-
-cepts of frames and subframes. In the context of Tuvok, a
+Tuvok's progressive renderer is based on overloaded
+concepts of frames and subframes. In the context of Tuvok, a
 frame is a single, complete rendering of the data at native
 screen and data resolution. A subframe is an intermediate
 state between no rendering and a frame, which includes the
 full spatial range of the data and any annotations present in
-the visualization. The quality of successive subframes mono-
-tonically increases. A sequence of these subframes are ren-
-dered before the final frame is displayed, detailing differ-
-ent approximations of the complete rendering much more
+the visualization. The quality of successive subframes
+monotonically increases. A sequence of these subframes are
+rendered before the final frame is displayed, detailing different
+approximations of the complete rendering much more
 quickly than a frame can be displayed. We guarantee that
 there is always at least one subframe which can be displayed
 interactively (within a couple hundred milliseconds). The
@@ -370,10 +365,10 @@ a particular level of detail. At the coarsest level of detail,
 the data are small enough that they can easily be read from
 disk under our real time requirements. However, we found
 that older GPUs could not always render such data quickly
-enough for our needs. Therefore Tuvok always makes avail-
-able up to three additional subframes. These are generated
-by lowering the screen resolution of the rendering (and up-
-scaling before display to the user), lowering the sampling
+enough for our needs. Therefore Tuvok always makes available
+up to three additional subframes. These are generated
+by lowering the screen resolution of the rendering (and upscaling
+before display to the user), lowering the sampling
 rate used by the renderer, or both. Lowering resolution and
 sample rate significantly reduces the strain on the fragment
 processing stage of the graphics pipeline, allowing Tuvok
@@ -385,26 +380,26 @@ capabilities.
 
 \subsubsection{Preprocessing}
 
-Most data are not fed to visualization software with mul-
-tiple levels of detail included. To accommodate such data,
-Tuvok’s IO subsystem implements a preprocess which gen-
-erates a multiresolution hierarchy. The data at their native
+Most data are not fed to visualization software with
+multiple levels of detail included. To accommodate such data,
+Tuvok's IO subsystem implements a preprocess which generates
+a multiresolution hierarchy. The data at their native
 resolution form the finest level of detail, and we subsample
 by two recursively until a level of detail exists which is less
 than or equal to a predefined user-configured limit. We also
 use this opportunity to perform other operations on the data,
 for example by converting the endianness so that, in most
-cases, it will need no transformations when used for render-
-ing later.
+cases, it will need no transformations when used for rendering
+later.
 
 The primary issues we face when loading large data are
 32-bit address spaces, limitations on GPU 3D texture sizes,
 and managing the IO in an efficient manner. The address
 space limits us to only handling two gigabytes of data at any
-one time. Limitations on texture sizes prevent us from ‘sim-
-ply’ loading the data into a single, large 3D texture. Typical
-IO performance on desktop-class and predicted future hard-
-ware informs our strategy for how we access and consume
+one time. Limitations on texture sizes prevent us from `simply'
+loading the data into a single, large 3D texture. Typical
+IO performance on desktop-class and predicted future hardware
+informs our strategy for how we access and consume
 data.
 
 To tackle these issues, the preprocess divides each level of
@@ -430,10 +425,10 @@ yet only 8 milliseconds to seek to the position of that block. Even as
 one gets into the higher end drives, the story is the same; a Cheetah
 15K.5 would take 0.12 seconds to read a 16 megabyte chunk of data, and
 only 3.75 milliseconds to seek to the appropriate location on disk.
-In relative terms, seek time makes up approximately 3% of the time
-required to read the data block. Based on these sim- ple calculations,
+In relative terms, seek time makes up approximately 3\% of the time
+required to read the data block. Based on these simple calculations,
 it is clear that transfer rates will have to improve drastically before
-seek times become a relevant pa- rameter.
+seek times become a relevant parameter.
 
 \begin{table}
 	\begin{center}
@@ -457,7 +452,7 @@ We have also benchmarked our I/O subsystem using solid
 state drives. Table~\ref{tbl:ssd} shows the time spent on I/O when
 loading a 648-brick data set via Tuvok. The SSD boasts vastly better
 seek times, on the order of microseconds instead of the normal
-milliseconds for mechanical drives, and a fac- tor of two to three
+milliseconds for mechanical drives, and a factor of two to three
 improvement in bandwidth. Using large reads, the seek time matters
 little in this case, but as shown in Table~\ref{tbl:ssd} Tuvok benefits
 from the improved transfer times offered by SSDs.
@@ -484,73 +479,72 @@ rendering time by obviating the need to pay the transfer cost
 for every brick rendered.
 
 A straightforward paging strategy for such a cache would
-be Least Recently Used (LRU), however this strategy deliv-
-ers poor performance in many situations. Consider a dataset
+be Least Recently Used (LRU), however this strategy delivers
+poor performance in many situations. Consider a dataset
 with 10 bricks, and a brick cache capable of storing 9 bricks.
-In the first frame, all ten bricks must be paged. Further, load-
-ing the final brick of the first frame will evict the first brick
-of that frame. Assuming any reasonable amount of frame-to-
-frame coherence, the next frame will again need the same 10
-bricks, and they are likely to require a similar depth order-
-ing. Thus, in the second frame, the first brick we will need
-is the brick we just evicted at the end of the last frame; fur-
-ther, the second brick we need will be evicted while loading
+In the first frame, all ten bricks must be paged. Further, loading
+the final brick of the first frame will evict the first brick
+of that frame. Assuming any reasonable amount of frame-to-frame
+coherence, the next frame will again need the same 10
+bricks, and they are likely to require a similar depth ordering.
+Thus, in the second frame, the first brick we will need
+is the brick we just evicted at the end of the last frame; further,
+the second brick we need will be evicted while loading
 the first brick of the second frame, and so on throughout the
 entire frame.
 
 We have implemented a custom paging strategy which
 takes into account our progressive rendering system. In this
-strategy, we evict bricks within a frame using the Most Re-
-cently Used (MRU) strategy; we evict bricks between frames
+strategy, we evict bricks within a frame using the Most Recently
+Used (MRU) strategy; we evict bricks between frames
 using a LRU strategy. The rationale for the former is that
 once we have used a brick in a subframe, it will not be
-used in the rendering of that frame again until the progres-
-sive renderer starts over, and we may service a large number
+used in the rendering of that frame again until the progressive
+renderer starts over, and we may service a large number
 of bricks in the interim. However, if we do start the frame
-from its earliest subframe again, particularly before finish-
-ing the frame, we are likely to need the oldest bricks which
-are present in the cache. Between frames, we rely on frame-
-to-frame coherence. If a brick was not used in the previous
+from its earliest subframe again, particularly before finishing
+the frame, we are likely to need the oldest bricks which
+are present in the cache. Between frames, we rely on frame-to-frame
+coherence. If a brick was not used in the previous
 frame, and is not used in the current frame, it is likely to not
-be required in subsequent frames as well; a common exam-
-ple is if the user has enabled a clip plane: any viewing trans-
-form will not effect which bricks are clipped away by the
+be required in subsequent frames as well; a common example
+is if the user has enabled a clip plane: any viewing transform
+will not effect which bricks are clipped away by the
 plane. Therefore the LRU strategy will tend to evict bricks
-which are not visible under the current transfer function, iso-
-surface, or viewing parameters.
+which are not visible under the current transfer function, isosurface,
+or viewing parameters.
 
 \subsection{UI and networking library}
 
-To facilitate rapid development of other visualization appli-
-cations, all those components built on top of Qt which are
+To facilitate rapid development of other visualization applications,
+all those components built on top of Qt which are
 not specific to the application level were separated, allowing
 them to be shared and reused in future applications. These
-components can be roughly categorized as the UI and net-
-working components. The independent networking compo-
-nents include the bug reporting, update checking, and data
+components can be roughly categorized as the UI and networking
+components. The independent networking components
+include the bug reporting, update checking, and data
 set sharing subsystems, while the UI components include
 the base classes that define the look and feel of ImageVis3D,
-such as dialogs, tool widgets, user interaction, and persis-
-tence.
+such as dialogs, tool widgets, user interaction, and persistence.
 
 \section{Extensions to \textit{Tuvok} and \textit{ImageVis3D}}
 
 In this section we will present a couple of examples to
 demonstrate how simple it is to add new features or extend
 existing functionality. We present examples from research
-projects implementing a prototypic environment to experi-
-ment with new methods (see Section~\todo{\ref{fixme}}) as well as new
+projects implementing a prototypic environment to experiment
+with new methods (see Section~\todo{\ref{fixme}}) as well as new
 features to ImageVis3D to use it for other research.
 
 Due to the modular design, the scripting interface, and
-the MasterController concept, integration with external soft-
-ware is simple. As the UI and ‘execution layer’ communicate
+the MasterController concept, integration with external software
+is simple. As the UI and `execution layer' communicate
 strictly through a single class, the MasterController, any
 type of external communication channel can simply attach
 itself to this class and track changes. Control of the library
 can also happen through the MasterController via script
 commands that allow programmatic modification of all of
-Tuvok’s features.
+Tuvok's features.
 
 \subsection{Extensions to the rendering subsystem}
 
@@ -559,25 +553,25 @@ visualization capabilities. In some domains, it is necessary
 to visualize multiple data sets simultaneously. A student has
 modified ImageVis3D to render multiple data sets that live in
 overlapping space, and added domain-specific widgets for
-ease of use in a particular scientific domain. One such ex-
-ample is a dialog to automatically create transfer functions,
-based on external knowledge of characteristic data distribu-
-tions within data sets common to that field. A second exam-
-ple is repurposing the 2D transfer function editor to utilize
+ease of use in a particular scientific domain. One such example
+is a dialog to automatically create transfer functions,
+based on external knowledge of characteristic data distributions
+within data sets common to that field. A second example
+is repurposing the 2D transfer function editor to utilize
 different metadata along each axis.
 
 \subsection{Extensions to \textit{Tuvok}'s controller}
 
-For provenance tracking, we have integrated VisTrails, a pro-
-duction provenance framework with well-developed APIs
+For provenance tracking, we have integrated VisTrails, a production
+provenance framework with well-developed APIs
 for integration with external systems. The integration of
 VisTrail’s provenance tracking features required a two way
 communication from and to Tuvok. Interactions made by
 the user need to be communicated to VisTrails to track the
-provenance, but also VisTrails needs to be able to control Tu-
-vok to perform undo/redo operations. Thus, this example is
-prototypic for any type of recording or remote control of Tu-
-vok, such as cluster extensions or connections to novel input
+provenance, but also VisTrails needs to be able to control Tuvok
+to perform undo/redo operations. Thus, this example is
+prototypic for any type of recording or remote control of Tuvok,
+such as cluster extensions or connections to novel input
 devices.
 
 \section{Use cases of \textit{Tuvok}}
@@ -599,17 +593,17 @@ and~\ref{fig:altaviewer} demonstrate the integrations presented here.
 \subsection{SCIRun}
 
 SCIRun is a problem solving environment for modeling,
-simulation, and visualization of scientific data. It is an ex-
-ample of what we refer to as a legacy application, in that it
+simulation, and visualization of scientific data. It is an example
+of what we refer to as a legacy application, in that it
 was developed without the ideas implemented by Tuvok in
 mind. In particular, this means that the system must work
-with in-core, “unbricked” data sets of a single resolution.
+with in-core, `unbricked' data sets of a single resolution.
 
 To support such an environment, Tuvok has a simplified
 API for existing systems which do not include level of detail
 or bricking concepts. The information flows one way from
-the controlling application to Tuvok, and includes a refer-
-ence counted smart pointer to the data, as well as metadata
+the controlling application to Tuvok, and includes a reference
+counted smart pointer to the data, as well as metadata
 and rendering parameters. For small changes in rendering
 parameters, data shared from previous frames is retained and
 simply re-rendered. When changing or passing a new data
@@ -623,42 +617,41 @@ cannot guarantee interactive performance.
 \subsection{VisIt}
 
 VisIt is a data visualization and analysis application which is
-well-suited to large scale data processing on leadership com-
-puting platforms. We have integrated the underlying render-
-ing core as an option alongside VisIt’s existing volume ren-
-derers. Since VisIt already supported domain-based data set
+well-suited to large scale data processing on leadership computing
+platforms. We have integrated the underlying rendering
+core as an option alongside VisIt's existing volume renderers.
+Since VisIt already supported domain-based data set
 decomposition, it can easily take advantage of an additional
 Tuvok feature: bricking. This allows VisIt to volume render
 data of arbitrary size on the GPU, whereas it was previously
-limited to resampling the data or utilizing software render-
-ing.
+limited to resampling the data or utilizing software rendering.
 
 Though data do not come directly from a data file in this
-and other integration work, the abstraction provided by Tu-
-vok’s IO layer allows the rendering core to remain ignorant
+and other integration work, the abstraction provided by Tuvok's
+IO layer allows the rendering core to remain ignorant
 about the source of the data. The metadata which must be
-supplied to Tuvok scales with the complexity of the applica-
-tion: in the unbricked, SCIRun case, Tuvok can be told only
-the brick size (assuming the brick lies centered on the ori-
-gin); with decomposed data, Tuvok must be informed of the
+supplied to Tuvok scales with the complexity of the application:
+in the unbricked, SCIRun case, Tuvok can be told only
+the brick size (assuming the brick lies centered on the origin);
+with decomposed data, Tuvok must be informed of the
 world space location of the bricks; for progressive rendering
-applications, such as ImageVis3D, the LoD that a brick be-
-longs to must also be given. Should an application choose, it
-can also supply additional metadata to allow advanced ren-
-dering optimizations.
+applications, such as ImageVis3D, the LoD that a brick belongs
+to must also be given. Should an application choose, it
+can also supply additional metadata to allow advanced rendering
+optimizations.
 
 An issue that arose specifically in the VisIt integration
-was state management in large, established software sys-
-tems. The OpenGL API is a global state machine, and VisIt
+was state management in large, established software systems.
+The OpenGL API is a global state machine, and VisIt
 has many sub-libraries which can and will change the global
 state in ways we cannot predict. Tuvok therefore makes very
-few assumptions about OpenGL state. During the ‘setup’
-stage, Tuvok takes state information – camera and viewing
-reference points, data, etc. – and simply stores it locally.
+few assumptions about OpenGL state. During the `setup'
+stage, Tuvok takes state information---camera and viewing
+reference points, data, etc.---and stores it locally.
 A single method then uses all that information to configure
-OpenGL state once before moving on to per-brick render-
-ing. For efficiency reasons, the system leaves the OpenGL
-state “as-is” when finished rendering, much like other VisIt
+OpenGL state once before moving on to per-brick rendering.
+For efficiency reasons, the system leaves the OpenGL
+state `as-is' when finished rendering, much like other VisIt
 subsystems and libraries do. Until OpenGL establishes an
 object model, we have found this to be the best method for
 managing OpenGL state.
@@ -670,61 +663,57 @@ managing OpenGL state.
 
 	\caption{The left image shows an E11 mouse embryo
 	(2.4GB) while the right image depicts a P0 newborn rat
-	(7.6GB). Both specimens were stained using Numira’s cus-
-	tom protocol and scanned using microCT. Images cour-
-	tesy of Numira Biosciences. Copyright c 2009 Numira Bio-
-	sciences. All rights reserved. AltaViewer Software available
+	(7.6GB). Both specimens were stained using Numira's custom
+	protocol and scanned using microCT. Images courtesy
+	of Numira Biosciences. Copyright c 2009 Numira Biosciences.
+	All rights reserved. AltaViewer Software available
 	at \url{http://www.numirabio.com/}}
 	\label{fig:altaviewer}
 \end{figure}
 
-Finally, we demonstrate the usability of Tuvok’s components
-in a commercial environment. Numira Biosciences is a spe-
-cialty contract research organization (CRO) which focuses
+Finally, we demonstrate the usability of Tuvok's components
+in a commercial environment. Numira Biosciences is a specialty
+contract research organization (CRO) which focuses
 on high-resolution imaging and analysis of small animal
 specimens, provides researchers with quantifiable, visible
 evidence of disease progression, as well as drug efficacy and
 drug side effects in their animal models. For the next gen-
-eration of their visualization suite “AltaViewer” (see
+eration of their visualization suite `AltaViewer' (see
 Figure~\ref{fig:altaviewer}) they have chosen to replace their
-proprietary IO library in part by Tuvok’s IO components to achieve
+proprietary IO library in part by Tuvok's IO components to achieve
 significantly better performance.
 
 \section{Conclusion and future work}
 
 In this paper we have presented the Tuvok framework as well
-as ImageVis3D, an application built with Tuvok . We gave in-
-sight into large data support in a production volume renderer.
+as ImageVis3D, an application built with Tuvok. We gave insigh
+into large data support in a production volume renderer.
 We also gave a couple of examples of research projects and
 commercial use of components of Tuvok.
 We are currently working on three major extensions to
-Tuvok. First, the support of time dependent data sets, in par-
-ticular we are working to extend the progressive rendering
-concept to this data as well. Secondly, we are extending Tu-
-vok to render multiple data sets in overlapping 3D space;
-due to the out-of-core nature of the system an efficient im-
-plementation of this feature is non-trivial. Finally, we also
+Tuvok. First, the support of time dependent data sets, in
+particular we are working to extend the progressive rendering
+concept to this data as well. Secondly, we are extending
+Tuvok to render multiple data sets in overlapping 3D space;
+due to the out-of-core nature of the system an efficient
+implementation of this feature is non-trivial. Finally, we also
 plan to add purely software based as well as OpenCL based
 ray casters to allow for fast rendering of ultra large data sets
 on headless clusters with and without GPUs.
 
 \section{Acknowledgements}
-This research was made possible in part by the Cluster
-of Excellence “Multimodal Computing and Interaction” at
-the Saarland University, by the NIH/NCRR Center for In-
-tegrative Biomedical Computing, P41-RR12553-10 and by
-Award Number R01EB007688 from the National Institute
-Of Biomedical Imaging And Bioengineering, and by the Of-
-fice of Advanced Scientific Computing Research, Office of
-Science, of the U.S. Department of Energy under Contract
-No. DE-AC02-05CH11231 through the Scientific Discov-
-ery through Advanced Computing (SciDAC) program’s Vi-
-sualization and Analytics Center for Enabling Technologies
-(VACET). The work presented in this paper has been co-
-financed by the Intel Visual Computing Institute. The con-
-tent is under sole responsibility of the authors. We thank
-John Blondin for some of the data pictured in Figure 4. Fur-
-thermore we thank Numira Bioscience for the AltaViewer
-screen shots, the visible human project for the visible hu-
-man scan and Siemens Corporate Research for the Whole-
-body data set.
+This research was made possible in part by the Cluster of Excellence
+``Multimodal Computing and Interaction'' at the Saarland University,
+by the NIH/NCRR Center for Integrative Biomedical Computing,
+P41-RR12553-10 and by Award Number R01EB007688 from the National
+Institute Of Biomedical Imaging And Bioengineering, and by the Office
+of Advanced Scientific Computing Research, Office of Science, of
+the U.S. Department of Energy under Contract No. DE-AC02-05CH11231
+through the Scientific Discovery through Advanced Computing (SciDAC)
+program's Visualization and Analytics Center for Enabling Technologies
+(VACET). The work presented in this paper has been co-financed by
+the Intel Visual Computing Institute. The content is under sole
+responsibility of the authors. We thank John Blondin for some of the
+data pictured in Figure 4.  Furthermore we thank Numira Bioscience for
+the AltaViewer screen shots, the visible human project for the visible
+human scan and Siemens Corporate Research for the `Wholebody' data set.
