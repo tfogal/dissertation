@@ -3,7 +3,7 @@
   \caption{The Visible Human male full color (\tjftilde{}12~GB) and
   a Richtmyer-Meshkov instability (\tjftilde{}8~GB) render in 34~ms
   and 58~ms, respectively, using our ray-guided volume rendering
-  implementation.  On right are views which highlight the areas
+  implementation.  On right are views that highlight the areas
   that take advantage of empty space leaping (green) and early ray
   termination (blue).}
   \label{fig:teaser}
@@ -43,7 +43,7 @@ space skipping and the fast detection of ray saturation.  Both of
 these concepts have extensive effects on the amount of compute work
 required.  However, even more relevant is their ability to reduce the
 working set of extremely large datasets down to a small kernel, which
-can significantly reduce the amount of data which must be loaded from a
+can significantly reduce the amount of data that must be loaded from a
 slow resource, such as the network or a local disk.  This has enabled
 interactive volume rendering for very large data on commodity
 hardware~\cite{Knoll:2010:BVH, Hadwiger:2012:Guided,
@@ -101,7 +101,7 @@ a multiresolution
 representation~\cite{Boada:2001:Multires, LaMar:2000:Multires,
 Weiler:2000:LoD}.  This method hinges on the concepts of empty space
 leaping and early ray termination~\cite{Levoy:EarlyTermination}, two
-techniques developed early on which demonstrate that sampling can be
+techniques developed early on that demonstrate that sampling can be
 significantly reduced in many instances of volume rendering.
 
 There has been much work on accelerating ray-traced volume rendering in
@@ -144,7 +144,7 @@ number of ways:
   well-documented in volume rendering literature.
 
   \item We expound on how to use modern GPU features to implement our
-  lock-free feedback data structure, which enables the implementation
+  lock-free feedback data structure.  This enables the implementation
   to spend more time computing on the GPU and less time pushing data
   around.
 
@@ -156,7 +156,7 @@ number of ways:
 
 While we believe these to be novel additions, we do not consider them
 to be this work's major contribution.  Rather, we provide new depth to
-the discussions of a variety of parameters which are relevant in the
+the discussions of a variety of parameters that are relevant in the
 development of a ray-guided direct volume renderer:
 
 \begin{itemize}
@@ -196,7 +196,7 @@ the rendering process with the identification of which subvolumes
 (`bricks') must be loaded.  We describe the operation of ray-guided
 volume renderers, in Section~\ref{sec:algorithm}.
 In Section~\ref{sec:performance} we detail a plethora of benchmarks
-which demonstrate the performance of the renderer.
+that demonstrate the performance of the renderer.
 
 In many prior volume renderer evaluations, results are generally
 limited to the raw performance of the renderer.  However, we note
@@ -220,29 +220,29 @@ both limitations and opportunities for future work.
 At the macro level, our algorithm is reminiscent of the recent work of
 Hadwiger et
 al. ~\cite{Hadwiger:2012:Guided}, as well as Engel's
-CERA-TVR~\cite{Engel:2012:CERA} which in turn is based on the
+CERA-TVR~\cite{Engel:2012:CERA} that is in turn is based on the
 Gigavoxels
 system~\cite{Crassin:2009:Gigavoxels}.
 
 With Hadwiger et al., we share the requirement of a set of simple
 multiresolution Cartesian grids, along with an OpenGL-based table
 to report missing bricks.  A multiresolution hierarchy is built as a
-preprocess for input data which exist at only one resolution (details
+preprocess for input data that exist at only one resolution (details
 are in Section~\ref{sec:tradeoffs}).  From the CERA-TVR system
 we inherit the idea to only recompute and request grid cells at
 boundaries.
 
 \subsection{Overview}
 
-We endeavor to create a volume renderer which can render massive 
+We endeavor to create a volume renderer that can render massive 
 datasets extremely fast on commodity GPU hardware.  The major issues in
 such a renderer are:
 \begin{enumerate}
   \itemsep0em
-  \item Identifying regions which must be sampled densely.
+  \item Identifying regions that must be sampled densely.
 
   \item Precisely locating the transition between these regions and
-  regions which exhibit considerable homogeneity.
+  regions that exhibit considerable homogeneity.
 
   \item Terminating a ray as soon as possible.
 
@@ -252,19 +252,19 @@ such a renderer are:
 \end{enumerate}
 
 Points (1) and (2) ensure we concentrate the computational effort on
-the areas which require it.  Point (3) is critical because it means we
+the areas that require it.  Point (3) is critical because it means we
 do not have to load the data beyond the point of early termination,
 significantly reducing costly disk traffic.  If point (4) is not
 sufficiently addressed, the renderer will load large amounts of data
-which are not needed for rendering, at severe costs in performance.
+that are not needed for rendering, at severe costs in performance.
 
 % new subsection header here? we are switching from properties a
 % Ray-guided VR needs to how we implemented said properties, here
 
-To the first point, we employ an efficient metadata structure which
+To the first point, we employ an efficient metadata structure that
 allows us to quickly identify these regions.  Points (2) and (3) are
 handled through an educated choice of brick size, which is discussed
-more thoroughly in Section \ref{sec:tradeoffs}.  A major component to
+more thoroughly in Section~\ref{sec:tradeoffs}.  A major component to
 modern volume renderers is how they address point (4), now by and large
 based on \emph{ray guidance}.  That is, the sampling characteristics of
 the ray determine which data to load.  Stated differently, the future
@@ -300,19 +300,19 @@ portion of the brick pool for sampling (Figure \ref{fig:flow}.6).
 % data as a preprocess.
 
 The key component is that both ray-accumulation \emph{as well
-as} identification of the bricks which are needed should occur
+as} identification of the bricks that are needed should occur
 on the GPU.  The latter is natural to compute during standard
 ray-casting operations.  Doing both operations on the GPU means brick
 identification comes very cheap, as it parallelizes very effectively.
 More importantly, performing this during ray-casting ensures that it
-is optimally accurate: the program never loads data which will not be
+is optimally accurate: the program never loads data that will not be
 used.
 
 %---we get results which are as accurate as the brick size.
 
 \begin{algorithm}
   \caption{Ray-guided volume rendering.  Each ray identifies the
-  set of bricks which it needs for rendering independently, and
+  set of bricks that it needs for rendering independently, and
   reports this information for use in subsequent rendering passes.}
   \label{alg:vrender}
   \begin{algorithmic}[1]
@@ -462,12 +462,12 @@ between rays.  Two neighboring rays are highly likely to request the
 same set of bricks, or at least have substantial overlap within the
 sets they require.  With the multiple render targets approach, both
 pixels will encode the same value, and we will need to read back larger
-textures which consist of predominantly duplicate values.
+textures that consist of predominantly duplicate values.
 
 Instead of utilizing extra render targets, we take advantage of an
-OpenGL extension which was promoted to core in version 4.2,
+OpenGL extension that was promoted to core in version 4.2,
 \texttt{GL\_ARB\_shader\_image\_load\_store}.  This extension allows
-the creation of an image buffer which is independent of the current
+the creation of an image buffer that is independent of the current
 rendering buffer.  Using the atomic load/store operations the extension
 provides, we implement a set based on a linearly-probed lock-free hash
 table stored in an \texttt{image\_load\_store} buffer.  Since we are
@@ -481,9 +481,9 @@ Section \ref{sec:ht-params}.
   \centering
   \includegraphics[width=0.95\linewidth]{images/rg/terminate-empty.png}
   \caption{Volume rendering behavior for the Mandelbulb dataset.
-  Green indicates bricks which were skipped via empty space skipping.
-  Red indicates bricks which were sampled densely.  Blue indicates
-  bricks which were sampled but saturated quickly.
+  Green indicates bricks that were skipped via empty space skipping.
+  Red indicates bricks that were sampled densely.  Blue indicates
+  bricks that were sampled but saturated quickly.
 %  Most rays skip almost all of the data or terminate very quickly;
 %  the lack of white regions in this rendering indicate that, here,
 %  \emph{all} rays fall into a single category.
@@ -523,7 +523,7 @@ this section, one could classify a brick into one of three categories:
 An important observation is that---in a very large number of
 cases---bricks fall into \emph{either} the `empty' or `saturating'
 categories, and only \emph{rarely} in the `non-saturating' category.
-The factor which has the greatest effect on performance is how quickly
+The factor that has the greatest effect on performance is how quickly
 a renderer can classify data into one of the first two categories, and
 therefore bypass a large set of the work.
 
@@ -544,7 +544,7 @@ Figure \ref{fig:teaser}, in which only the rays in the middle of the
 volume require high computation.
 
 Of course, this classification depends largely on the transfer function
-and viewing parameters.  In practice, however, transfer functions which
+and viewing parameters.  In practice, however, transfer functions that
 produce \emph{informative} visualizations tend to exhibit such ternary
 classifications.
 
@@ -555,7 +555,7 @@ a noticeable delay.  Our current test platform can process about
 interactions is too much.  Therefore, we offload this update to a
 background thread.  Until the thread completes its work, the renderer
 considers all unprocessed bricks to be `missing', causing it to request
-bricks which might be empty.  Those bricks' metadata is directly
+bricks that might be empty.  Those bricks' metadata is directly
 updated and they are only loaded if they fail the empty check.  The
 overall performance effects may be large, but the system remains
 responsive during this period.
@@ -591,7 +591,7 @@ irrespective of the input dataset size.
 We utilize zoom-ins, as in the accompanying video and results such as
 those in Figure~\ref{fig:working-set} and some in
 Table~\ref{tbl:timings}, to accentuate these high resolution issues.
-When the volume is far away, a very coarse resolution is utilized which
+When the volume is far away, a very coarse resolution is utilized that
 maintains accurate voxel-to-pixel error ratios.  As the camera comes
 closer, higher resolutions of the source data must be utilized.  We
 terminate zoom-ins slightly after they fill the screen; beyond this
@@ -616,7 +616,7 @@ ensure all of the data has a chance to contribute to a sequence.
 an important benchmark in any volume rendering system.  Doing so
 invalidates our brick metadata concerning which bricks are empty,
 causing some hash table entries in the next frame to make little sense
-(i.e. request bricks which are visible under the old transfer function
+(i.e. request bricks that are visible under the old transfer function
 but empty under the new one).  Furthermore, the bricks in the GPU
 volume pool may be inappropriate for the new transfer function.
 
@@ -683,7 +683,7 @@ sizes.
 \section{Design Tradeoffs}
 \label{sec:tradeoffs}
 
-In this section, we try to explore aspects which have not been
+In this section, we try to explore aspects that have not been
 thoroughly addressed by previous literature.  Details on trade-offs and
 the reasoning behind our final implementation choices are given.
 
@@ -1008,7 +1008,7 @@ frame and utilized to fill the volume pool with new data.
 
 As locks do not exist in current GLSL versions (and potentially never
 will), lock-free structures are the only hazard-prone data structures
-which can be correctly implemented.  Crassin et
+that can be correctly implemented.  Crassin et
 al.\cite{Crassin:2009:Gigavoxels} workaround this by using multiple
 render targets: each pixel has its own unique set of memory to
 write into, and so there are no write hazards.  Our scheme requires
@@ -1037,9 +1037,9 @@ missing brick is not recorded}.  As long as \emph{some}
 missing bricks are recorded, the next frame \emph{will} make progress.
 Each ray is either: finished, able to make progress, or unable to make
 progress due to a lack of bricks that it requires.  Since our hash
-table only contains entries for bricks which were requested by a ray,
+table only contains entries for bricks that were requested by a ray,
 then an invariant of our system is that: volume rendering is done, or
-there exists at least one ray which can make progress.
+there exists at least one ray that can make progress.
 
 % When a large number of bricks are needed, the hash table fills
 % consistently, implying that collisions are infrequent or unimportant.
@@ -1182,7 +1182,7 @@ in a much wider sense than that presented here.
 \end{figure}
 
 We tested our renderer with a plethora of datasets, both real and
-artificially created.  For space reasons, we discuss only a subset which
+artificially created.  For space reasons, we discuss only a subset that
 proved to be a reasonable sampling of our available data.
 Renderer performance is depicted for a variety of datasets in
 Table~\ref{tbl:timings}.  We discuss these in order of increasing size
@@ -1204,19 +1204,19 @@ anisotropically, else the in-plane resolution washes out too quickly.
 ``Velocity'' (center, left) comes from the simulation of an exploding
 star; we chose this dataset because our ideal transfer function for it
 is quite transparent, preventing the renderer from taking advantage of
-early ray termination.  Highly transparent transfer functions which
+early ray termination.  Highly transparent transfer functions that
 still produce informative results are a rarity but still occur.  For
 these data, the additional overhead of small bricks can have a fairly
 drastic effect on performance.  This dataset is one of the rare datasets
-for which lighting actually makes the visualization more
-\emph{difficult} to interpret, and so we always render this dataset
-with lighting off.
+for that lighting actually makes the visualization \emph{more
+difficult} to interpret, and so we always render this dataset with
+lighting off.
 
 The ``magnitude'' dataset (center, middle) comes from a combustion
 simulation and represents another intermediate step towards larger
 data.  The lower half of this dataset actually has a very faint trace
 of data, which causes the renderer to sample densely.  The expense
-of computing lighting information for fragments which ultimately
+of computing lighting information for fragments that ultimately
 contribute very little has a notable effect on performance.
 
 The Richtmyer-Meshkov Instability (``RMI'',
@@ -1228,8 +1228,9 @@ previous work.
 We created a series of ``Mandelbulbs'' at various resolutions ($1k^3$,
 $4k^3$, $8k^3$).  These are an extension of the mandelbrot fractal into
 3 dimensions.  This has many of the same properties of the data used in
-Crassin et al.~\cite{Crassin:2009:Gigavoxels}, which took a large bone
-scan and added Perlin noise to increase the sampling requirements.  We
+Crassin et al.~\cite{Crassin:2009:Gigavoxels}, in which Perlin noise
+was added to a large bone scan to increase the sampling requirements.
+We
 create the high-resolution features \textit{a priori}, so no GPU
 features were used to accelerate this process.  At equivalent
 resolutions to that work, we see double to an order of magnitude

@@ -25,7 +25,7 @@ the increased scale of data.
 Humans are effective pattern recognizers, but error-prone with
 repetitive tasks and inherently visual thinkers.  Among even small sets
 of data, it is much easier for us to apprehend a change in color than
-a significant change in repeated sequences of numbers.  Mapping raw
+a change in repeated sequences of numbers.  Mapping raw
 numbers to color or another visual representation is thus an effective
 way to take advantage of the pattern recognition capabilities of the
 human visual system.  The growth of data only increases the need for
@@ -33,12 +33,13 @@ data visualization, else we will be left with massive piles of numbers
 with no insight into the mechanisms or processes that sourced them.
 
 There are a variety of data types we might apply our efforts to.  In
-this thesis, we concentrate on \textit{regular gridded data}, as might
-be output by medical (CT, MRI) scanners or used in simulation software.
-These kinds of structured grids account for a disproportionately large
-subset of data types used in the scientific and medical domains.  It is
-one of the `important' data types highlighted by a report discussing
-the future scalability of computing in
+this dissertation, we concentrate on \textit{regular gridded
+data}, as might be output by medical (CT, MRI) scanners or used in
+simulation software.  These kinds of structured grids account for a
+disproportionately large subset of data types used in the scientific
+and medical domains.  It is one of the `important' data types
+highlighted by a report discussing the future scalability of computing
+in
 science~\cite{Berkeley:2006:View}.  Furthermore, operations on such
 data are easily mappable to promising data-parallel hardware, unlike
 many other data types, suggesting its continued future use at scale.
@@ -70,7 +71,9 @@ There are a number of visualization techniques that are widely
 appreciated for such volumetric data.  Much effort has been focused
 on the performance aspects of a few well-known techniques: mapping
 the algorithms to novel architectures, identifying special cases of
-interest, and reducing constants in the algorithms' execution.
+interest, and reducing constants in the algorithms' execution.  This
+work builds on the previous performance-oriented efforts in volume
+visualization.
 
 %Extreme data sizes as well as established algorithms (in SciVis)
 %mean there is increasing focus on constants in algorithmic scaling
@@ -95,8 +98,8 @@ interest, and reducing constants in the algorithms' execution.
 
 Direct volume rendering produces visualizations that accurately model
 tenuous mediums such as fire, smoke, and clouds.  However, it is
-seldom applied for its ability to produce photorealistic imagery.  The
-scientific and medical domains use volume rendering to see
+seldom applied for its ability to produce photorealistic imagery.  
+Scientific and medical researchers use volume rendering to see
 \emph{inside} a data set and highlight its internal structure.
 This can be extremely useful both in interrogating data as well as
 communicating known features.
@@ -113,17 +116,17 @@ communicating known features.
 The precision instrument used to control volume rendering is called the
 \emph{transfer function}.  A transfer function maps the value at every
 datum to colors \emph{and opacities}.  The control of opacity gives
-users an effective mechanism for filtering out data irrelevant
-to the point of interest.  Color control enables the user to
-highlight specific regions of interest.  In contrast to other volume
-visualization methods, this gives comparatively more power and
-flexibility to the user to communicate a feature exactly as intended.
+users an effective mechanism for filtering out data irrelevant to
+the point of interest.  Color control enables the user to flexibly
+highlight different regions.  In contrast to other volume visualization
+methods, this gives comparatively more power and flexibility to the
+user to communicate a feature exactly as intended.
 
 Unfortunately this increased flexibility comes at the cost of
 considerable computational complexity as compared to other volume
 visualization techniques.  In the general case, volume rendering is an
 $O(n^3)$ algorithm, requiring the consideration of every voxel in a
-three-dimensional dataset.  Each of these samples typically consists of
+three-dimensional dataset.  Each of these samples typically requires a
 trilinear interpolation coupled with a set of multiply-adds needed to
 compute the volume rendering integral.  For data of even small sizes, a
 na\"ive CPU-based computation is far from interactive.
@@ -167,9 +170,9 @@ very high levels of shared memory-based concurrency on each node.
 Both companies leading the HPC space, NVIDIA and Intel, have invested
 heavily in an architecture based on accelerator cards: boards with a
 large number of shared memory computational units.  While this is due
-in part due to results such as those contained herein, much of this
-architecture is dictated by the practical concerns of energy and the
-ability to dissipate heat from processing units.
+in part due to promising performance results, such as those contained
+herein, much of this architecture is dictated by the practical concerns
+of energy and the ability to dissipate heat from processing units.
 
 %In part due to the results of this thesis, architecting for
 %accelerators as opposed to CPU threads holds greater promise for
@@ -222,10 +225,10 @@ subsystems by many orders of magnitude: far wider than the gap between
 processor and memory speeds, for example.  Furthermore, there is little
 hope that this gap will shrink in the coming years.  This poses a
 pernicious problem for visualization, whose primary interaction with
-the storage hierarchy is via necessarily-synchronous read operations.
-Worse, this type of workload is unique to visualization: other
-high-performance computing consumers are unlikely to be allies when
-negotiating architectural trade offs for HPC resources.
+the storage hierarchy is via synchronous read operations.  Worse, this
+type of workload is unique to visualization: other high-performance
+computing consumers are unlikely to be allies when negotiating
+architectural trade offs for HPC resources.
 
 %The storage hierarchy is the single most limiting architectural
 %component.
@@ -276,9 +279,9 @@ computation will be favored in future algorithms.
 \textit{In situ} visualization addresses the `too big to read' problem
 in large-scale visualization and analysis.  The simple act of loading
 data significantly changes the visualization and analysis work flow.
-The growing size of outputs crosses an inflection point in relation to
-the speed of storage hierarchy.  Past this point, the impracticality of
-loading the full
+There is an inflection point in the relationship between data sizes and
+the performance of the storage hierarchy.  Past the inflection, the
+impracticality of loading the full
 dataset precludes exploratory visualization and analysis. \textit{In
 situ} visualization solves this by foregoing such use cases entirely:
 instead, all visualization and analysis is `baked into' the simulation
@@ -293,14 +296,14 @@ in the majority of visualization pipelines: reading data from disk.
 %    coffee, make a pot, drink a cup, teach a class, sleep, forget it.
 %	* in situ solves this by obviating the `read' step
 
-To achieve this coupling of visualization and simulation requires the
+To achieve this coupling of visualization and simulation requires a
 combination of software from multiple communities, notably simulation
 and visualization \& analysis.  This creates sizable technical and
 social challenges.  First and foremost, these are often distinct
 groups, with varying research motivations, methods for assessing
-engineering contributions, and software processes.  Data models
-are often radically different and must be shared across multiple
-programming languages.  Finally, large-scale visualization software is
+engineering contributions, and software processes.  Data models are
+often radically different and data must often be shared across multiple
+programming languages.  Finally, scalable visualization software is
 typically large, and both sides tend to have unique but overlapping
 dependency stacks.
 
@@ -317,7 +320,7 @@ candidates for benefiting from \textit{in situ} techniques---there is
 great concern that visualization will severely impact the execution
 time of highly parallel simulation software.  The scalability of these
 results is promising, but often comes at large increases in software
-complexity and thereby `technical debt'.
+complexity and thereby technical debt.
 
 %Considerable effort has been focused on scalability and performance.
 %	* often serves to make these more complex
@@ -328,9 +331,10 @@ associated with coupling increasingly complex visualization software
 with the simulations it uses as input.  The starting thesis is that
 embedding visualization into simulation code should not require a
 visualization expert.  It should be possible for the simulation author
-or even an independent user to perform this task.  Furthermore,
-we should measure coupling efforts in hours, not weeks or months.
-Starting from
+or even an independent user to perform this task.  For the
+monumental task of integrating \textit{in situ} visualization into the
+thousands of available simulation packages, coupling efforts must be
+measured in minutes, not weeks or months.  Starting from
 these premises requires a radically different approach to \textit{in
 situ} visualization than traditional solutions permit.
 
@@ -353,9 +357,12 @@ situ} visualization than traditional solutions permit.
 
 \section{Contribution}
 
-The efforts involved in this dissertation redefined the data sizes
-and methods in use to visualize and understand regularly-gridded
-three-dimensional data.
+The contributions of this dissertation fall along two broad lines.
+First, this work redefined the data sizes and methods in use to volume
+render and understand regularly-gridded three-dimensional data.
+Second, this dissertation is the first to radically rethink \textit{in
+situ} visualization approaches for the purpose of accelerating the task
+of coupling simulation and visualization.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{images/rabbit5tb}
@@ -380,17 +387,21 @@ better than on the large-scale infrastructure.
 Chapter~\ref{chp:multiscale} demonstrates that these techniques can
 still be applied at scale and uses them to produce the largest-ever
 volume renderings, and Chapter~\ref{chp:io} takes that concept further
-by investigating the parallel IO concerns at scale.
+by investigating parallel IO concerns at scale.
 
-Volume visualization is simply a means to an end: that of understanding
-the structures and processes present in a volume data set.  In recent
+Volume visualization is a means to an end: that of understanding the
+structures and processes present in a volume data set.  However,
+massive data
+sizes preclude \textit{post hoc} visualization for extremely large data
+sizes, even when taking advantage of the methods highlighted above.  In
+recent
 years, many have turned to \textit{in situ} visualization to tame the
 growing performance concerns of large-scale visualization.  However,
 engineering groups have long coupled \textit{ad hoc} visualization and
 analysis routines into their simulations to understand their simulation
 \emph{while} it runs.  The work developed here in
-Chapters~\ref{chp:freeprocessing}~and~\ref{chp:conclusions} is the
-first to consider
+Chapters~\ref{chp:freeprocessing}~and~\ref{chp:inference} is the first
+to consider
 \textit{in situ} visualization from the engineers' point of view: quick
 and easy visualization of their data.
 
@@ -426,4 +437,4 @@ considered
 `core' components of this thesis~\cite{Fogal:2009:SizeMatters,
 Fogal:2010:Bridge, Jevremovic:2011:Education, Jovana:2012:Interactive,
 Brownlee:2012:GLuRay, Childs:2012:VisIt, Hermilo:2013:Steering,
-Butson:2013:DBS}.  They are mentioned in the text only peripherally.
+Butson:2013:DBS}.  They are mentioned in this text only peripherally.
