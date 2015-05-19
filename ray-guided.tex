@@ -219,12 +219,11 @@ both limitations and opportunities for future work.
 
 At the macro level, our algorithm is reminiscent of the recent work of
 Hadwiger et
-al. ~\cite{Hadwiger:2012:Guided}, as well as Engel's
-CERA-TVR~\cite{Engel:2012:CERA} that is in turn is based on the
-Gigavoxels
+al.~\cite{Hadwiger:2012:Guided}, as well as Engel's
+CERA-TVR~\cite{Engel:2012:CERA} that is in turn based on the Gigavoxels
 system~\cite{Crassin:2009:Gigavoxels}.
 
-With Hadwiger et al., we share the requirement of a set of simple
+With Hadwiger et al. we share the requirement of a set of simple
 multiresolution Cartesian grids, along with an OpenGL-based table
 to report missing bricks.  A multiresolution hierarchy is built as a
 preprocess for input data that exist at only one resolution (details
@@ -319,6 +318,7 @@ used.
 %  \If{$rayResumePos = FINISHED$} \Return \EndIf
   \State \textit{color} = \textit{rayResumeColor}
   \State \textit{terminated} = \textbf{true} \Comment{assume ray will finish}
+  \State \textit{rayResumePos} = \textbf{FINISHED}
   \Repeat
     \State \textit{LoD} = ComputeLOD(Depth(\textit{ray}))
     \State \textit{brick, samplingRate} = GetBrick(\textit{ray})
@@ -330,22 +330,19 @@ used.
         \State \textit{rayResumePos} = \textit{ray}
       \EndIf
     \EndIf
-    \State Raycast(\textit{ray}, \textit{stepSize}, \textit{offsets})
+    \State Raycast(\textit{ray}, \textit{samplingRate}, \textit{offsets})
   \Until{\textit{ray} $\geq$ \textit{exit} $\lor$ Saturated(\textit{ray})}
   \State \textit{rayResumeColor} = \textit{color}
-  \If{\textit{done}}
-    \State \textit{rayResumePos} = \textbf{FINISHED}
-  \EndIf
   \end{algorithmic}
 \end{algorithm}
 
 The basic algorithm is given in Algorithm \ref{alg:vrender}.  Briefly, the
 appropriate sampling rate is identified and we look for the data at
-that resolution (lines 4, 5).
+that resolution (lines 6, 7).
 \texttt{GetBrick} will always return some data, but the data may be at
 a lower resolution than request; this is
-communicated through the \texttt{stepSize} and the situation is handled
-on line 7.  If our data are too coarse, we note that we are missing a
+communicated through the \texttt{samplingRate} and the situation is handled
+on line 8.  If our data are too coarse, we note that we are missing a
 brick (\texttt{ReportMissingBrick}) and where we are in the volume
 (\texttt{rayResumePos}) when
 this \emph{first} occurred (\texttt{terminated}).
@@ -353,7 +350,7 @@ this \emph{first} occurred (\texttt{terminated}).
 % A key insight is that the relationship between \texttt{GetBrick} and
 % multiresolution data can be entirely opaque.  The function simply
 % takes a region and returns a chunk of memory to be ray-traced, with
-% information as to how it should be sampled.  In stark contrast to the
+% information as to how it should be sampled.  In contrast to the
 % Gigavoxels system, a strict hierarchy is not required, and indeed our
 % system does not organize data on the GPU in this manner.
 
@@ -378,9 +375,9 @@ of the appropriate resolution.  This satisfies our first goal as
 mentioned above: we identify the appropriate sampling resolution
 at every brick boundary.  With small bricks, this means we will do
 few integration steps before early ray termination is recognized.
-Furthermore, we detect empty bricks at this stage as well.
-% and so we will sample no more data than a single brick before
-% recognizing empty space.
+Furthermore, we detect empty bricks at this stage as well.  The
+standard
+raycasting inner loop is hidden in the \texttt{Raycast} call.
 
 % The \texttt{Raycast} function is listed in Algorithm
 % \ref{alg:inner-loop}.  Note that this is equivalent to `standard'
@@ -555,7 +552,7 @@ a noticeable delay.  Our current test platform can process about
 interactions is too much.  Therefore, we offload this update to a
 background thread.  Until the thread completes its work, the renderer
 considers all unprocessed bricks to be `missing', causing it to request
-bricks that might be empty.  Those bricks' metadata is directly
+bricks that might be empty.  Those bricks' metadata are directly
 updated and they are only loaded if they fail the empty check.  The
 overall performance effects may be large, but the system remains
 responsive during this period.
@@ -946,9 +943,10 @@ this mode.
 
 \begin{figure*}
   \centering
- \begin{minipage}[t]{0.3151225\linewidth}
+ \begin{minipage}[t]{0.3651225\linewidth}
    \begin{algorithm}[H]
-   \caption{Greedy algorithm: request all bricks at all resolutions.}
+   \caption{Greedy algorithm: request all bricks at all
+   resolutions.\vspace{0.1em}}
      \begin{algorithmic}[H]
      \State ReportMissingBrick(\textit{b}) \Repeat
        \State \textit{LoD++}
@@ -961,10 +959,10 @@ this mode.
    \end{algorithm}
  \end{minipage}
  \hfill
- \begin{minipage}[t]{0.65\linewidth}
+ \begin{minipage}[t]{0.55\linewidth}
    \begin{algorithm}[H]
    \caption{Global algorithm: only request bricks required to satisfy
-   the final rendering request.\vspace{-0.185em}}
+   the final rendering request.\vspace{0.000em}}
      \begin{algorithmic}[0]
        \State ReportMissingBrick(\textit{b})
        \Repeat
@@ -972,8 +970,6 @@ this mode.
          \State \textit{b} = LookupBrick(\textit{ray}, \textit{LoD})
        \Until{$\lnot$Missing(\textit{b})}
      \end{algorithmic}
-     \vspace{1cm}
-     \vspace{1.0700em}
    \end{algorithm}
  \end{minipage}
 

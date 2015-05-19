@@ -555,7 +555,7 @@ Traditional debugger watchpoints are implemented (on x86*
 architectures) using a finite set of debug registers; these would be
 quickly exhausted in our case.  Finding instructions that modify memory
 and inserting checks is a viable
-alternative, but \cite{Antoniu:2001:PFault} previously showed this to
+alternative, but~\cite{Antoniu:2001:PFault} previously showed this to
 be inefficient.
 
 %Tracking the pointer via symbolic interpretation may be possible, but
@@ -1413,8 +1413,8 @@ affecting them are removed as opposed to ignored.
 \textit{In situ} visualization has a rich history in the visualization
 community.  Recent frameworks include Damaris/Viz, the ParaView
 Coprocessing library, and VisIt's `libsim'~\cite{Dorier:2013:Damaris,
-Fabian:2011:Catalyst, Whitlock:2011:Libsim}. \cite{Dorier:2013:Damaris}
-open
+Fabian:2011:Catalyst, Whitlock:2011:Libsim}. Dorier et
+al.~\cite{Dorier:2013:Damaris} open
 by noting the important factors for an \textit{in situ} visualization
 tool. Among these factors are \textbf{low impact on code} and
 \textbf{low impact on runtime}.  As our solution requires zero code
@@ -1427,9 +1427,9 @@ parallelism increases and debugging becomes correspondingly more difficult.
 \cite{Laguna:2011:Debugging} extend their earlier
 work~\cite{Bronevetsky:2010:AutomaDeD} with a scalable method to
 identify divergent parallel processes based on reduced control flow and
-call stack information. \cite{Gao:2007:DMTracker} watch data movement
-patterns of a parallel application and use anomalies to statistically
-infer a set of undesirable program activites.
+call stack information. Gao et al.~\cite{Gao:2007:DMTracker} watch
+data movement patterns of a parallel application and use anomalies to
+statistically infer a set of undesirable program activites.
 \cite{Luecke:2003:MPICheck} instruments an MPI program to detect
 invalid or inconsistent usage of the library.  All of these debugging
 techniques are focused on identifying and eliminating the source of
@@ -1447,9 +1447,9 @@ Our code injection for page-aligned allocation is straightforward and
 undeserving of such a robust formalism.
 
 Our approach must identify and verify memory regions and related
-variables that meet a set of invariants. \cite{McCloskey:2010:Infer}
-provided both a language and an implementation to specify complex
-invariants suitable for our analyses.
+variables that meet a set of invariants. McCloskey et
+al.~\cite{McCloskey:2010:Infer} provided both a language and an
+implementation to specify complex invariants suitable for our analyses.
 \cite{Nguyen:2012:Invariants} use dynamic analysis to identify detailed
 invariants that include array accesses.  Our approach utilizes
 invariants that include reasoning at different levels, such as control
@@ -1457,7 +1457,7 @@ flow, in addition to invariants like those discovered therein.
 \cite{Sharma:2013:DDEC} implement equivalence identification for
 instruction-level loops.  Our code injection and access detection might
 be seen as a lighter weight variant of their sandboxing technique.  The
-techniques in \cite{Sharma:2013:DDEC} present a potential vector
+techniques in~\cite{Sharma:2013:DDEC} present a potential vector
 for inferring bounds from pointer-based loop guards, by deriving
 equivalent index-based guards and relying on our existing analysis
 infrastructure.
