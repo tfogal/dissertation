@@ -413,13 +413,13 @@ journals.
   Architecture for Large Scale Volume Rendering'' that appeared in VMV
   2010~\cite{Fogal:2010:Tuvok}.
 
-  \item Chapter~\ref{chp:multiscale} is based on, ``Large Data
-  Visualization on Distributed Memory Multi-GPU Clusters'' that
-  appeared at HPG 2010~\cite{Fogal:2010:HPG}.
-
 	\item Chapter~\ref{chp:rayguided} is based on, ``An analysis of scalable
 	GPU-based ray-guided volume rendering'' that appeared at LDAV
 	2013~\cite{Fogal:2013:Analysis}.
+
+  \item Chapter~\ref{chp:multiscale} is based on, ``Large Data
+  Visualization on Distributed Memory Multi-GPU Clusters'' that
+  appeared at HPG 2010~\cite{Fogal:2010:HPG}.
 
   \item Chapter~\ref{chp:io} is based on, ``Efficient I/O
   for Parallel Visualization'' that was presented at EGPGV
@@ -438,3 +438,32 @@ considered
 Fogal:2010:Bridge, Jevremovic:2011:Education, Jovana:2012:Interactive,
 Brownlee:2012:GLuRay, Childs:2012:VisIt, Hermilo:2013:Steering,
 Butson:2013:DBS}.  They are mentioned in this text only peripherally.
+
+\subsection{How to read this dissertation}
+
+The chapters in this dissertation can be read in any order.  However
+the author recommends digesting the content in three groups, roughly
+concerned with GPU parallel volume rendering, distributed memory
+parallelism, and
+\textit{in situ} visualization.
+
+\begin{enumerate}
+
+  \item \textbf{GPU volume rendering} is covered by
+  Chapters~\ref{chp:tuvok} and~\ref{chp:rayguided}.  The former chapter
+  sets the stage for the problems that need to be solved, while the
+  latter chapter delves deep into performance aspects.  These chapters
+  are therefore best read in the order presented.
+
+  \item \textbf{Distributed parallelism} is covered from multiple
+  angles by Chapters~\ref{chp:multiscale} and~\ref{chp:io}.
+  Understanding the work presented in the first group will be useful in
+  following that presented in Chapter~\ref{chp:multiscale}.
+
+  \item \textbf{\textit{in situ} visualization} is covered by
+  Chapters~\ref{chp:freeprocessing} and~\ref{chp:inference}.  Within
+  this group Chapter~\ref{chp:freeprocessing} sets the stage for the
+  overall goal---simpler \textit{in situ} visualization---and thus
+  should be approached first.
+
+\end{enumerate}

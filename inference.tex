@@ -1,7 +1,5 @@
 \newcommand{\addr}[1]{\texttt{#1}}
 
-\section{abstract}
-
 %Visual debugging can be a valuable method to identify and correct
 %errors in simulation software.  Current approaches, however,
 %are limited by the traditional workflows ascribed to the \emph{use} of
@@ -451,11 +449,11 @@ the binary under execution.
 
 We target unstripped binaries with debug information.  This gives us
 robust type information as well as simplifying implementation.
-\cite{Reps:2010:Bottom} give detailed information on how this
-simplifies the task. Our use case of simulation developers creating and
-debugging their simulation coincides with this input: the environment
-would make it likely that users would compile with debug information
-even without our tool in use.
+Reps et al. give detailed information in~\cite{Reps:2010:Bottom} on
+how this simplifies the task. Our use case of simulation developers
+creating and debugging their simulation coincides with this input: the
+environment would make it likely that users would compile with debug
+information even without our tool in use.
 
 A notable advantage of targeting binaries is that it is
 language-agnostic.  C, C++, and Fortran are the dominant programming
