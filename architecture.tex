@@ -441,9 +441,10 @@ seek times become a relevant parameter.
 	\end{tabular}
 	\end{center}
 
+	% note to self: you already updated the year, here, for your dissertation!
   \caption{Relevant disk performance characteristics for disks ranging
   from high-end server drives (Cheetah 15K.5) to an aging model
-  released 6 years ago (WD 740 GD)}
+  released 11 years ago (WD 740 GD)}
 	\label{tbl:disks}
 \end{table}
 
@@ -530,12 +531,12 @@ In this section we present a couple of examples to
 demonstrate how simple it is to add new features or extend
 existing functionality. We present examples from research
 projects implementing a prototypic environment to experiment
-with new methods (see Section~\todo{\ref{fixme}}) as well as new
+with new methods (\tjfsec{sec:arch-rendering-exts}) as well as new
 features to ImageVis3D to use it for other research.
 
 Due to the modular design, the scripting interface, and
-the \texttt{MasterController} concept, integration with external software
-is simple. As the UI and `execution layer' communicate
+the \texttt{MasterController} concept, integration with external
+software is simple. As the UI and execution layer communicate
 strictly through a single class, the \texttt{MasterController}, any
 type of external communication channel can simply attach
 itself to this class and track changes. Control of the library
@@ -544,6 +545,7 @@ commands that allow programmatic modification of all of
 Tuvok's features.
 
 \subsection{Extensions to the rendering subsystem}
+\label{sec:arch-rendering-exts}
 
 ImageVis3D has been extended to provide domain specific
 visualization capabilities. In some domains, it is necessary
