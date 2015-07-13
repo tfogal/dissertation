@@ -85,7 +85,7 @@ well as multi-dimensional transfer function support. Unfortunately it
 falls short as far as data import is concerned and development ceased
 years ago; therefore no novel render modes are implemented. Other such
 discontinued frameworks and toolkits are the OGLE~\cite{OGLE} system,
-optimized for large data, and OpenQVis [RSEH02], optimized for fast GPU
+optimized for large data, and OpenQVis~\cite{OpenQVis}, optimized for fast GPU
 rendering. A program tailored for 3D Microscopy,
 Voxx~\cite{Indiana:2009:Voxx}, has been released by Indiana University;
 while it has very promising features, including support for 4D data,
@@ -96,40 +96,39 @@ and no current version is available. Further, it only supported their
 proprietary volume format and the current license disallows the use of
 the code in commercial environments.
 
-For medical applications the MITK [TXD ∗ 08] toolkit 
-delivers many interesting features, including support for large
-data sets and data manipulation routines, but it offers only
-basic transfer function support and slow performance compared
-to highly optimized out-of-core GPU volume rendering
-systems. Solely on the Apple Mac OS X platform,
-OsiriX [Ros09] offers unmatched DICOM support in an
-open source application, but as the tool is tied closely to Apple's
-Cocoa framework and implemented in Apple-extended
-Objective-C, it is nigh-impossible to port to any other platform.
+For medical applications the MITK toolkit~\cite{Tian:2008:MITK}
+delivers many interesting features, including support for large data
+sets and data manipulation routines, but it offers only basic transfer
+function support and slow performance compared to highly optimized
+out-of-core GPU volume rendering systems. Solely on the Apple Mac
+OS X platform, OsiriX~\cite{OsiriX} offers unmatched DICOM support in
+an open source application, but as the tool is tied closely to Apple's
+Cocoa framework and implemented in Apple-extended Objective-C, it is
+nigh-impossible to port to any other platform.
 
 Instead of using a specialized volume rendering application,
 existing visualization toolkits can be utilized to render
 volumetric data. The most prominent examples are the
-VTK~\cite{Schroeder:2006:VTK} and ITK [YAL ∗ 02] systems, which allow
+VTK~\cite{Schroeder:2006:VTK} and ITK \todo{[YAL02]} systems, which allow
 for extremely versatile and flexible rendering and modification
 of many types of data sets. The major drawback is
 the lack of support for out-of-core processing, forcing
 application developers to concoct external strategies to handle
-large data sets. The ParaView application [AGL05], built on
-top of VTK, addresses this issue and extends the support to
-large data sets but---like the underlying toolkit---does not
+large data sets. The ParaView application~\cite{Ahrens:2005:ParaView},
+built on top of VTK, addresses this issue and extends the support
+to large data sets but---like the underlying toolkit---does not
 efficiently utilize the capabilities of modern graphics cards,
-resulting in interactive performance only at very low quality
-even for modestly sized data sets. Recently, the VisCG
-at the Universit\"at M\"unster developed the Voreen
+resulting in interactive performance only at very low quality even for
+modestly sized data sets. Recently, the VisCG at the Universit\"at
+M\"unster developed the Voreen
 system~\cite{Voreen:2009}, a prototyping environment for volume
 visualization.  The interface provided exposes the underlying data
 flow network and many visualizations require knowledge as to how
 they are technically realized, which we found was not suitable for a
 large segment of our user base. Other non commercial visualization
-toolkits are the OpenDX3 [IBM06] system which is no longer under active
+toolkits are the OpenDX3 \todo{[IBM06]} system which is no longer under active
 development, and
-finally the SCIRun [Ins09] and VisIt~\cite{Childs:2005:Contracts,
+finally the SCIRun \todo{[Ins09]} and VisIt~\cite{Childs:2005:Contracts,
 Childs:2012:VisIt} systems. As these systems suffered some of the
 problems of previously mentioned solutions (e.g. outdated render modes,
 slow performance, or limited support for large data sets) Tuvok is
@@ -163,7 +162,7 @@ While the application ImageVis3D presents itself to the
 end-user as a single application, it is composed of a
 collection of independent Tuvok frameworks.
 \item \textbf{Self contained}
-While ImageVis3D requires Nokia's Qt [Nok09] library
+While ImageVis3D requires Nokia's Qt \todo{[Nok09]} library
 as an external dependency, \textit{Tuvok} itself does not rely on
 external libraries at all.
 \item \textbf{Cross platform support}
@@ -182,7 +181,7 @@ interactively render images of the highest quality.
 \item \textbf{Provenance Support}
 \textit{Tuvok} and \textit{ImageVis3D} provide provenance hooks, with
 provenance recording and playback realized via VisTrails
-[BCS ∗ 05].
+\todo{[BCS 05]}.
 \item \textbf{Open Source}
 Tuvok and ImageVis3D are released under the very liberal
 MIT license, which means that practically no usage
@@ -229,7 +228,7 @@ algorithms to render volumetric data. Currently, a slice
 based volume renderer as well as GPU based ray casting
 renderer are available in OpenGL and DirectX 10. For pure
 software based rendering the system currently relies on the
-Mesa library [Pau].
+Mesa library \todo{[Pau]}.
 
 \subsection{Interactivity and quality}
 
