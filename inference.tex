@@ -419,7 +419,7 @@ in a linear list of integers, and the fifth and sixth say the variable
 that describes the length of that list is a simple integer.
 
 The 7th and 8th constraints are complex and intertwined.  First, the
-application must write into the the relevant memory block.  Secondly,
+application must write into the relevant memory block.  Secondly,
 the basic block where the data are written must be deeper than another
 basic block that contains a loop header.  That is to say that the data
 access occurs within a loop.
@@ -742,15 +742,14 @@ discriminate between these final two cases for us.
         \If{mov.source $\in$ register}
           \State register[mov.target] := register[mov.source]
         \ElsIf{mov.source is an address}
-          \State register[mov.target] := mov.source + \\
-                                         \hspace{6em}memdiff[mov.source]
+          \State register[mov.target] := mov.source +
+                                         memdiff[mov.source]
         \EndIf
       \EndIf
-      \State \Comment Track address modifications
-      \If{instruction.Opcode = ADD}
+      \If{instruction.Opcode = ADD} \Comment Track address modifications
         \State add := (AddInstruction)instruction
-        \If{add.dest $\in$ register $\land$ \\
-            \hspace{3.75em} register[add.dest] $\neq$ UNKNOWN}
+        \If{add.dest $\in$ register $\land$
+            register[add.dest] $\neq$ UNKNOWN}
           \State register[add.dest] += add.source
         \EndIf
         \If{add.dest $\in$ memory}
