@@ -1,12 +1,12 @@
-\section{Introduction and related work}
+\section{Modern GPU-based volume rendering}
 
 \begin{figure*}
 	\includegraphics[width=\linewidth]{images/arch/vh-rm}
 
   \caption{Large data sets rendered with the \textit{Tuvok} framework.
-  The Visible Human CT scan (a), the Wholebody data set (b) and a
-  Richtmyer-Meshkov instability (c).}
-	\label{fig:tvktease}
+  The Visible Human~\cite{Yoo:2000:VHuman} CT scan (a), the Wholebody
+  data set (b) and a Richtmyer-Meshkov instability (c).}
+	\label{figtvk:teaser}
 \end{figure*}
 
 In the past decade texture-based volume rendering on graphics hardware
@@ -66,9 +66,9 @@ one of three cases:
   \item \textbf{Licensing}: while largely irrelevant in the academic
   environment, license issues often prevent developers in commercial
   environments from reusing existing code. Even code that is released
-  under Open Source conditions may come with untenable requirements,
-  such as the GPL's stipulation that related yet non-derivative code be
-  released under the GNU license.
+  under Open Source conditions may come with untenable requirements for
+  some commercial entities, such as the GPL's stipulation that related
+  yet non-derivative code be released under the GNU license.
 
 \end{itemize}
 
@@ -109,18 +109,18 @@ nigh-impossible to port to any other platform.
 Instead of using a specialized volume rendering application,
 existing visualization toolkits can be utilized to render
 volumetric data. The most prominent examples are the
-VTK~\cite{Schroeder:2006:VTK} and ITK \todo{[YAL02]} systems, which allow
-for extremely versatile and flexible rendering and modification
-of many types of data sets. The major drawback is
-the lack of support for out-of-core processing, forcing
-application developers to concoct external strategies to handle
-large data sets. The ParaView application~\cite{Ahrens:2005:ParaView},
-built on top of VTK, addresses this issue and extends the support
-to large data sets but---like the underlying toolkit---does not
-efficiently utilize the capabilities of modern graphics cards,
-resulting in interactive performance only at very low quality even for
-modestly sized data sets. Recently, the VisCG at the Universit\"at
-M\"unster developed the Voreen
+VTK~\cite{Schroeder:2006:VTK} and ITK~\cite{Yoo:2002:ITK} systems,
+which allow for extremely versatile and flexible rendering and
+modification of many types of data sets. The major drawback is the lack
+of support for out-of-core processing, forcing application developers
+to concoct external strategies to handle
+large data sets. Built on top of VTK,
+ParaView~\cite{Ahrens:2005:ParaView} addresses the large dataset
+issue with a distributed memory approach but---like the underlying
+toolkit---does not efficiently utilize the capabilities of modern
+graphics cards, resulting in interactive performance only at very low
+quality even for modestly sized data sets. Recently, the VisCG at the
+Universit\"at M\"unster developed the Voreen
 system~\cite{Voreen:2009}, a prototyping environment for volume
 visualization.  The interface provided exposes the underlying data
 flow network and many visualizations require knowledge as to how
@@ -284,23 +284,23 @@ bounded by the screen resolution.
 	data set & Air & Pro & Vista \\\hline
 
 	\begin{minipage}{0.4\linewidth}
-	\textbf{C60 Molecule}\\128x128x128 8bit = 2 MB\\See	Figure~\ref{fig:modes}
+	\textbf{C60 Molecule}\\128x128x128 8bit = 2 MB\\See	Figure~\ref{figtvk:modes}
 	\end{minipage}
 	& 110 / 184 & 80 / 124 & 12 / 14\\\hline
 
 	\begin{minipage}{0.4\linewidth}
 	\textbf{VH Male CT}\\512x512x1884 8bit = 471 MB\\See
-	Figure~\ref{fig:tvktease}a
+	Figure~\ref{figtvk:teaser}a
 	\end{minipage} & 380 / 500 & 526 / 744 & 48 / 76\\\hline
 
 	\begin{minipage}{0.4\linewidth}
 	\textbf{Wholebody}\\512x512x3172 16bit = 1586 MB\\See
-	Figure~\ref{fig:tvktease}b
+	Figure~\ref{figtvk:teaser}b
 	\end{minipage} & 680 / 700 & 587 / 984 & 126 / 301\\\hline
 
 	\begin{minipage}{0.4\linewidth}
 	\textbf{RM Instability}\\2048x2048x1920 8bit = 7680 MB\\See
-	Figure~\ref{fig:tvktease}c
+	Figure~\ref{figtvk:teaser}c
 	\end{minipage} & 5523 / 6112 & 3112 / 3520 & 196 / 321 \\
 
 	\end{tabular}
@@ -325,7 +325,7 @@ bounded by the screen resolution.
   ClearView are shown.  The bottom row shows the same views in anaglyph
   stereo mode.  On the right is two by two mode featuring a 3D view, a
   MIP view (top right) and two slice views (bottom).}
-	\label{fig:modes}
+	\label{figtvk:modes}
 
 \end{figure*}
 
@@ -580,14 +580,14 @@ devices.
 
   \caption{3D texture, SLIVR, and \textit{Tuvok} volume renderers in
   VisIt (left); \textit{Tuvok} rendering a torso in SCIRun (right).}
-	\label{fig:integration}
+	\label{figtvk:integration}
 \end{figure*}
 
 In the following we present examples where Tuvok---or only some of it
 components---have been integrated into rendering environments other
 than
-\textit{ImageVis3D}. Figures~\ref{fig:integration}
-and~\ref{fig:altaviewer} demonstrate the integrations presented here.
+\textit{ImageVis3D}. Figures~\ref{figtvk:integration}
+and~\ref{figtvk:altaviewer} demonstrate the integrations presented here.
 
 \subsection{SCIRun}
 
@@ -667,7 +667,7 @@ managing OpenGL state.
 	of Numira Biosciences. Copyright 2009 \copyright{} Numira Biosciences.
 	All rights reserved. AltaViewer Software available
 	at \url{http://www.numirabio.com/}}
-	\label{fig:altaviewer}
+	\label{figtvk:altaviewer}
 \end{figure}
 
 Finally, we demonstrate the usability of Tuvok's components
@@ -678,7 +678,7 @@ specimens, provides researchers with quantifiable, visible
 evidence of disease progression, as well as drug efficacy and
 drug side effects in their animal models. For the next generation
 of their visualization suite `AltaViewer' (see
-Figure~\ref{fig:altaviewer}) they have chosen to replace their
+Figure~\ref{figtvk:altaviewer}) they have chosen to replace their
 proprietary IO library in part by Tuvok's IO components to achieve
 significantly better performance.
 

@@ -6,7 +6,7 @@
   implementation.  On right are views that highlight the areas
   that take advantage of empty space leaping (green) and early ray
   termination (blue).}
-  \label{fig:teaser}
+  \label{figrg:teaser}
 \end{figure*}
 
 Volume rendering continues to be a critical method for analyzing
@@ -77,7 +77,7 @@ volume renderer.
   rendering approach.  Missing bricks are recorded into a hash table
   (1, 2), to be paged in (3, 4, 5) and rendered in subsequent frames
   (6).}
-  \label{fig:flow}
+  \label{figrg:flow}
 \end{figure*}
 
 \section{Related Work}
@@ -273,25 +273,25 @@ traversal and accumulation.
 % is in modern volume renderers, and allude to a later section where we
 % discuss data organization}
 
-The entire operation is detailed in Figure \ref{fig:flow}. For each
+The entire operation is detailed in Figure \ref{figrg:flow}. For each
 ray we compute the level of detail required to maintain a pixel error
 of less than one. With this level and the position in the volume we
 compute a brick index.  This brick index is used to fetch information
 from a lookup table
-(Figure \ref{fig:flow}.1) to identify whether the brick is a) empty, b)
+(Figure \ref{figrg:flow}.1) to identify whether the brick is a) empty, b)
 non-empty and present on the GPU, or c) non-empty and absent. When it
 is empty, we skip the brick and repeat the process at the brick's exit
 point.  When it is non-empty and present, we ray-cast that brick. When
 the brick is non-empty \emph{and} not resident in GPU memory, the
 system returns the finest coarser level available and the missing entry
 is added to a GPU hash table (Figure
-\ref{fig:flow}.2). This table is read back to the host memory at the
-end of the frame (Figure \ref{fig:flow}.3), and used to page in bricks
+\ref{figrg:flow}.2). This table is read back to the host memory at the
+end of the frame (Figure \ref{figrg:flow}.3), and used to page in bricks
 from
-disk or cache (Figure \ref{fig:flow}.4).  A paged-in brick is then
+disk or cache (Figure \ref{figrg:flow}.4).  A paged-in brick is then
 uploaded to a GPU texture pool
-(Figure \ref{fig:flow}.5), and a subsequent frame will use this
-portion of the brick pool for sampling (Figure \ref{fig:flow}.6).
+(Figure \ref{figrg:flow}.5), and a subsequent frame will use this
+portion of the brick pool for sampling (Figure \ref{figrg:flow}.6).
 
 % While we do not require a full hierarchy---only that coarser versions
 % of the data exist---we generate a multiresolution hierarchy for such
@@ -410,13 +410,13 @@ raycasting inner loop is hidden in the \texttt{Raycast} call.
 %   with color-coded levels of detail.  It is difficult to derive viewing
 %   conditions for which a plethora of LoDs are required; the relatively
 %   few LoDs visible here come from an extreme case.}
-%   \label{fig:LODs}
+%   \label{figrg:LODs}
 % \end{figure}
 % 
 % In practice, even for highly anisotropic data, it is difficult to
 % derive frustum and viewing angles which result in the simultaneous
 % visibility of more than three levels of detail.  Figure
-% \ref{fig:LODs} demonstrates this: as the ray switches from one level
+% \ref{figrg:LODs} demonstrates this: as the ray switches from one level
 % of detail to another, the color is flipped---bricks rendered at the
 % highest resolution for the viewpoint are in red, and the lowest
 % resolution data has a blue tint.  Looking at these areas side-by-side,
@@ -484,7 +484,7 @@ Section \ref{sec:ht-params}.
 %  the lack of white regions in this rendering indicate that, here,
 %  \emph{all} rays fall into a single category.
   }
-  \label{fig:bricks-empty}
+  \label{figrg:bricks-empty}
 \end{figure}
 
 \begin{figure*}
@@ -499,7 +499,7 @@ Section \ref{sec:ht-params}.
   Body', `Velocity', and `Magnitude' suffer from a lack of ray
   saturation.}
 
-  \label{fig:breakdown}
+  \label{figrg:breakdown}
 \end{figure*}
 
 \subsection{Brick Classification}
@@ -530,13 +530,13 @@ is empty.  If so, the renderer leaps over that space instead.  We store
 this as an array consisting of one 32-bit integer per brick of the
 dataset.
 
-Figure \ref{fig:bricks-empty} visualizes this classification for a
+Figure \ref{figrg:bricks-empty} visualizes this classification for a
 large dataset under a typical view and transfer function.  As shown
 there, the majority of the visualization falls into either the `blue'
 (saturated quickly) or `green' (skipped) sets. This also demonstrates
 how little data is actually required for a typical volume rendering.  A
 similar rendering is given in the rightmost image of
-Figure \ref{fig:teaser}, in which only the rays in the middle of the
+Figure~\ref{figrg:teaser}, in which only the rays in the middle of the
 volume require high computation.
 
 Of course, this classification depends largely on the transfer function
@@ -585,14 +585,14 @@ can get along fine with a paltry few hundred megabytes of memory,
 irrespective of the input dataset size.
 
 We utilize zoom-ins, as in the accompanying video and results such as
-those in Figure~\ref{fig:working-set} and some in
+those in Figure~\ref{figrg:working-set} and some in
 Table~\ref{tbl:timings}, to accentuate these high resolution issues.
 When the volume is far away, a very coarse resolution is utilized that
 maintains accurate voxel-to-pixel error ratios.  As the camera comes
 closer, higher resolutions of the source data must be utilized.  We
 terminate zoom-ins slightly after they fill the screen; beyond this
 point, frustum culling's effect dominates (see
-Figure~\ref{fig:working-set}).  The most challenging cases for a
+Figure~\ref{figrg:working-set}).  The most challenging cases for a
 volume renderer are when data are close enough to be seen at native
 resolution, but far enough away that no data can be culled by the
 frustum.
@@ -600,7 +600,7 @@ frustum.
 Rotations are used to demonstrate that the renderer does not rely
 solely on early ray termination.  As described in
 Section~\ref{sec:brick-classification} and depicted in
-Figure~\ref{fig:bricks-empty}, most rays either skip large parts of
+Figure~\ref{figrg:bricks-empty}, most rays either skip large parts of
 the volume, or terminate very quickly.  With a transfer function that
 produces a dense volume, bricks in the front will prevent bricks in the
 rear from ever being paged in, effectively meaning the volume renderer
@@ -630,7 +630,7 @@ to convergence increased over 6x after changing the transfer function
   \caption{Working set sizes across three different scenarios for
   multiple datasets.  Smaller brick sizes approximate the working set
   better.}
-  \label{fig:working-set}
+  \label{figrg:working-set}
 \end{figure*}
 
 \subsection{Results}
@@ -638,7 +638,7 @@ to convergence increased over 6x after changing the transfer function
 
 To evaluate our renderer in different scenarios, we used a standard
 rotation scenario with a variety of datasets, measuring the length of
-each pipeline stage.  Figure~\ref{fig:breakdown} has these results.  As
+each pipeline stage.  Figure~\ref{figrg:breakdown} has these results.  As
 IO is the prime bottleneck in many cases, we implemented a `rebricking'
 scheme to mitigate the amount of IO performed.  Using large reads and
 caching, this significantly lowers the time spent doing IO.  We used
@@ -660,7 +660,7 @@ RMI ($2048\times2048\times1920$).  This reinforces our assertion that
 there is only so much data visible in a given frame---dependent only on
 the view
 frustum, and \emph{not} the dataset size---and so at some point we
-saturate the set of visible data.  Figure~\ref{fig:working-set} and
+saturate the set of visible data.  Figure~\ref{figrg:working-set} and
 Section~\ref{sec:subdivision} include more discussion about working set
 sizes.
 
@@ -708,7 +708,7 @@ brick needs two voxels of ghost data in each dimension, for sampling
 and gradient computation purposes.  This is negligible for large
 bricks, but grows sharply as the brick size approaches one, as shown in
 Figure
-\ref{fig:brick-size}. Figure~\ref{fig:hierarchy-build} demonstrates
+\ref{figrg:brick-size}. Figure~\ref{figrg:hierarchy-build} demonstrates
 that this is not strictly a theoretical result: a small brick size
 greatly increases not just size overhead, but also the time to
 reorganize the data on disk.  From these Figures we can derive that for
@@ -720,7 +720,7 @@ We have performed a number of experiments to identify the working set
 size for multiple different brick sizes.  Starting with the smallest
 practical size of $16^3$, we increase the brick size up to $512^3$.
 
-As can be seen in Figure~\ref{fig:working-set} the working set is bound
+As can be seen in Figure~\ref{figrg:working-set} the working set is bound
 not by just the data size, but the screen resolution as well.  It can
 also be seen that the brick size heavily influences the working set
 size: larger bricks allow for less efficient utilization of empty
@@ -729,7 +729,7 @@ $128^3$ is desirable to reduce the working set to roughly the memory
 size of a GPU.
 
 We note that the working set size is not a strict function of the brick
-size, however.  Figure~\ref{fig:working-set} and
+size, however.  Figure~\ref{figrg:working-set} and
 Table~\ref{tbl:timings} also show that the choice of brick size is not
 clear-cut.  The Visible Human male performs best with $16^3$ bricks,
 for example, whereas the ideal brick size for the `Magnitude' data is
@@ -756,7 +756,7 @@ they significantly improve disk throughput.
 
 %% moved this up into other paragraph
 % As can be seen Table \ref{tbl:timings} and Figure
-% \ref{fig:working-set}, the brick size choice is not clear-cut.
+% \ref{figrg:working-set}, the brick size choice is not clear-cut.
 %   The
 % Visible Human male performs best with $16^3$ bricks, for example,
 % whereas the ideal brick size for the `Magnitude' data is $64^3$.  When
@@ -777,7 +777,7 @@ respond within a few tens of milliseconds, but such concerns should not
 dictate the design to the point that end-to-end performance suffers
 drastically.  Furthermore, small brick sizes are accompanied with
 significant
-overhead, as discussed in Figure \ref{fig:brick-size}, and do not
+overhead, as discussed in Figure \ref{figrg:brick-size}, and do not
 compress as effectively as their larger counterparts.
 
 Systems such as Reichl et al.'s hybrid surface rendering, CERA-TVR, and
@@ -795,14 +795,14 @@ ideal choice for all circumstances.
   size of $128^3$, the overhead with 2 ghost voxels per dimension
   amounts to a few percent, whereas with $32^3$ bricks this increases
   the dataset size by almost 50\%.}
-  \label{fig:brick-size}
+  \label{figrg:brick-size}
 \end{figure}
 
 \subsection{Disk IO}
 
 \subsubsection{Brick Layout}
 
-Figure~\ref{fig:layout} demonstrates how this changes with the brick
+Figure~\ref{figrg:layout} demonstrates how this changes with the brick
 size.  Both disk IO times as well as decompression times are displayed
 there.  As shown in the figure, reading data from disk becomes quite
 severe with small brick sizes.  However, as brick sizes grow to $64^3$
@@ -821,7 +821,7 @@ caveat that seek times are not relevant with larger brick sizes.
   $1024\times768$ viewport.  Layout strategies only see utility at
   small brick sizes.}
 
-  \label{fig:layout}
+  \label{figrg:layout}
 \end{figure}
 
 % \begin{figure}
@@ -833,7 +833,7 @@ caveat that seek times are not relevant with larger brick sizes.
 %   sizes and two distinct layouts.  Brick size was $32^3$ for all
 %   runs.  Layout scheme has relatively little impact: disk read time is
 %   negligible relative to the entire process.}
-%   \label{fig:rtime-layout}
+%   \label{figrg:rtime-layout}
 % \end{figure}
 
 \subsubsection{Dynamic Rebricking}
@@ -845,8 +845,8 @@ caveat that seek times are not relevant with larger brick sizes.
 
 The renderer desires small bricks, as discussed in
 Section~\ref{sec:subdivision}, as small bricks will help with early ray
-termination and empty space leaping.  However Figures~\ref{fig:layout}
-and \ref{fig:brick-size} clearly demonstrate that large brick sizes
+termination and empty space leaping.  However Figures~\ref{figrg:layout}
+and \ref{figrg:brick-size} clearly demonstrate that large brick sizes
 are preferable for disk performance and overhead reasons.  To provide
 the best of both worlds, we implemented a `dynamic' bricking scheme,
 whereby bricks are stored on disk in a rather large size (e.g. $256^3$)
@@ -862,7 +862,7 @@ host memory, however when the working set exceeds the host memory we
 will evict entries before finishing a rendering.  We stuck with this
 strategy since the working set
 often \emph{does} fit into host memory, as established by
-Figure~\ref{fig:working-set}.  If the renderer is to be used in an
+Figure~\ref{figrg:working-set}.  If the renderer is to be used in an
 environment in which working sets are routinely larger than memory, an
 MRU strategy would be more appropriate.
 
@@ -871,7 +871,7 @@ MRU strategy would be more appropriate.
 Reorganizing data into a set of bricks is mostly ignored in volume
 rendering literature, but becomes a significant bottleneck in
 real-world usage.
-Figure~\ref{fig:hierarchy-build} shows the time our preprocess needs
+Figure~\ref{figrg:hierarchy-build} shows the time our preprocess needs
 to generate this hierarchy, which increases sharply for small brick
 sizes.  This time also increases with respect to dataset size.  At
 the extreme scale, such data reorganization is completely infeasible:
@@ -888,7 +888,7 @@ Rebricking the data at run time alleviates this problem.  The data can
 be generated at very large brick sizes, enabling fast conversion and
 effective disk throughput, and then dynamically rebricked to very small
 sizes.  Both disk and renderer deal with their ideal cases, then.  The
-`Rebricking' case of Figure~\ref{fig:breakdown} shows performance in
+`Rebricking' case of Figure~\ref{figrg:breakdown} shows performance in
 this mode.
 
 %% compression isn't unique enough to have its own story, particularly
@@ -914,14 +914,14 @@ this mode.
 %   `fastest' zlib compression mode.  Very often, data compress to a
 %   factor of less than half their original size. \todo{Alex will replace
 %   this graph}}
-%   \label{fig:compression}
+%   \label{figrg:compression}
 % \end{figure}
 %
 % \todo{Need results for (\emph{many}!) more datasets!}
 
 % The zlib libary has given us very good results for many datasets.
 % Some results on the compression ratio are given in Figure
-% \ref{fig:compression}.  Our system compresses data per-brick, and is
+% \ref{figrg:compression}.  Our system compresses data per-brick, and is
 % instrumented to keep track of the data sizes both before and after
 % compression.  Interestingly, these brick sizes \emph{always} shrink:
 % we have not identified a single brick in any depicted (as well as many
@@ -936,7 +936,7 @@ this mode.
   as a function of brick size.  Renderers desire small bricks to
   perform efficiently, but generating such bricks takes significant
   preprocessing resources.}
-  \label{fig:hierarchy-build}
+  \label{figrg:hierarchy-build}
 \end{figure}
 
 
@@ -980,7 +980,7 @@ this mode.
   strategy.  `Greedy' strategies converge quicker and produce more
   densely-packed intermediate progress.}
 
-  \label{fig:strategy}
+  \label{figrg:strategy}
 \end{figure*}
 
 \subsection{CPU/GPU Interface}
@@ -997,7 +997,7 @@ which we will read back and process as a list later.  A list would work
 as well, but a hashing scheme allows concurrent inserts to proceed with
 less contention.  During rendering, a ray may write into this table to
 indicate that it
-needs a non-resident brick to continue (see Figure \ref{fig:flow},
+needs a non-resident brick to continue (see Figure \ref{figrg:flow},
 (c)).  This small table will be read back from the GPU at the end of a
 frame and utilized to fill the volume pool with new data.
 
@@ -1068,7 +1068,7 @@ requests that \textit{this} ray wants.  In the `global' case, each
 ray only requests what it absolutely needs, leaving space for other
 rays to request what they need.  These cases are visually depicted and
 expounded in Figure
-\ref{fig:strategy}.
+\ref{figrg:strategy}.
 
 % \begin{figure}
 %   \centering
@@ -1078,7 +1078,7 @@ expounded in Figure
 %   strategy.  `Greedy' strategies converge quicker and produce more
 %   densely-packed intermediate progress.}
 
-%   \label{fig:strategyGlobal}
+%   \label{figrg:strategyGlobal}
 % \end{figure}
 
 % \begin{figure}
@@ -1089,7 +1089,7 @@ expounded in Figure
 %   strategy.  `Greedy' strategies converge quicker and produce more
 %   densely-packed intermediate progress.}
 
-%   \label{fig:strategyGreedy}
+%   \label{figrg:strategyGreedy}
 % \end{figure}
 
 The intuitive interpretation is that the `greedy' approach will produce
@@ -1113,7 +1113,7 @@ renderer.
 
 Based on the data here, we conclude that a ray-guided volume renderer
 should work with bricks that are, on disk, $64^3$ or larger.  This
-minimizes time spent doing IO (Figure~\ref{fig:layout}), and makes
+minimizes time spent doing IO (Figure~\ref{figrg:layout}), and makes
 data layout irrelevant, obviating the need for a complicated component
 of the code.  Since the required memory shrinks with the brick size,
 generating $32^3$ or even $16^3$ bricks on-the-fly is desirable,
@@ -1138,7 +1138,7 @@ rendering effects as well, such as those similar to ambient
 occlusion~\cite{Schott:2009:DAOVR}, are omitted.  Such effects should
 have a variable impact, positively correlating to the proportion of
 rendering vs. IO times presented in
-Figure~\ref{fig:breakdown}.  Screen-space methods may provide
+Figure~\ref{figrg:breakdown}.  Screen-space methods may provide
 acceptable quality without (comparatively) impacting performance.
 
 Finally, reformatting the data into a bricked hierarchy continues to
@@ -1172,8 +1172,8 @@ in a much wider sense than that presented here.
   \centering
   \includegraphics[width=0.98\linewidth]{images/rg/perFramesSmall.png}
   \caption{Selected frames from interactions used to record data for
-  Table~\ref{tbl:timings} or Figure~\ref{fig:breakdown}}
-  \label{fig:perFrames}
+  Table~\ref{tbl:timings} or Figure~\ref{figrg:breakdown}}
+  \label{figrg:perFrames}
 \end{figure}
 
 We tested our renderer with a plethora of datasets, both real and
@@ -1184,13 +1184,13 @@ Table~\ref{tbl:timings}.  We discuss these in order of increasing size
 here.
 
 Two small datasets are the Bonsai tree (``Bonsai'') and ``Aneurysm''
-datasets (Figure~\ref{fig:perFrames}, top, left \& middle). While
+datasets (Figure~\ref{figrg:perFrames}, top, left \& middle). While
 small by today's standards, effective empty space leaping and early ray
 termination still double the performance
 (Table~\ref{tbl:timings}, note how performance doubles with smaller
 brick sizes).
 
-The ``WholeBody'' dataset (Figure~\ref{fig:perFrames}, top, right) is
+The ``WholeBody'' dataset (Figure~\ref{figrg:perFrames}, top, right) is
 a contrast-enhanced CT scan of a human body.  As sometimes happens in
 the biomedical domain, these data have limited slice resolution but a
 plethora of slices.  Coarser resolutions must be careful to downsample
@@ -1215,8 +1215,8 @@ of computing lighting information for fragments that ultimately
 contribute very little has a notable effect on performance.
 
 The Richtmyer-Meshkov Instability (``RMI'',
-Figure~\ref{fig:teaser} right and Figure~\ref{fig:perFrames}, center,
-right) and the Visible Human (Figure~\ref{fig:teaser} left) are popular
+Figure~\ref{figrg:teaser} right and Figure~\ref{figrg:perFrames}, center,
+right) and the Visible Human (Figure~\ref{figrg:teaser} left) are popular
 datasets in the volume rendering literature; details can be found in
 previous work.
 
@@ -1231,15 +1231,15 @@ features were used to accelerate this process.  At equivalent
 resolutions to that work, we see double to an order of magnitude
 improved performance, but for this work we report results at 1080p HD
 resolution.  A descriptive view of the Mandelbulb is
-given in Figure~\ref{fig:bricks-empty} and there
-are close-ups visible in Figure~\ref{fig:perFrames} (bottom row;
+given in Figure~\ref{figrg:bricks-empty} and there
+are close-ups visible in Figure~\ref{figrg:perFrames} (bottom row;
 center, right).
 
 \begin{table}
   \centering
   \caption{Per-frame rendering time at 6 different brick sizes, for
-  a variety of datasets depicted in Figures~\ref{fig:perFrames} and
-  \ref{fig:teaser}.  \textbf{Optimal brick sizes} are
+  a variety of datasets depicted in Figures~\ref{figrg:perFrames} and
+  \ref{figrg:teaser}.  \textbf{Optimal brick sizes} are
   dataset dependent.}
   \label{tbl:timings}
   \rowcolors{4}{gray!20}{white}

@@ -117,7 +117,7 @@ establish auto-tuned parameters.
 %\end{itemize}
 
 IO remains and will remain the major problem in large-scale
-visualization.  Figure~\ref{fixme} shows that the rendering and
+visualization.  Figure~\todo{\ref{fixme}} shows that the rendering and
 compositing problems are dominated by IO at scale.  While this image
 was from a specific strong scaling study, the story changes little if
 we replace the X axis by year: rendering and compositing times have
@@ -180,12 +180,14 @@ simulations, as opposed to (re)processing simulation outputs.
 %simulation run.
 
 In situ visualization is currently complex and difficult.
+\todo{
 \begin{itemize}
 	\item large APIs
 	\item instability
 	\item lots of metadata to convey
 	\item when to interrupt sim / balance of sim vs. vis time
 \end{itemize}
+}
 
 Despite the growing importance of \insitu{}, existing visualization
 tools couple with simulation software only with extreme difficulty.

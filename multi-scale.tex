@@ -119,9 +119,9 @@ Extensive research has been done on parallel rendering and parallel
 volume rendering.  Much of this work has focused on achieving
 acceptable compositing times on large systems.  Molnar et al. conveyed
 the theoretical underpinnings of rendering
-performance~\cite{Molnar:199?:???}.  Earlier systems for parallel
-volume rendering relied on direct send~\cite{Hsu:1993:???,
-Ma:1993:???}, which divides the volume up into at least as many
+performance~\cite{Molnar:1994:ParRen}.  Earlier systems for parallel
+volume rendering relied on direct send~\cite{Hsu:1993:SRC,
+Ma:1993:DSend} which divides the volume up into at least as many
 chunks as there are processors, sending ray segments (fragments) to a
 responsible tile node for compositing via the Porter and Duff
 \emph{over} operator~\cite{PorterDuff:1984:Compositing}.  These
@@ -147,16 +147,16 @@ up to $3000^3$ are studied using hundreds of cores.  In this regime,
 the time spent ray casting far exceeds the composite time.
 In~\cite{PYRM:2008:???, PYR:2009:???}, the data set sizes range up to
 $4480^3$, while core counts of tens of thousands are studied.
-In~\cite{HBC:2010:???}, the benefits of hybrid parallelism are explored
-at concurrency ranges going above two hundred thousand cores.  For both
-of these studies, when going to extreme concurrency compositing time
-becomes large and dominates ray-casting time.  This suggests that a
-sweet spot may exist with GPU-accelerated distributed memory volume
-rendering.  By using hardware acceleration, the long ray
-casting times encountered in~\cite{Childs:2006:???} can be overcome.
+In~\cite{Howison:2010:HybridVR} the benefits of hybrid parallelism
+are explored at concurrency ranges going above two hundred thousand
+cores.  For both of these studies, when going to extreme concurrency
+compositing time becomes large and dominates ray-casting time.  This
+suggests that a sweet spot may exist with GPU-accelerated distributed
+memory volume rendering.  By using hardware acceleration, the long ray
+casting times encountered in~\cite{Childs:2006:ScalableVR} can be overcome.
 Simultaneously, the emerging trend of composite-bound rendering
-observed in~\cite{PYR:2009:???} and~\cite{HBC:2010:???} will be
-mitigated by the ability to use many fewer nodes to command the same
+observed in~\cite{PYR:2009:???} and~\cite{Howison:2010:HybridVR} will
+be mitigated by the ability to use many fewer nodes to command the same
 compute power.
 
 Numerous systems have been developed to enable parallel rendering in
@@ -188,7 +188,7 @@ we chose to implement our system within) and can be time consuming for
 large data sets.  Further differentiating our system and in line with
 recent trends in visualization cluster architectures, we enable the use
 of multiple GPUs per node.  M\"uller et al. used a direct send
-compositing strategy~\cite{Hsu:1993:???, MPHK:1993:???}, whereas we use
+compositing strategy~\cite{Hsu:1993:SRC, Ma:1993:DSend} whereas we use
 a tree-based compositing method~\cite{MWP:2001:???}.  Finally, and
 most importantly, we report performance results for substantially more
 GPUs and much larger data sets, detailing the scalability of GPU-based
@@ -200,12 +200,13 @@ scale of data.
 \label{sec:arch}
 
 We implemented our remote rendering system inside of
-VisIt~\cite{Childs:???:???}, which is capable of rendering data in
-parallel on remote machines.  The system is comprised of a lightweight
-`viewer' client application, connected over TCP to a server that
-employs GPU cluster nodes.  All rendering is performed on the cluster,
-composited via MPI, and images (optionally compressed via zlib) are
-sent back to the viewer for display.  Example output from our system is
+VisIt~\cite{Childs:2005:Contracts, Childs:2012:VisIt} which is capable
+of rendering data in parallel on remote machines.  The system is
+comprised of a lightweight `viewer' client application, connected over
+TCP to a server that employs GPU cluster nodes.  All rendering is
+performed on the cluster, composited via MPI, and images (optionally
+compressed via zlib) are sent back to the viewer for display.  Example
+output from our system is
 in Figure~\ref{fig:sample}.
 
 Although VisIt provided a good starting point for our work, we needed
@@ -311,7 +312,20 @@ compositing order.
 \section{Evaluation}
 \label{sec:eval}
 
-\todo{add / copy tbl:clusters from paper!!}
+\begin{table}
+	\begin{tabular}{|c|c|c|}\hline
+	\textbf{Component} & \textit{Lens} & \textit{Longhorn}\\\hline
+	Number of nodes & 32 & 256\\\hline
+	GPUs per node & 2 & 2\\\hline
+	Cores per node & 16 & 8\\\hline
+	Graphics Card & NVIDIA 8800 GTX & NVIDIA FX 5800\\\hline
+	Per-node memory & 64 Gb & 48 Gb\\\hline
+	Processors & 2.3 GHz Opterons & 2.53 GHz Nehalems\\\hline
+	Interconnect & DDR Infiniband & Mellanox QDR Infiniband\\\hline
+	\end{tabular}
+	\caption{Configuration of the GPU clusters utilized.}
+	\label{tbl:clusters}
+\end{table}
 
 We implemented and tested our system on \textit{Lens}, a GPU-accelerated
 visualization cluster housed at ORNL.  However, we were only able to access 16
@@ -422,9 +436,10 @@ it may be difficult or impossible to ask our volume renderer to free up
 memory.
 
 To solve this problem, we render the data in a true out-of-core
-fashion: bricks are given to the renderer, rendered into a framebuffer object,
-and immediately thrown away.  One might expect that out-of-core algorithms would
-have more per-block overhead and therefore be slower than an in-core algorithm.
+fashion: bricks are given to the renderer, rendered into a framebuffer
+object, and immediately thrown away.  One might expect that out-of-core
+algorithms would have more per-block overhead and therefore be slower
+than an in-core algorithm.
 As shown in Figure~\ref{fig:ooc}, the out-of-core approach actually
 outperforms the analogous in-core approach even when there is
 sufficient memory to hold the data set at once.  The reasoning
