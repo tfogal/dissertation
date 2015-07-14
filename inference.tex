@@ -683,7 +683,7 @@ induction variable; the other variable gives the loop's bound.
 \begin{lstlisting}[label=lst:header,caption=Instructions within a
 sample loop header.  Both the induction variable and the loop bound
 appear as arguments to the \texttt{CMP} instruction.  The preceding
-instructions are still necessary for distinguishing between the two
+instructions are necessary for distinguishing between the two
 variables.]
   MOV %rdx, [%rip+0x20507]
   MOV %rax, [%rpb-0x60]
@@ -694,7 +694,7 @@ variables.]
 %% bad: 'we'd like to do X, but it's too impossible, so we do Y.'
 Ideally, we would simply examine the comparison instruction to identify
 the operands and infer the loop bound. Unfortunately a myopic view of
-this single instruction is insufficient for operand classification.
+this instruction is insufficient for operand classification.
 The instruction sequence for a loop header generally follows the
 pattern that
 Listing~\ref{lst:header} follows: first, the bound and induction
