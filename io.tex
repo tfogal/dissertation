@@ -2,10 +2,10 @@ While additional cores and newer architectures, such as those provided
 by GPU clusters, steadily increase available compute power, memory
 and disk access has not kept pace, and most believe this trend will
 continue.  It is therefore of critical importance that we design
-systems and algorithms which make effective use of off-processor
+systems and algorithms that make effective use of off-processor
 storage.  This work details our experiences using parallel file
 systems, details performance using current systems and software,
-and suggests a new API which has greater potential for increased
+and suggests a new API that has greater potential for increased
 scalability.
 
 \section{Introduction}
@@ -27,7 +27,7 @@ concerns that must be considered to obtain acceptable performance.
 In the space of I/O, and especially distributed filesystems, many
 visualization and analysis developers pay little heed to these
 concerns.  In this work we hope to elucidate some `best practices' for
-writing applications which will utilize parallel filesystems, as well
+writing applications that will utilize parallel filesystems, as well
 as steer a convergence between application and filesystem developers.
 
 \subsection{Previous Work}
@@ -43,9 +43,9 @@ developed by Sun and is now in its fourth revision.  However, despite
 the third revision's release almost twenty years
 ago\cite{Callaghan:1995:NFSv3,Hildebrand:2004:NAHP}, it is still in
 wide deployment.  The ``Linux Cluster'' filesystem,
-Lustre\cite{Sun:2008:PSIW}, is a newer filesystem which distributes
+Lustre\cite{Sun:2008:PSIW}, is a newer filesystem that distributes
 the I/O workload across multiple nodes, and thus has been demonstrated
-to scale considerably better.  Both systems have characteristics which
+to scale considerably better.  Both systems have characteristics that
 should inform how we develop software to run on such systems.  We focus
 this work on these two filesystems due to their prevalence in high
 performance computing environments.
@@ -65,7 +65,7 @@ al.~\cite{Kendall:2009:TDO}. They showed that, with a carefully chosen
 greedy algorithm, end-to-end access times of under a minute are
 possible in the visualization of terascale data.  Their system accessed
 multi-file netCDF~\cite{Rew:1990:NAIF} data using the Parallel netCDF
-library~\cite{Li:2003:PNAH}, which in turn is built on top of MPI-2
+library~\cite{Li:2003:PNAH} that is in turn built on top of MPI-2
 \cite{Gropp:1998:MTCR}.
 
 Lofstead et
@@ -87,7 +87,7 @@ earthquake simulations by Yu et al.~\cite{Yu:2004:PVPF}.
 
 Yu et al.~\cite{Yu:2008:PADP} conducted an extensive characterization,
 tuning, and optimization of parallel I/O on Jaguar, a Cray XT based
-supercomputer at Oak Ridge National Laboratory which uses Lustre
+supercomputer at Oak Ridge National Laboratory that uses Lustre
 \cite{Sun:2008:PSIW} for its IO subsystem.
 
 Yu et al.~\cite{Yu:2004:ISFP} demonstrated general I/O solutions
@@ -119,37 +119,37 @@ visualization and analysis applications on the characteristics of
 I/O systems at a multitude of scales.  We desire to show methods by
 which parallel applications can be written to maximize performance for
 developers' constituency, without working directly with their user base
-or clusters which the application will run on.  As a community, we will
+or clusters that the application will run on.  As a community, we will
 never have the resources required to address the specific machines that
 every supercomputing-based science group needs to utilize.  Therefore
-we must design applications which perform well on such machines without
+we must design applications that perform well on such machines without
 investing weeks (or months) of a visualization or I/O expert's time to
 achieve that performance.
 
 Most I/O studies focus on a particular machine and even a specific
 application on that machine.  This approach would not, however,
-serve our purpose of identifying I/O best practices which are widely
+serve our purpose of identifying I/O best practices that are widely
 applicable.  We contribute end-to-end scalability results of a typical
 analysis problem on volume data, for numerous clusters and a variety of
 I/O backends.
 
 Finally, based on our work developing parallel visualization and
 analysis applications like the one in this work, we propose an
-extension to the ubiquitous POSIX API which has the potential to
+extension to the ubiquitous POSIX API that has the potential to
 greatly improve the performance of parallel I/O systems.
 
 The remainder of this paper is organized as follows.  First, we review
-some disk and I/O characteristics which are common to both serial and
+some disk and I/O characteristics that are common to both serial and
 parallel environments.  In Section \ref{sec:parallel_fs} we describe
 filesystems in common use in modern cluster computing environments.
-Then we expound the design of a program which has I/O as a major
+Then we expound the design of a program that has I/O as a major
 component, and describe implementations using numerous backend APIs, in
 Section \ref{sec:access}.  In Section \ref{sec:design} we use the
 knowledge gained in Sections
-\ref{sec:parallel_fs} and \ref{sec:access} to enumerate an API which
+\ref{sec:parallel_fs} and \ref{sec:access} to enumerate an API that
 would allow improved scalability on current and future parallel
 filesystems.  Finally, we conclude by highlighting the limitations,
-drawbacks, and opportunities for mistaken conclusions which arise due
+drawbacks, and opportunities for mistaken conclusions that arise due
 to our methods.
 
 \section{Data Access Time}\label{sec:basics}
@@ -194,8 +194,8 @@ be described by the equation:
 where $R_{trans}$ denotes the transfer rate in MB per second. 
 We divide $T_{access}$  by 1000 to express it in seconds as it is
 normally given as milliseconds.
-Consequently, the access time represents a percentage $P$ of the overall time,
-which can be expressed as:
+Consequently, the access time represents a percentage $P$ of the overall time
+that can be expressed as:
 \begin{align*}
 P &= 100 \cdot \frac{T_{\text{access}}}{T_{\text{total}} \cdot 1000}
 \\&=  \frac{T_{\text{access}}} {\frac{T_{\text{access}}}{100} +  10 \cdot \frac{M}{R_{\text{trans}}}}
@@ -233,7 +233,7 @@ a very small fraction of the overall time and is most likely not worth
 the implementation and
 maintenance effort. For environments that \emph{must} break the data into
 tiny chunks a clever layout strategy to improve data access times can in the
-best case (in which practically all disk operations involve seeks) double the
+best case (in which the majority of disk operations involve seeks) double the
 data access performance.
 
 %%%% moved to ``The takeway:'' to make it more consistent with the 
@@ -282,21 +282,21 @@ The takeway:
 
 \section{Parallel Filesystems}\label{sec:parallel_fs}
 
-All distributed filesystems have unique characteristics which should
+All distributed filesystems have unique characteristics that should
 inform the way we access and process data.  In this section we
 will highlight some of the common pitfalls that may be found with
 applications designed to run in an NFS or Lustre environment.
 
 \subsection{Opening Files}
 
-Opening a file is one example of an operation which performs uniquely
+Opening a file is one example of an operation that performs uniquely
 in a distributed environment.  In NFS systems, this is implemented
 via the client sending an \verb!ACCESS! or \verb!GETATTR! remote
 procedure call.  The operation asks the server if the client is allowed
 to access the file, or requests metadata for the file.  The server
 responds with a small message containing the resulting permissions.
 The situation in Lustre is similar: queries go to a global `metadata
-server' (MDS) which determines access information.  In both systems,
+server' (MDS) that grants or denies access.  In both systems,
 \emph{the file is not opened}.  Doing so would consume resources on
 the server, particularly due to read-ahead caching, and the request
 to actually read or write the file may be significantly delayed in
@@ -324,7 +324,7 @@ sizes is extremely poor.  It is important to note that \emph{Lustre
 does not scale any better than NFS} in this use case, as it has the
 singular bottleneck of one MDS per filesystem.  Many sites split up
 their Lustre offerings into multiple filesystems as a way to mitigate
-this problem, but of course these must then be mounted under different
+this problem, but these must then be mounted under different
 locations in the filesystem hierarchy.
 
 To prevent inducing poor performance in this manner, avoid opening
@@ -334,7 +334,7 @@ avoid synchronization points immediately before opening files: if one
 absolutely needs an \verb!MPI_Reduce!, for example, try opening the
 file immediately before the reduce instead of immediately after.  This
 should prevent a `thundering herd' (to steal a term from the threading
-world) of processes which pound on the metadata server at the same
+world) of processes that pound on the metadata server at the same
 time.  It is interesting to note that the ADIOS middleware library
 already attempts to mitigate this effect~\cite{ADIOS:Manual}.
 
@@ -364,22 +364,22 @@ system cannot report this error to the running process, because the
 process has long since moved on from the failing write call.
 
 Distributed filesystems thus require a client cache to write-through
-all changes when the client application closes the file.  Client
+all changes when the client application \emph{closes} the file.  Client
 operating systems must get a confirmation from the server that all data
 has been flushed
 \emph{before} it returns from the client processes' \verb!close!
 call; this is the last possible operation for the file, and thus the
-distributed systems' final opportunity to report errors which may
+distributed systems' final opportunity to report errors that may
 indicate data loss.
 
-It is therefore highly desirable to delay close operations which occur
+It is therefore highly desirable to delay close operations that occur
 after writes.  If a process is writing multiple output files, try to
 make it maintain two open files instead of one, and close the file from
 the previous iteration while writing in the current iteration.
 
 Sadly many applications, even those designed to run on supercomputers,
 do not check the return value of the \verb!close! system call.  There
-is no reason to believe that what was written is at all valid, given
+is no reason to believe that what was written is consistent, given
 such applications.
 
 The takeaway:
@@ -400,10 +400,10 @@ file locking.  However, it is worth noting that locking typically
 adds an I/O synchronization point, much like \verb!close! would.  For
 this reason it is not recommended that an application lock and unlock
 files unless there is an interaction with known external software
-which dictates it.  If at all possible, a better solution would be
-to \verb!close! the files on the writing process, and send a message
-to reading processes notifying them that the writer has completed --
-before they attempt \verb!open!ing the files at all.
+that dictates it.  If at all possible, a better solution would be to
+\verb!close! the files on the writing process, and send a message to
+reading processes notifying them that the writer has completed---before
+they attempt \verb!open!ing the files at all.
 
 Locking can in theory provide the best mechanism for inter-process
 communication in a distributed environment (i.e. to coordinate with in
@@ -430,11 +430,11 @@ clusters.
 To quantify this, we developed the same analysis program using
 a variety of backend APIs.  The program is simple: it is a
 threshold-based volume segmentation tool.  The software reads in a
-large volume and outputs a binary mask volume which indicates the
-voxels which fall between the threshold values.  The program is
+large volume and outputs a binary mask volume that indicates the
+voxels that fall between the threshold values.  The program is
 parallel, and out-of-core: the input volume is intelligently bricked,
-and each process is responsible for a set of bricks.  Processes load
-up a brick and generate an output brick one at a time.  We chose
+and each process is responsible for a set of bricks.  Processes load up
+a brick and generate the output volume brick one at a time.  We chose
 out-of-core as opposed to in-core because it models how future (even
 current) visualization and analysis software must be written, given the
 current trend of increasing processing-power-to-memory ratios.
@@ -462,7 +462,7 @@ the libraries we required.
 For backend I/O we tested multiple configurations: NetCDF, HDF5/NetCDF,
 and a custom solution.
 
-The hierarchical data format (HDF) is a data model which has seen
+The hierarchical data format (HDF) is a data model that has seen
 significant uptake in the parallel computing world.  It provides
 mechanisms for organizing complex data in an extensible manner.  We did
 not look directly at HDF5, but instead considered it in concert with
@@ -479,7 +479,7 @@ NetCDF.
   \label{fig:lens-most}
 \end{figure}
 
-The Network Common Data Form is a library which provides array-oriented
+The Network Common Data Form is a library that provides array-oriented
 data access.  Like HDF5, NetCDF files endeavor to be partly
 self-describing.  With recent releases of the NetCDF library, there
 are a multitude of options for backend I/O.  The first is so-called
@@ -489,7 +489,7 @@ is an extension of the `classic' format to allow use of 64bit indices,
 and thereby to address files of, for all practical purposes, unlimited
 size.  The final format is the so-called `NetCDF4' format -- somewhat
 confusing because the `64bit offset' format debuted in 3.6.0, right
-before the 4.0 release, yet is a distinct backend -- which uses HDF5 as
+before the 4.0 release, yet is a distinct backend that uses HDF5 as
 its backend.  To disambiguate, we refer to the `64bit offset' format as
 ``NetCDF-64'' and the HDF5-backed format as ```NetCDF4'' in this work.
 
@@ -501,7 +501,7 @@ processed out of the memory-map as is, without intermediate buffers.
 The source for this version is thus simpler than any other version of
 the program, containing no memory management code for data buffers.  As
 such, this version required the least memory by a wide margin: the API
-dictated an approach which was naturally out-of-core.
+dictated an approach that was naturally out-of-core.
 
 The results on the first cluster can be seen in Figure
 \ref{fig:lens-most}.  `NetCDF4' is NetCDF backed with an HDF5 file.
@@ -532,7 +532,7 @@ by 20 seconds or so, and the width of the error bars would change
 arbitrarily.  The readahead version of the program experienced less
 variability, but we were unable to conclude whether this was a property
 of the program or simply luck.  The data presented in figures
-represents the \emph{set} of runs which performed best overall, for
+represents the \emph{set} of runs that performed best overall, for
 that I/O backend.
 
 \begin{figure}
@@ -551,7 +551,7 @@ to the large difference in scale.  Results using this format on
 multiple clusters is provided in Figure \ref{fig:n64}.  Performance
 actually decreased with this backend.  For this reason, we highly
 recommend forcing the HDF backend (using the \texttt{NC\_NETCDF4} flag)
-when writing applications which make use of the NetCDF API.
+when writing applications that make use of the NetCDF API.
 
 \begin{figure}
   \centering
@@ -669,12 +669,12 @@ supercomputers, we have noticed that the available I/O models presented
 by the standard POSIX API is insufficient from both the producer and
 consumer vantage points.  Implementers are not given enough information
 about access patterns that applications are utilizing, which prevents
-them from optimizing the I/O for common tasks.  Library and application
+filesystems from optimizing for common tasks.  Library and application
 developers, on the other hand, have no mechanism for communicating such
 information.  The result is sub-par performance, with both parties
 feeling like there is little that can be done.
 
-For this reason, we present an API which:
+For this reason, we present an API that:
 
 \begin{itemize}
   \item models the way visualization and analysis application
@@ -683,19 +683,19 @@ For this reason, we present an API which:
   \item enables implementers to design effective filesystems.
 \end{itemize}
 
-A summary of the methods which the API provides is given in Table
+A summary of the methods that the API provides is given in Table
 \ref{tbl:api}.  Our primary goal with such an API is to encourage
 application developers to structure their code in such a way that it
 models a similar API, as it provides more information to lower levels.
 At the same time, we hope middleware libraries and even kernel code
-begin to offer APIs which allow application developers to provide this
+begin to offer APIs that allow application developers to provide this
 kind of information.  In the end, there should be much more data about
 the patterns and intent of data access that the application provides to
-the levels which can make use of it.
+the levels that can make use of it.
 
 \colorbox{lightgray}{\texttt{open\_range}} and
 \colorbox{lightgray}{\texttt{close\_range}}; \verb!open! and \verb!close!
-calls which work with byte ranges.
+calls that work with byte ranges.
 One of the issues that plagues I/O concurrency
 at large scales is the inability to indicate which portion of data
 a process intends to
@@ -780,7 +780,7 @@ test program, this can provide compelling performance advantages.
 The API should return pointers; it should not accept previously
 allocated buffers.  The gives the implementer freedom to manage
 allocations, enabling flexibility in choices of underlying APIs.  For
-example, memory-mapped files generally require page-aligned memory,
+example, memory-mapped files require page-aligned memory,
 which is not provided by \verb!malloc! or \verb!new!, and is more
 difficult to use at fixed addresses, as opposed to letting the kernel
 choose the mapping.
@@ -820,11 +820,11 @@ primary I/O needs.
 We have presented performance characteristics of modern disks.
 Utilizing that information, we evaluated a variety of APIs for
 file access with large scale data by implementing the same program
-using multiple backends.  Where APIs had options which may effect
-performance, we experimented with those options to identify which set
+using multiple backends.  Where APIs had options that may effect
+performance, we experimented with those options to identify the set that
 gave the best parallel performance on our chosen problem.  We evaluated
 this program on multiple clusters, attempting to identify generalized
-practices which application developers could follow to obtain superior
+practices that application developers should follow to obtain superior
 performance in the common case: where they have no control over where
 their users will run the released code.
 
@@ -835,7 +835,7 @@ did at another point in time.  This presents a difficult challenge
 for interactive visualization and analysis applications, which should
 provide the illusion of interactive response yet are highly susceptible
 to such latency.  The results encourage the use of progressive or
-multiresolution renderers, which can be used to provide real-time
+multiresolution renderers that can be used to provide real-time
 responses in the plausible event that the supercomputer cannot respond
 quickly enough.
 
@@ -924,7 +924,7 @@ information from neighboring voxels.
 % \subsection{Lustre Overview}
 %
 % Lustre (an almagmation of ``Linux'' and ``cluster'')
-% is a distributed file system which is popular in mid-
+% is a distributed file system that is popular in mid-
 % to high-end supercomputing facilities. The major claim
 % is that Lustre is \emph{scalable}: administrators can
 % add disks and new machines to a supercomputer without
@@ -1063,7 +1063,7 @@ information from neighboring voxels.
 % Compare this situation to application-level input: the
 % program could easily be written to have process 0 open
 % and read the desired data, and then send out the data
-% to the processes which need it.  This would incur:
+% to the processes that need it.  This would incur:
 % \begin{eqnarray*}
 %   T(N, b) &=& {} + 0.6 \mu{}s + (N \times 0.3 \mu{}s) \\
 %           &&  {} + 9ms \\
