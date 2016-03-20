@@ -6,7 +6,7 @@ benchmarks,
 	\item established the multi-scale parallelism architecture that future
 	visualization---and HPC---work is following,
 	\item identified a number of best practices for the remaining largest
-challenge in high-performance visualization: IO, and
+challenge in performance-oriented visualization: IO, and
 	\item outlined a method to profoundly simplify the practice of \textit{in
 situ} visualization.
 \end{itemize}
@@ -16,15 +16,15 @@ developed here.
 We began by outlining the volume rendering architecture,
 ``\textit{Tuvok}''.  The architecture strikes a balance between
 performance, practicality, and portability that few have done.  Volume
-rendering modules in Voreen~\cite{Needed} have since followed a similar
-architecture.  However, academic work tends to focus on particular
-hardware features whereas commercial work is often tied to particular
-platforms.  Tuvok practically utilizes available, modern features of
-GPUs while addressing and falling back to less straightforward methods.
-More importantly, it has seen significant effort working around the
-nonintersecting shortcomings of modern OpenGL drivers, a critical
-component of its applicability.  As such, Tuvok is the volume renderer
-that is most cited outside its field~\cite{Needed}.
+rendering modules in Voreen~\cite{Voreen:2009} have since followed
+a similar architecture.  However, academic work tends to focus on
+particular hardware features whereas commercial work is often tied
+to particular platforms.  Tuvok practically utilizes available,
+modern features of GPUs while addressing and falling back to less
+straightforward methods.  More importantly, it has seen significant
+effort working around the nonintersecting shortcomings of modern OpenGL
+drivers, a critical component of its applicability.  As such, Tuvok is
+the volume renderer that is most cited outside its field.
 
 Chapter~\ref{chp:rayguided} described ray-guided rendering and provided
 a detailed performance analysis using a variety of real-world datasets.
@@ -160,9 +160,8 @@ data are too large to be transferred between sites.  Using knowledge
 of the sampling rate required by the analysis method may be the best
 way of performing otherwise computationally-infeasible analyses.  All
 of these factors suggest a centralization of large-scale computing
-resources, in strict contrast to the decentralization that industry
-has been experiencing.  It is not difficult to imagine a future where
-analysis
+resources, in contrast to the decentralization that industry has been
+undergoing.  It is not difficult to imagine a future where analysis
 \emph{is} simulation: that all analysis is performed by (re)running
 simulations, as opposed to (re)processing simulation outputs.
 
@@ -231,8 +230,8 @@ injecting---at will---visualization and analysis capabilities into an
 entire corpus of simulation software.  Chapter~\ref{chp:inference}
 takes the first steps at eliminating the complex metadata communication
 primitives.  However, we must also ameloriate the untenable model of
-simulation authors learning visualization APIs.  The approaches of both
-chapters put more onus on the efforts of visualization scientists,
+simulation authors becoming visualization experts.  The approaches of
+both chapters put more onus on the efforts of visualization scientists,
 sweeping many visualization details under the rug from the simulation
 author's perspective.  An important theme among these approaches is
 shifting responsibilities away from the simulation engineer and towards

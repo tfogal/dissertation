@@ -57,17 +57,18 @@ Our system is divided into three stages:
 \end{enumerate}
 
 M\"uller et al. presented a system similar to our own that was limited
-to smaller data sets~\cite{Needed}.  We have extended the ideas in that
-system to allow for larger data sets, by removing the restriction that
-a data set must fit in the combined texture memory of the GPU cluster
-and adding the ability to mix in CPU-based renderers, enabling us to
-analyze the parallel performance on extremely large data sets.  The
-primary contribution of this component of our work is an increased
-understanding of the performance characteristics of a distributed
-memory GPU-accelerated volume rendering algorithm at a scale (256 GPUs)
-much larger than previously published.  Further, the results presented
-here (data sets up to $8192^3$ voxels) represent some of the largest
-parallel volume renderings attempted thus far.
+to smaller data sets~\cite{Mueller:2006:ParallelVRen}.  We have
+extended the ideas in that system to allow for larger data sets, by
+removing the restriction that a data set must fit in the combined
+texture memory of the GPU cluster and adding the ability to mix in
+CPU-based renderers, enabling us to analyze the parallel performance
+on extremely large data sets.  The primary contribution of this
+component of our work is an increased understanding of the performance
+characteristics of a distributed memory GPU-accelerated volume
+rendering algorithm at a scale (256 GPUs) much larger than previously
+published.  Further, the results presented here (data sets up to
+$8192^3$ voxels) represent some of the largest parallel volume
+renderings attempted thus far.
 
 Our system and benchmarks allow us to explore issues such as:
 
@@ -104,14 +105,17 @@ based on our findings.
 
 Volume rendering in a serial context has been studied for many years.
 The
-performance of the basic algorithm~\cite{Needed} was improved
-significantly by incorporating empty space leaping and early ray
+performance of the basic algorithm~\cite{Drebin:1988:VolRen} was
+improved significantly by incorporating empty space leaping and early
+ray
 termination~\cite{Levoy:EarlyTermination}.  Max provided one of the
 earliest formal presentations of the complete volume rendering equation
-in~\cite{Needed}.  Despite significant algorithmic advances from
+in~\cite{Max:1995:OpticalModels}.  Despite significant algorithmic
+advances from
 research such as~\cite{Levoy:EarlyTermination}, the largest increase in
 performance for desktop volume renderers has come from taking advantage
-of the 3D texture capabilities~\cite{Needed, Needed, Needed} and
+of the 3D texture capabilities~\cite{Cabral:1994:AVRA,
+Cullip:1993:AVRW, Westermann:1998:VolRen} and
 programmable shaders~\cite{Krueger:2003:ATGV} available on modern
 graphics hardware.
 
@@ -140,61 +144,67 @@ thus high-performance networking remains a necessity for subsecond
 rendering times on large numbers of processors.
 
 In the area of distributed memory parallel volume rendering of very
-large data sets, the algorithm described by Ma et al
-in~\cite{Ma:1993:???} has been taken to extreme scale in several
-followuip publications.  In~\cite{Childs:2006:???}, data set sizes of
-up to $3000^3$ are studied using hundreds of cores.  In this regime,
-the time spent ray casting far exceeds the composite time.
-In~\cite{PYRM:2008:???, PYR:2009:???}, the data set sizes range up to
-$4480^3$, while core counts of tens of thousands are studied.
+large data sets, the algorithm described by Ma et al.
+in~\cite{Ma:1993:DSend} has been taken to extreme scale in several
+followuip publications.  In~\cite{Childs:2006:ScalableVR}, data set
+sizes of up to $3000^3$ are studied using hundreds of cores.  In this
+regime, the time spent ray casting far exceeds the composite time.
+In~\cite{Peterka:2008:VolRenBGP, Peterka:2009:ETES} the data set sizes
+range up to $4480^3$, while core counts of tens of thousands are
+studied.
 In~\cite{Howison:2010:HybridVR} the benefits of hybrid parallelism
 are explored at concurrency ranges going above two hundred thousand
 cores.  For both of these studies, when going to extreme concurrency
 compositing time becomes large and dominates ray-casting time.  This
 suggests that a sweet spot may exist with GPU-accelerated distributed
 memory volume rendering.  By using hardware acceleration, the long ray
-casting times encountered in~\cite{Childs:2006:ScalableVR} can be overcome.
-Simultaneously, the emerging trend of composite-bound rendering
-observed in~\cite{PYR:2009:???} and~\cite{Howison:2010:HybridVR} will
-be mitigated by the ability to use many fewer nodes to command the same
-compute power.
+casting times encountered in~\cite{Childs:2006:ScalableVR} can be
+overcome.  Simultaneously, the emerging trend of composite-bound
+rendering
+observed in~\cite{Peterka:2009:ETES} and~\cite{Howison:2010:HybridVR}
+will be mitigated by the ability to use many fewer nodes to command the
+same compute power.
 
 Numerous systems have been developed to enable parallel rendering in
 existing software.  Among the most well-known is
-Chromium~\cite{HHN:2002:???}, a rendering system that can transparently
-parallelize OpenGL-based applications.  The Equalizer framework boasts
-multiple compositing strategies, including an improved direct
-send~\cite{EP:2007:???}.  The IceT library provides parallel rendering
-with a variety of sort-last compositing strategies~\cite{MWP:2001:???}.
+Chromium~\cite{Humphreys:2002:Chromium}, a rendering system that can
+transparently parallelize OpenGL-based applications.  The Equalizer
+framework boasts multiple compositing strategies, including an improved
+direct
+send~\cite{Eilemann:2007:DSend}.  The IceT library provides parallel
+rendering with a variety of sort-last compositing
+strategies~\cite{Moreland:2001:IceT}.
 
 There has been less previous work studying volume rendering on
 multiple GPUs.  Strengert et al. developed a system that used wavelet
 compression and adaptively decompressed the data on small GPU
-clusters~\cite{SMW:2004:???}.  Marchesin et al. compared a volume that
-ran on two different two-GPU configurations: two GPUs on one system,
-and one GPU on two networked systems~\cite{Marchesin:2008:MultiGPU}. The
-use of just one or two systems, coupled with an in-core renderer,
-artificially constrained the data set size.  M\"uller et al. developed
-a distributed memory volume renderer that ran on
-GPUs~\cite{Mueller:2006:???}; their system differs from ours in a few
-key ways.  First, we use an out-of-core renderer and therefore can
-exceed the available texture memory of the GPU by also utilizing CPU
-memoryor disk.  To further reduce memory costs, we compute gradients
-dynamically in the GLSL shader~\cite{KW:2003:???}, obviating the need
-to upload a separate gradient texture.  This also has the benefit of
-avoiding a pre-processing step, which is normally software-based in
+clusters~\cite{Strengert:2004:ClusterVolRen}. Marchesin et al. compared
+a volume that ran on two different two-GPU configurations: two GPUs on
+one system, and one GPU on two networked
+systems~\cite{Marchesin:2008:MultiGPU}. The use of just one or two
+systems, coupled with an in-core renderer, artificially constrained the
+data set size.  M\"uller et al. developed a distributed memory volume
+renderer that ran on
+GPUs~\cite{Mueller:2006:ParallelVRen}; their system differs from
+ours in a few key ways.  First, we use an out-of-core renderer and
+therefore can exceed the available texture memory of the GPU by also
+utilizing CPU memoryor disk.  To further reduce memory costs, we
+compute gradients
+dynamically in the GLSL shader~\cite{Krueger:2003:ATGV} obviating the
+need to upload a separate gradient texture.  This also has the benefit
+of avoiding a pre-processing step, which is normally software-based in
 existing general-purpose visualization applications (including the one
 we chose to implement our system within) and can be time consuming for
 large data sets.  Further differentiating our system and in line with
 recent trends in visualization cluster architectures, we enable the use
 of multiple GPUs per node.  M\"uller et al. used a direct send
 compositing strategy~\cite{Hsu:1993:SRC, Ma:1993:DSend} whereas we use
-a tree-based compositing method~\cite{MWP:2001:???}.  Finally, and
-most importantly, we report performance results for substantially more
-GPUs and much larger data sets, detailing the scalability of GPU-based
-visualization clusters.  We therefore believe our work is the first
-to evaluate the usability of distributed memory GPU clusters for this
-scale of data.
+a tree-based compositing method~\cite{Moreland:2001:IceT}.  Finally,
+and most importantly, we report performance results for substantially
+more GPUs and much larger data sets, detailing the scalability of
+GPU-based visualization clusters.  We therefore believe our work is the
+first to evaluate the usability of distributed memory GPU clusters for
+this scale of data.
 
 \section{Architecture}
 \label{sec:arch}
@@ -240,11 +250,12 @@ variety of reasons:
   data set.  Our balancing algorithms use the time taken to render the
   previous frame to determine the weighted distribution of loads.
 
-  \item \textbf{Master-slave} Dynamic balance algorithms in VisIt are
-  based on a \emph{master} node that tells slaves to process a brick,
-  waits for the slaves' completion, and then sends them a new brick to
-  process.  We implemented a flat hierarchy, as seems to be more common
-  in recent literature~\cite{Marchesin:2006:???, MSE06}.
+  \item \textbf{Master-slave} Dynamic balance algorithms in VisIt
+  are based on a \emph{master} node that tells slaves to process a
+  brick, waits for the slaves' completion, and then sends them a new
+  brick to process.  We implemented a flat hierarchy, as seems to be
+  more common in recent literature~\cite{Marchesin:2006:DynamicLB,
+  Mueller:2006:ParallelVRen}.
 
   \item \textbf{Compositing} \emph{Most importantly}, for our
   object-based decomposition to work correctly, we needed a defined
@@ -289,21 +300,22 @@ gave significantly better results.
 
 In order to compare different implementations, we implemented multiple
 load balancing algorithms, notably those described in Marchesin et al.
-and M\"uller et al.'s work~\cite{Marchesin:2006:???, MSE06}.  In both cases, leaf
-nodes represent processes, and each process has some number of bricks
-assigned to it.  In the Marchesin-based approach, we start at the
-parents of the leaf nodes and work our way up the tree, searching for
-imbalance among siblings.  If two siblings are found to be imbalanced,
-a single layer of bricks is moved along the splitting plane.  This
-process continues up the root of the tree, at which time the virtual
-results are committed and the new tree dictates the resulting data
-distribution.  In the M\"uller-based approach, we begin with the root
-node and use a pre-order traversal to find imbalance among siblings.
-Once imbalance is found, the process stops for the current frame.
-Instead of blindly shifting a layer of bricks between the siblings,
-the method derives the average rendering cost associated with a layer
-of bricks along the split plane, and shifts this layer if the new
-configuration is projected to improve rendering time.
+and M\"uller et al.'s work~\cite{Marchesin:2006:DynamicLB,
+Mueller:2006:ParallelVRen}.  In both cases, leaf nodes represent
+processes, and each process has some number of bricks assigned to
+it.  In the Marchesin-based approach, we start at the parents of the
+leaf nodes and work our way up the tree, searching for imbalance among
+siblings.  If two siblings are found to be imbalanced, a single layer
+of bricks is moved along the splitting plane.  This process continues
+up the root of the tree, at which time the virtual results are
+committed and the new tree dictates the resulting data distribution.
+In the M\"uller-based approach, we begin with the root node and use a
+pre-order traversal to find imbalance among siblings.  Once imbalance
+is found, the process stops for the current frame.  Instead of blindly
+shifting a layer of bricks between the siblings, the method derives
+the average rendering cost associated with a layer of bricks along
+the split plane, and shifts this layer if the new configuration is
+projected to improve rendering time.
 
 In addition to achieving a relatively even balance among the data, the
 \emph{k}d-tree is used in the final stages to derive a valid sort-last
@@ -548,7 +560,7 @@ With the implementations we recreated as faithfully as possible, we did
 find that zooming in to the data set was a task that was well-suited
 for load balancing.  Still, we encountered issues even with this case.
 For the
-algorithm given in~\cite{Marchesin:2006:???}, we observed that the
+algorithm given in~\cite{Marchesin:2006:DynamicLB} we observed that the
 data would move back and forth between nodes quite frequently, having
 a negative impact on overall rendering time.  We therefore introduced
 a `threshold' parmaeter to the existing algorithm, in an attempt to
@@ -567,14 +579,14 @@ Figure~\ref{fig:balance}, in which low thresholds display an obvious
 `ping-pong' effect as nodes overcompensate for increased rendering
 load.
 
-M\"uller et al. describe a different balancing system~\cite{MSE06}.
-This system calculates the average cost of rendering a brick, and
-therefore has a clearer idea of what the effect of moving a given set
-of bricks will have on overall system performance.  Further, they
-introduce additional parameters that add some hysteresis to the system,
-and this helped reduce the `ping-pong' effect of nodes sending data
-to a neighbor just to receive it in the next frame when the neighbor
-becomes overloaded.
+M\"uller et al. describe a different balancing
+system~\cite{Mueller:2006:ParallelVRen}.  This system calculates the
+average cost of rendering a brick, and therefore has a clearer idea of
+what the effect of moving a given set of bricks will have on overall
+system performance.  Further, they introduce additional parameters
+that add some hysteresis to the system, and this helped reduce the
+`ping-pong' effect of nodes sending data to a neighbor just to receive
+it in the next frame when the neighbor becomes overloaded.
 
 We found that this algorithm did do intelligent balancing for
 reasonable settings of these parameters, and the additional parametes

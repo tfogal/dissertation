@@ -123,22 +123,21 @@ quality even for modestly sized data sets. Recently, the VisCG at the
 Universit\"at M\"unster developed the Voreen
 system~\cite{Voreen:2009}, a prototyping environment for volume
 visualization.  The interface provided exposes the underlying data
-flow network and many visualizations require knowledge as to how
-they are technically realized, which we found was not suitable for a
-large segment of our user base. Other non commercial visualization
-toolkits are the OpenDX3 \todo{[IBM06]} system which is no longer under active
-development, and
-finally the SCIRun \todo{[Ins09]} and VisIt~\cite{Childs:2005:Contracts,
-Childs:2012:VisIt} systems. As these systems suffered some of the
-problems of previously mentioned solutions (e.g. outdated render modes,
-slow performance, or limited support for large data sets) Tuvok is
-currently being integrated into these solutions. Besides these free
-\& open source solutions, a number of commercial products exist such
-as AVS2, Amira, Ensight, syngo, VGStudio Max, or AltaViewer. As these
-systems are closed source, obtaining detailed information on their
-operation is difficult; the possibility of integrating Tuvok into these
-systems is intriguing, but we do not discuss them in detail for this
-work.
+flow network and many visualizations require knowledge as to how they
+are technically realized, which we found was not suitable for a large
+segment of our user base. Other non commercial visualization toolkits
+are the OpenDX system that is no longer under active development, and
+finally the SCIRun~\cite{Macleod:2004:SCIRun} and
+VisIt~\cite{Childs:2005:Contracts, Childs:2012:VisIt} systems. As these
+systems suffered some of the problems of previously mentioned solutions
+(e.g. outdated render modes, slow performance, or limited support
+for large data sets) Tuvok is currently being integrated into these
+solutions. Besides these free \& open source solutions, a number of
+commercial products exist such as AVS2, Amira, Ensight, syngo, VGStudio
+Max, or AltaViewer. As these systems are closed source, obtaining
+detailed information on their operation is difficult; the possibility
+of integrating Tuvok into these systems is intriguing, but we do not
+discuss them in detail for this work.
 
 In order to address the aforementioned three issues and to overcome the
 limitations of existing systems, we present \textit{Tuvok}, a system
@@ -162,7 +161,7 @@ While the application ImageVis3D presents itself to the
 end-user as a single application, it is composed of a
 collection of independent Tuvok frameworks.
 \item \textbf{Self contained}
-While ImageVis3D requires Nokia's Qt \todo{[Nok09]} library
+While ImageVis3D requires Nokia's Qt library
 as an external dependency, \textit{Tuvok} itself does not rely on
 external libraries at all.
 \item \textbf{Cross platform support}
@@ -180,8 +179,8 @@ hardware---\textit{Tuvok} features GPU based ray casting to
 interactively render images of the highest quality.
 \item \textbf{Provenance Support}
 \textit{Tuvok} and \textit{ImageVis3D} provide provenance hooks, with
-provenance recording and playback realized via VisTrails
-\todo{[BCS 05]}.
+provenance recording and playback realized via
+VisTrails~\cite{Bavoil:2005:VisTrails}.
 \item \textbf{Open Source}
 Tuvok and ImageVis3D are released under the very liberal
 MIT license, which means that practically no usage
@@ -224,11 +223,10 @@ control over the application.
 \subsection{The volume rendering library}
 
 The Tuvok volume rendering library contains the core graphics
-algorithms to render volumetric data. Currently, a slice
-based volume renderer as well as GPU based ray casting
-renderer are available in OpenGL and DirectX 10. For pure
-software based rendering the system currently relies on the
-Mesa library \todo{[Pau]}.
+algorithms to render volumetric data. Currently, a slice based volume
+renderer as well as GPU based ray casting renderer are available via
+OpenGL. For pure software based rendering the system currently relies
+on the Mesa library.
 
 \subsection{Interactivity and quality}
 
