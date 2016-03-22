@@ -269,10 +269,6 @@ the ray determine which data to load.  Stated differently, the future
 data requirements are computed \emph{in concert} with standard ray
 traversal and accumulation.
 
-% \todo{here we might want to say something about how regular disk I/O
-% is in modern volume renderers, and allude to a later section where we
-% discuss data organization}
-
 The entire operation is detailed in Figure \ref{figrg:flow}. For each
 ray we compute the level of detail required to maintain a pixel error
 of less than one. With this level and the position in the volume we
@@ -424,7 +420,7 @@ raycasting inner loop is hidden in the \texttt{Raycast} call.
 % renderings.
  
 %% this was moved to a single sentence at the beginning of sec:algorithm
-% \todo{This paragraph feels really out of place here, but we need something
+% {This paragraph feels really out of place here, but we need something
 % similar \emph{somewhere} (reviewer comment)} Of course, many volume
 % datasets are not provided in a multiresolution form.  For such data,
 % we generate multiresolution representations as a preprocess.  This need
@@ -664,7 +660,7 @@ saturate the set of visible data.  Figure~\ref{figrg:working-set} and
 Section~\ref{sec:subdivision} include more discussion about working set
 sizes.
 
-% \todo{datasets to beat/compare with:
+% \{datasets to beat/compare with:
 % 2048x1024x1080, 16bit, 640x480 viewport: 95 minutes to preprocess
 % ($32^3$). biomedical data (lizard scan?).  12 to 30 Hz range; avg 16 Hz
 % for volume rendering, avg 20 Hz for
@@ -751,8 +747,6 @@ they significantly improve disk throughput.
 % state, the renderer should respond quickly.  A third consideration is
 % the time to generate these data: converting a large dataset into a
 % bricked representation grows sharply as the brick size shrinks.
-%
-% \todo{table or graph of brick size (X) and `time to build hierarchy' (Y)}
 
 %% moved this up into other paragraph
 % As can be seen Table \ref{tbl:timings} and Figure
@@ -824,35 +818,24 @@ caveat that seek times are not relevant with larger brick sizes.
   \label{figrg:layout}
 \end{figure}
 
-% \begin{figure}
-%   \centering
-%   \includegraphics[width=\linewidth]{images/dsize-rtime}
-%   \caption{\todo{needs update, data is made up (alex: benchmark! run
-%   dsize-performance.lua)} Total rendering time, including brick IO,
-%   to generate animations for the `mandelbulb' dataset at various
-%   sizes and two distinct layouts.  Brick size was $32^3$ for all
-%   runs.  Layout scheme has relatively little impact: disk read time is
-%   negligible relative to the entire process.}
-%   \label{figrg:rtime-layout}
-% \end{figure}
-
 \subsubsection{Dynamic Rebricking}
 \label{sec:rebricking}
 
-% \todo{this is too long. important message: rebricking is a good idea,
+% {this is too long. important message: rebricking is a good idea,
 % because it avoids absurd hierarchy build times and gives good I/O
 % performance. the overhead is demonstrably minor.}
 
 The renderer desires small bricks, as discussed in
 Section~\ref{sec:subdivision}, as small bricks will help with early ray
-termination and empty space leaping.  However Figures~\ref{figrg:layout}
-and \ref{figrg:brick-size} clearly demonstrate that large brick sizes
-are preferable for disk performance and overhead reasons.  To provide
+termination and empty space leaping.  However
+Figures~\ref{figrg:layout}
+and \ref{figrg:brick-size} demonstrate that large brick sizes are
+preferable for disk performance and overhead reasons.  To provide
 the best of both worlds, we implemented a `dynamic' bricking scheme,
 whereby bricks are stored on disk in a rather large size (e.g. $256^3$)
 but presented to the renderer as if they exist at some small resolution
-($32^3$).  The small bricks are dynamically generated from the large ones on
-request.
+($32^3$).  The small bricks are dynamically generated from the large
+ones on request.
 
 Since requesting a large brick for every small brick would only
 increase the disk traffic, we keep an additional brick cache in memory
@@ -892,7 +875,7 @@ sizes.  Both disk and renderer deal with their ideal cases, then.  The
 this mode.
 
 %% compression isn't unique enough to have its own story, particularly
-%% since we need space.
+%% since we need space.  guess it got compressed out ;-)
 
 % \subsubsection{Compression}
 % 
@@ -903,7 +886,7 @@ this mode.
 % a dataset which change at a very low frequency, producing runs of the
 % same data value. All of these regions compress very effectively.
 % 
-% \todo{make it clear we are compressing each brick in isolation, storing
+% {make it clear we are compressing each brick in isolation, storing
 % it compressed on disk, and decompressing it when it is read---before it
 % makes it to the renderer}
 %
@@ -912,12 +895,9 @@ this mode.
 %   \includegraphics[width=\linewidth]{images/Compression}
 %   \caption{Compression ratios for a variety of datasets using the
 %   `fastest' zlib compression mode.  Very often, data compress to a
-%   factor of less than half their original size. \todo{Alex will replace
-%   this graph}}
+%   factor of less than half their original size.}
 %   \label{figrg:compression}
 % \end{figure}
-%
-% \todo{Need results for (\emph{many}!) more datasets!}
 
 % The zlib libary has given us very good results for many datasets.
 % Some results on the compression ratio are given in Figure
@@ -1151,9 +1131,8 @@ Most importantly, we have contributed an evaluation and discussion
 of the issues inherent in the development of a ray guided volume
 renderer. As has been demonstrated, many of these choices are not as
 clear as previous reports may have inadvertently implied.  The results
-presented in this work clearly depict the tradeoffs, to aid system
-designers in creating volume renderers that suit their particular
-environment.
+presented in this work depict the tradeoffs, to aid system designers in
+creating volume renderers that suit their particular environment.
 
 We hope to extend this work to more diverse visualization scenarios.
 Ray-guidance-based isosurface generation is a natural candidate for

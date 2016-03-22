@@ -270,16 +270,6 @@ The takeway:
            significantly cut the data access time on a standard HDD.
 \end{itemize}
 
-%% Great idea, no time.
-% \subsection{Considerations for transfer time optimization}
-% 
-% \todo{Should the experiments show that it makes sense to 
-% use compressed data then talk about how modern processors
-% have so much horsepower that it makes sense to reduce the
-% size of the data at the cost of more CPU cycle to prepare it. 
-% Give a bunch of numbers/graphs that demonstrate this behavior
-% with a number compression algorithms, CPUs, and disks.}
-
 \section{Parallel Filesystems}\label{sec:parallel_fs}
 
 All distributed filesystems have unique characteristics that should
@@ -305,7 +295,7 @@ time---or might never come at all!
 %\begin{figure}[Htb]
 %  \centering
 %  \includegraphics[width=\linewidth]{images/io/lustre-read}
-%  \caption{Best case read performance with Lustre. \todo{Fits?}}
+%  \caption{Best case read performance with Lustre.}
 %  \label{fig:lustre-read}
 %\end{figure}
 %
@@ -438,9 +428,6 @@ a brick and generate the output volume brick one at a time.  We chose
 out-of-core as opposed to in-core because it models how future (even
 current) visualization and analysis software must be written, given the
 current trend of increasing processing-power-to-memory ratios.
-
-% .. could add it if we need to fill space.
-%\todo{Figure with pseudocode for the program?}
 
 \subsection{Results}
 
@@ -601,12 +588,6 @@ and compute time was harder to obtain for this machine.
 %an essential feature.  We hope to include ADIOS results in a future
 %study.
 
-% Would be nice.. no time now.
-% \todo{They actually have pretty good documentation on how to add a new
-% transport method... though not a new API.  Still it's probably simple.
-% Maybe we could add an out-of-core API to ADIOS and evaluate it here
-% quickly enough?}
-
 %\subsection{Custom Low-Level Data Access}
 %
 %This is a method we developed based on a series of experiments with
@@ -627,31 +608,28 @@ and compute time was harder to obtain for this machine.
 %  `64bit offset' files and a custom I/O layer, on multiple clusters.
 %  Error bars indicate minimum and maximum running times observed, per
 %  process in the job.
-%  \todo{split things into two figures: one figure for Lens, one for Longhorn,
+%  {split things into two figures: one figure for Lens, one for Longhorn,
 %  and another for Jaguar if I can fit runs in...}
 %  }
 %  \label{fig:lh-performance}
 %\end{figure}
 
 % Figure \ref{fig:lh-performance} shows the scalability of this program
-% (`Raw Segmentation') alongside the results of the NetCDF4-backed files,
-% run on the same cluster\todo{err, multiple clusters now, but will
-% be split up later...}.  At scale, the performance appears to be
-% flat.  However, we note that a closer look at the performance data
-% indicates that performance increases up to 16 processors, and then
-% begins to worsen.  This is due to our chosen problem; the thresholding
-% segmentation is incredibly simple, and after 16 tasks we don't gain
-% much of a benefit from more processors, as there simply is not enough
-% work to go around.
+% (`Raw Segmentation') alongside the results of the NetCDF4-backed
+% files, run on the same cluster.  At scale, the performance appears
+% to be flat.  However, we note that a closer look at the performance
+% data indicates that performance increases up to 16 processors, and
+% then begins to worsen.  This is due to our chosen problem; the
+% thresholding segmentation is incredibly simple, and after 16 tasks we
+% don't gain much of a benefit from more processors, as there simply is
+% not enough work to go around.
 
-% \todo{Do some runs with a 1 terabyte file or similar (current file
-% is 32gb, $2048^3$). Use this in the text: ``While we don't show the
-% results, we ran the raw tests with a larger file, and confirmed that
-% more processors brings the runtime down out to a larger number of
-% processors, demonstrating that we just do not have enough work in our
-% algorithm to scale this approach appropriately.  More complicated
-% applications would see a greater benefit from this method.'' blah
-% blah blah}.
+% ``While we don't show the results, we ran the raw tests with a larger
+% file, and confirmed that more processors brings the runtime down
+% out to a larger number of processors, demonstrating that we just
+% do not have enough work in our algorithm to scale this approach
+% appropriately.  More complicated applications would see a greater
+% benefit from this method.'' blah blah blah.
 
 
 % This is still true, but the raw benchmark kicks so much ass that I
@@ -964,9 +942,6 @@ information from neighboring voxels.
 %   the first (or first few) OSTs, trying to fill up a
 %   readahead buffer.
 %
-%   \item \todo{replace this with a figure}
-%   \label{fig:lustre-open}
-%
 % \end{itemize}
 %
 % Consider what happens when all processes in an MPI
@@ -1024,12 +999,9 @@ information from neighboring voxels.
 %     &&  {} + N \times (M + nB)
 % \end{eqnarray*}
 %
-% We consider network performance numbers as given in a
-% now-dated
-% paper\cite{Rodrigues:FastSockets:1997}\todo{need to
-% find a newer paper that has a table like the one
-% found in that one...}; modern networks will certainly
-% perform better. Regardless, per-message and per-byte
+% We consider network performance numbers as given in
+% \cite{Rodrigues:FastSockets:1997} \TODO{something newer?}
+% Regardless, per-message and per-byte
 % overhead is measured in tenths of microseconds; a
 % message costs about a third of a microsecond, and a
 % byte costs approximately 0.2 microseconds. Therefore
@@ -1055,10 +1027,6 @@ information from neighboring voxels.
 %   \caption{Best case read performance with Lustre.}
 %   \label{fig:lustre-read}
 % \end{figure}
-%
-% \todo{repeat the same logic, except instead of reading
-% `y' data, read $\frac{y}{16}$ data 16 times... as a
-% really stupid unbricked app would do.}
 
 % Compare this situation to application-level input: the
 % program could easily be written to have process 0 open
@@ -1086,14 +1054,3 @@ information from neighboring voxels.
 % size is 1 megabyte. This is probably pretty terrible
 % for performance. We should incorporate this info into
 % the text, somehow...}
-
-% \todo{Can we write a UVF multiple ways to demonstrate the importance
-% of matching stripe size?  For example, if each brick in a UVF is
-% 16 megabytes, and we make a stripe 16 megabytes... will we get bad
-% performance because the 100-or-so byte header offsets everything
-% poorly?  If we write the header to a separate file, does that improve
-% our performance?}
-
-% \todo{Or maybe somehow simulate same using `dd'...}
-
-% \note{see \url{http://www.nics.tennessee.edu/io-tips}}
