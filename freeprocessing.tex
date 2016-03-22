@@ -215,7 +215,7 @@ before we conclude and note limitations as well as future work in
 % both VisIt's~\cite{Childs:2012:VisIt}
 % \texttt{libsim}~\cite{Whitlock:2011:Libsim} as well as
 % ParaView's Catalyst~\cite{Fabian:2011:Catalyst}.  Biddiscombe et al.
-% proposed an HDF5-based driver which forwards the data from HDF5 calls
+% proposed an HDF5-based driver that forwards the data from HDF5 calls
 % to ParaView~\cite{Biddiscombe:2011:HDF5Steering};
 % \S~\ref{sec:enzo-example} gives an example of our system implementing
 % similar functionality.
@@ -237,11 +237,11 @@ before we conclude and note limitations as well as future work in
 % software, change the simulation source code to call the new API, and
 % recompile the simulation code, additionally linking the visualization
 % tool as a library.  This is a significant investment: while the
-% multiple simulations which use it can amortize the development costs
+% multiple simulations that use it can amortize the development costs
 % of the coupling library, instrumenting the simulation source code
 % is necessarily a per-simulation cost.  Furthermore, visualization
 % software is typically multiple orders of magnitude more complicated
-% to build than the simulation code which then utilizes it.  This
+% to build than the simulation code that then utilizes it.  This
 % can be a large barrier, particularly when simulation authors are
 % not well-versed in the arcane lore of large-scale C++ software
 % development.
@@ -282,7 +282,7 @@ before we conclude and note limitations as well as future work in
 
 Previous \insitu{} solutions have relied on the simulation author
 explicitly invoking the visualization tool, or the simulation using a
-custom library for I/O, which is then repurposed for analysis.  In this
+custom library for I/O that is then repurposed for analysis.  In this
 work we demonstrate that there is little need for
 either; every simulation produces output already, an \insitu{} tool
 just needs to tap into that output.
@@ -335,7 +335,7 @@ Function interposition for higher-level functions from libraries such
 as HDF5 and NetCDF provide an important benefit: data semantics.  As
 these formats are self-describing, there is enough information in just
 the stream of function calls to identify data properties---in contrast
-to raw POSIX I/O functions, which provide little more than an abstract
+to raw POSIX I/O functions that provide little more than an abstract
 buffer.  The symbiont forwards any available data semantics from the
 interposed library functions to the
 \freeprocessor{}.
@@ -377,7 +377,7 @@ itself.  The symbiont does not contain this parsing and metadata
 acquisition code; the `user
 code'---\freeprocessor{}s---implements this only if they desire.
 
-%We provide code which the user can drop into their code for this
+%We provide code that the user can drop into their code for this
 %purpose, but there is no library a user must link against to implement
 %a
 %\freeprocessor{}.  Not forcing a metadata mechanism is useful, for
@@ -469,7 +469,7 @@ and needed metadata.  Most notably, it creates the
 written.  Exposing the array to Python does not require a copy; the
 simulation data shares the memory with the Python runtime.  Should
 the Python script attempt any write operation on the data, a copy is
-transparently made inside the Python runtime, which is then managed via
+transparently made inside the Python runtime that is then managed via
 Python's garbage collector.  We allow only one of the simulation or the
 Python tool to run at any given time.
 
@@ -544,14 +544,13 @@ outputs and volume renderings.  The simulation writes out these
 visualizations in custom ASCII-based formats every $n$ time steps, with
 typical values of $n$ in
 between 100 and 1000~\cite{Proch2014CNF};
-Figure~\ref{fig:PsiPhi} shows example visualizations.  The second
-type of output is a simulation-specific binary format used for
-restart files, which is organized in a `one file per process' manner.
-Synchronous Fortran `unformatted'
+Figure~\ref{fig:PsiPhi} shows example visualizations.  The second type
+of output is a simulation-specific binary format used for restart files
+that is organized in a `one file per process' manner.  Synchronous
+Fortran `unformatted'
 \texttt{WRITE} operations create these outputs.  The third kind of
-output is an ASCII-based metadata file that describes the layout of
-the binary restart files.
-%addition to a separate ASCII-based metadata file.
+output is an ASCII-based metadata file that describes the layout of the
+binary restart files.
 
 The PsiPhi authors are interested in extracting arbitrary 2D slices
 as well as 3D visualizations with more flexibility than their
@@ -565,7 +564,7 @@ these restart files.
 
 % As such, we elected to utilize these restart files as the basis
 % for our \freeprocessor{}.  Fortunately, PsiPhi was also writing a
-% simple ASCII file which described its fields, and so we glean the
+% simple ASCII file that described its fields, and so we glean the
 % needed metadata from the writing of this file.
 
 \begin{figure}
@@ -685,8 +684,8 @@ the 20-line Python script is specific to yt.
 We taught a course in High-Performance Computing during the preparation
 of this manuscript.  Among the work given in the course was an
 MPI+OpenMP hybrid-parallel N-Body simulation.  We provided our symbiont
-to the students along with a simple ParaView script, which would
-produce a visualization given one of their timestep outputs.  A sample
+to the students along with a simple ParaView script that would produce
+a visualization given one of their timestep outputs.  A sample
 visualization is
 shown in Figure~\ref{fig:nbody}.
 
@@ -728,8 +727,7 @@ application of the technique in
 
 The ability to hook into \emph{any} data movement operation of a
 process enables \freeprocessing{} to create novel applications of
-\insitu{} ideas.  In this section, we highlight a couple uses which
-makes
+\insitu{} ideas.  In this section, we highlight a couple uses that make
 \freeprocessing{} unique among \insitu{} tools.
 
 \subsection{Transfer-based visualization}
@@ -741,10 +739,10 @@ the primary motivation behind prior \insitu{} visualization work: that
 we should do
 operations on data while they are \emph{already} in memory, instead of
 writing the data to disk and then reading them back. While most if not
-all HPC experts agree that---at the largest scale---moving data will
-no longer be viable for large data, a large userbase still exists for
-which simulation on a powerful remote supercomputer and analysis on
-local resources is the norm.
+all HPC experts agree that---at the largest scale---moving data will no
+longer be viable, a large userbase still exists for which simulation on
+a powerful remote supercomputer and analysis on local resources is the
+norm.
 
 To downplay this drawback, we propose preprocessing during this transit
 time.  As an
@@ -785,17 +783,16 @@ hand, with the rise of data parallel architectures and the decreasing
 memory per core ratio, one might argue that a transition to a stream
 processing model is inevitable.
 
-% One
-% example is from GPU volume rendering, which requires data organized
-% into regular `bricks' for effective paging.  However, as noted by
-% recent
+% One example is from GPU volume rendering, which requires data
+% organized into regular `bricks' for effective paging.  However, as
+% noted by recent
 % work~\cite{Fogal:2013:Analysis}, this can become a prohibitively
 % expensive operation for suitably large data.  The main cost in data
 % reorganization is simply loading and writing the file back to disk;
 % moving data around in memory is comparatively fast.
 %
-% The system works by ... calculating the appropriate new
-%offset, and transparently re-routing the data to the bricked position.
+% The system works by ... calculating the appropriate new offset, and
+% transparently re-routing the data to the bricked position.
 
 \subsection{MATLAB}
 

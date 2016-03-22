@@ -223,18 +223,19 @@ G  &=   \frac{F}{M} \cdot 80
 \end{align*}
 
 For a scheme that reduces random access by a factor of 3, only a 2.6\%
-improvement in runtime would be achieved for 10 MB blocks, while with the same scheme
-the performance would be almost tripled with 900 byte blocks.
+improvement in runtime would be achieved for 10 MB blocks, while with
+the same scheme the performance would be almost tripled with 900 byte
+blocks.
 
 From these numbers we conclude that in most environments, in particular
-those with structured data---where larger data blocks can be
-utilized more easily---a data layout optimization would only improve
-a very small fraction of the overall time and is most likely not worth
-the implementation and
-maintenance effort. For environments that \emph{must} break the data into
-tiny chunks a clever layout strategy to improve data access times can in the
-best case (in which the majority of disk operations involve seeks) double the
-data access performance.
+those with structured data---where larger data blocks can be utilized
+more easily---a data layout optimization would only improve a very
+small fraction of the overall time and is most likely not worth the
+implementation and
+maintenance effort. For environments that \emph{must} break the data
+into tiny chunks a clever layout strategy to improve data access times
+can in the best case (in which the majority of disk operations involve
+seeks) double the data access performance.
 
 %%%% moved to ``The takeway:'' to make it more consistent with the 
 %%%% rest of the paper
@@ -572,21 +573,7 @@ We only performed the `advised' version of our raw algorithm for this
 cluster, as the simpler version gave essentially the same performance,
 and compute time was harder to obtain for this machine.
 
-%\subsection{ADIOS}
-%
-%ADIOS is unique in that it is not a file format alone, but rather a
-%middleware suite that interfaces to a variety of backend methods for
-%reading and writing data.  These methods include HDF5, NetCDF4 and
-%ADIOS-only backends such as raw POSIX I/O and MPI-IO.  One of the
-%promising features of this approach is that such a system could have
-%rapid uptake of the results presented in work such as this.
-%
-%Unfortunately the current release at the time of publication (ADIOS
-%1.2.1) does not yet support out-of-core data access.  For large-scale
-%visualization applications, which commonly run on just a subset of the
-%nodes utilized to produce simulation data in the first place, this is
-%an essential feature.  We hope to include ADIOS results in a future
-%study.
+%\TODO{\subsection{ADIOS}}
 
 %\subsection{Custom Low-Level Data Access}
 %
@@ -675,7 +662,7 @@ the levels that can make use of it.
 \colorbox{lightgray}{\texttt{close\_range}}; \verb!open! and \verb!close!
 calls that work with byte ranges.
 One of the issues that plagues I/O concurrency
-at large scales is the inability to indicate which portion of data
+at large scales is the inability to indicate that portion of the data
 a process intends to
 access: each process only needs some subset of the overall data, but
 cannot communicate this a priori to middleware or the runtime system.
@@ -758,10 +745,10 @@ test program, this can provide compelling performance advantages.
 The API should return pointers; it should not accept previously
 allocated buffers.  The gives the implementer freedom to manage
 allocations, enabling flexibility in choices of underlying APIs.  For
-example, memory-mapped files require page-aligned memory,
-which is not provided by \verb!malloc! or \verb!new!, and is more
-difficult to use at fixed addresses, as opposed to letting the kernel
-choose the mapping.
+example, memory-mapped files require page-aligned memory that is not
+provided by \verb!malloc! or \verb!new!, and is more difficult to
+use at fixed addresses, as opposed to letting the kernel choose the
+mapping.
 
 \colorbox{lightgray}{\texttt{finished}}; an asynchronous flush
 operation.  This indicates that the given file (or byte range within
@@ -810,7 +797,7 @@ Variability in I/O performance, such as that depicted in Figure
 \ref{fig:n64}, was considerably higher than we expected it to be.  In
 some cases we observed a job taking twice as long to execute than it
 did at another point in time.  This presents a difficult challenge
-for interactive visualization and analysis applications, which should
+for interactive visualization and analysis applications that should
 provide the illusion of interactive response yet are highly susceptible
 to such latency.  The results encourage the use of progressive or
 multiresolution renderers that can be used to provide real-time
@@ -887,7 +874,7 @@ methods for reading and writing data.  These methods include HDF5,
 NetCDF4 and ADIOS-only backends such as raw POSIX I/O and MPI-IO.
 Unfortunately the current release at the time of publication (ADIOS
 1.2.1) does not yet support out-of-core data access.  For large scale
-visualization and analysis applications, which commonly run on just a
+visualization and analysis applications that commonly run on just a
 subset of the nodes utilized to produce simulation data in the first
 place, we judged this to be an essential feature.  We contacted the
 development team and they agreed to look into out-of-core APIs for a

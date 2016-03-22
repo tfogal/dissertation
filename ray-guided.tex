@@ -38,13 +38,13 @@ reproduction and comparison with future research.
 \section{Introduction}
 
 Modern volume rendering is heavily focused on the concepts of empty
-space skipping and the fast detection of ray saturation.  Both of
-these concepts have extensive effects on the amount of compute work
-required.  However, even more relevant is their ability to reduce the
-working set of extremely large datasets down to a small kernel, which
-can significantly reduce the amount of data that must be loaded from a
-slow resource, such as the network or a local disk.  This has enabled
-interactive volume rendering for very large data on commodity
+space skipping and the fast detection of ray saturation.  Both of these
+concepts have extensive effects on the amount of compute work required.
+However, even more relevant is their ability to reduce the working
+set of extremely large datasets down to a small kernel, which can
+significantly reduce the amount of data that must be loaded from a slow
+network or local disk resources.  This has enabled interactive volume
+rendering for very large data on commodity
 hardware~\cite{Knoll:2010:BVH, Hadwiger:2012:Guided,
 Crassin:2009:Gigavoxels}.
 
@@ -261,7 +261,7 @@ that are not needed for rendering, at severe costs in performance.
 
 To the first point, we employ an efficient metadata structure that
 allows us to quickly identify these regions.  Points (2) and (3) are
-handled through an educated choice of brick size, which is discussed
+handled through an educated choice of brick size that is discussed
 more thoroughly in Section~\ref{sec:tradeoffs}.  A major component to
 modern volume renderers is how they address point (4), now by and large
 based on \emph{ray guidance}.  That is, the sampling characteristics of
@@ -302,7 +302,7 @@ More importantly, performing this during ray-casting ensures that it
 is optimally accurate: the program never loads data that will not be
 used.
 
-%---we get results which are as accurate as the brick size.
+%---we get results that are as accurate as the brick size.
 
 \begin{algorithm}
   \caption{Ray-guided volume rendering.  Each ray identifies the
@@ -379,7 +379,7 @@ raycasting inner loop is hidden in the \texttt{Raycast} call.
 % ray-casted volume rendering in more traditional volume renderers,
 % sans the minor addition of \texttt{offsets} when sampling the
 % volume data.  In fact, this is not a unique aspect of our renderer;
-% any renderer which uses a volume pool would share this code.  The
+% any renderer that uses a volume pool would share this code.  The
 % simplicity of the volume rendering loop is a prime benefit to our
 % approach; the entire GLSL core consists of less than 600 lines of code,
 % including all the debugging and profiling targets used to generate
@@ -394,9 +394,9 @@ raycasting inner loop is hidden in the \texttt{Raycast} call.
 % 
 % The appropriate sampling rate for a given region of space is a function
 % of the frustum settings and the depth of the current sampling position.
-% The depth is the only parameter which varies
+% The depth is the only parameter that varies
 % \emph{while} we progress along a ray.  Moreover, the appropriate
-% sampling rate is aliased to the relatively few levels of detail which
+% sampling rate is aliased to the relatively few levels of detail that
 % are available for a dataset.
 % 
 % \begin{figure}
@@ -410,7 +410,7 @@ raycasting inner loop is hidden in the \texttt{Raycast} call.
 % \end{figure}
 % 
 % In practice, even for highly anisotropic data, it is difficult to
-% derive frustum and viewing angles which result in the simultaneous
+% derive frustum and viewing angles that result in the simultaneous
 % visibility of more than three levels of detail.  Figure
 % \ref{figrg:LODs} demonstrates this: as the ray switches from one level
 % of detail to another, the color is flipped---bricks rendered at the
@@ -526,14 +526,14 @@ is empty.  If so, the renderer leaps over that space instead.  We store
 this as an array consisting of one 32-bit integer per brick of the
 dataset.
 
-Figure \ref{figrg:bricks-empty} visualizes this classification for a
+Figure~\ref{figrg:bricks-empty} visualizes this classification for a
 large dataset under a typical view and transfer function.  As shown
 there, the majority of the visualization falls into either the `blue'
 (saturated quickly) or `green' (skipped) sets. This also demonstrates
-how little data is actually required for a typical volume rendering.  A
-similar rendering is given in the rightmost image of
+how little data is required for a typical volume rendering.  A similar
+rendering is given in the rightmost image of
 Figure~\ref{figrg:teaser}, in which only the rays in the middle of the
-volume require high computation.
+volume require extensive computation.
 
 Of course, this classification depends largely on the transfer function
 and viewing parameters.  In practice, however, transfer functions that
@@ -680,7 +680,7 @@ thoroughly addressed by previous literature.  Details on trade-offs and
 the reasoning behind our final implementation choices are given.
 
 % There are a variety of considerations in a ray-guided volume renderer
-% which have not been thoroughly addressed in previous literature.  We
+% that have not been thoroughly addressed in previous literature.  We
 % endeavor to explore some of these choices here, and explicitly detail
 % the inherent trade-offs and reasoning behind our final decisions.
 
@@ -691,10 +691,10 @@ How a system subdivides the volume into manageable pieces can have
 a large effect on the performance of the renderer.  The primary
 considerations are in regard to early ray termination and empty space
 skipping: small bricks are much more likely to be composed of a small
-range or even uniform values, which will make it more likely that the
-brick can be skipped under a large set of transfer functions.  Further,
-small bricks means one will detect ray saturation much more quickly, as
-this is checked only when exiting a brick.
+range or even uniform values, which will make it in turn more likely
+that the brick can be skipped under a large set of transfer functions.
+Further, small bricks means one will detect ray saturation much more
+quickly, as this is checked only when exiting a brick.
 
 \paragraph{Internal Overhead}
 

@@ -183,7 +183,7 @@ provenance recording and playback realized via
 VisTrails~\cite{Bavoil:2005:VisTrails}.
 \item \textbf{Open Source}
 Tuvok and ImageVis3D are released under the very liberal
-MIT license, which means that practically no usage
+MIT license, meaning that practically no usage
 restrictions exist---including the use of ImageVis3D or its
 components in commercial applications.
 
@@ -191,7 +191,7 @@ components in commercial applications.
 
 The remainder of this chapter is organized as follows. In
 Section~\ref{sec:tvk-design} we discuss the design of \textit{Tuvok},
-focusing on the ways in which the library handles large data. To
+focusing on the ways that the library handles large data. To
 demonstrate
 the versatility of \textit{Tuvok} and \textit{ImageVis3D}, we describe
 extensions
@@ -217,7 +217,7 @@ the communication from the UI to the rendering and IO systems happens
 through a single entity, named the \texttt{MasterController}. This concept makes
 it easy to intercept all the communication to and from the
 UI (see Section~\ref{sec:tvk-extensions}) and is also the heart of the
-scripting interface built into ImageVis3D, which allows programmatic
+scripting interface built into ImageVis3D that allows programmatic
 control over the application.
 
 \subsection{The volume rendering library}
@@ -254,14 +254,14 @@ details are available in Section~\ref{sec:tvk-data}.
 To achieve goals 4-6 in the list above, renderers contain a variety of
 extra code paths for compatibility settings, as a means to address a
 number of issues discovered in OpenGL drivers. Tuvok contains multiple
-renderers, based on ray casting, 3D slicing, and 2D slicing, which span
-a large range of quality versus portability across GPUs and drivers.
+renderers, based on ray casting, 3D slicing, and 2D slicing, that
+span a range of quality versus portability across GPUs and drivers.
 This has been important to support a breadth of collaborations, as
-less technical users tend to have integrated graphics chips that
-lack support for even 3D textures. One feature driven by this
-requirement is the ability to select the bit width of the framebuffer
-object (FBO) used for rendering, because we found that some drivers
-would switch to a software path when rendering into a 32-bit FBO.
+less technical users tend to have integrated graphics chips that lack
+support for even 3D textures. One feature driven by this requirement
+is the ability to select the bit width of the framebuffer object (FBO)
+used for rendering, because we found that some drivers would switch to
+a software path when rendering into a 32-bit FBO.
 
 Table 1 gives timings for multiple data sets on different
 systems, demonstrating the system's compatibility and scalability.
@@ -340,50 +340,44 @@ assume this trend would reverse in the coming years. Therefore, it is
 critical that interactive visualization systems incorporate progressive
 renderers.
 
-Tuvok's progressive renderer is based on overloaded
-concepts of frames and subframes. In the context of Tuvok, a
-frame is a single, complete rendering of the data at native
-screen and data resolution. A subframe is an intermediate
-state between no rendering and a frame, which includes the
-full spatial range of the data and any annotations present in
-the visualization. The quality of successive subframes
-monotonically increases. A sequence of these subframes are
-rendered before the final frame is displayed, detailing different
-approximations of the complete rendering much more
-quickly than a frame can be displayed. We guarantee that
-there is always at least one subframe which can be displayed
-interactively (within a couple hundred milliseconds). The
-system turns to such a subframe when the user is actively
-interacting with the data.
+Tuvok's progressive renderer is based on overloaded concepts of frames
+and subframes. In the context of Tuvok, a frame is a single, complete
+rendering of the data at native screen and data resolution. A subframe
+is an intermediate state between no rendering and a frame that includes
+the full spatial range of the data and any annotations present in
+the visualization. The quality of successive subframes monotonically
+increases. A sequence of these subframes are rendered before the final
+frame is displayed, detailing different approximations of the complete
+rendering much more quickly than a frame can be displayed. We guarantee
+that there is always at least one subframe that can be displayed
+interactively (within a hundred milliseconds). The system turns to such
+a subframe when the user is actively interacting with the data.
 
-To model the concepts of frames and subframes, Tuvok
-uses a multiresolution, level of detail representation of data.
-For the most part, a subframe corresponds to the data at
-a particular level of detail. At the coarsest level of detail,
-the data are small enough that they can easily be read from
-disk under our real time requirements. However, we found
-that older GPUs could not always render such data quickly
-enough for our needs. Therefore Tuvok always makes available
-up to three additional subframes. These are generated
-by lowering the screen resolution of the rendering (and upscaling
-before display to the user), lowering the sampling
-rate used by the renderer, or both. Lowering resolution and
-sample rate significantly reduces the strain on the fragment
-processing stage of the graphics pipeline, allowing Tuvok
-to respond quickly even on low end hardware. We do not
-know any OpenGL 2.0-capable GPU which Tuvok does not
-perform acceptably on, and (through extensions) Tuvok can
-render even on some cards that do not report OpenGL 2.0
-capabilities.
+To model the concepts of frames and subframes, Tuvok uses a
+multiresolution, level of detail representation of data.  For the
+most part, a subframe corresponds to the data at a particular level
+of detail. At the coarsest level of detail, the data are small
+enough that they can easily be read from disk under our real time
+requirements. However, we found that older GPUs could not always render
+such data quickly enough for our needs. Therefore Tuvok always makes
+available up to three additional subframes. These are generated by
+lowering the screen resolution of the rendering (and upscaling before
+display to the user), lowering the sampling rate used by the renderer,
+or both. Lowering resolution and sample rate significantly reduces
+the strain on the fragment processing stage of the graphics pipeline,
+allowing Tuvok to respond quickly even on low end hardware. We do not
+know any OpenGL 2.0-capable GPU that Tuvok does not perform acceptably
+on, and (through extensions) Tuvok can render even on some cards that
+do not report OpenGL 2.0 capabilities.
 
 \subsubsection{Preprocessing}
 
 Most data are not fed to visualization software with multiple
 levels of detail included. To accommodate such data, Tuvok's IO
-subsystem implements a preprocess which generates a multiresolution
+subsystem implements a preprocess that generates a multiresolution
 hierarchy. The data at their native resolution form the finest level
 of detail, and we subsample by two recursively until a level of detail
-exists which is less than or equal to a predefined user-configured
+exists that is less than or equal to a predefined user-configured
 limit. We also use this opportunity to perform other operations on
 the data, such as ensuring a consistent endianness.  In most cases
 preprocessed data can be loaded from disk directly into GPU memory.
@@ -498,7 +492,7 @@ brick in a subframe, it will not be used in the rendering of that frame
 again until the progressive renderer starts over, and we may service
 a large number of bricks in the interim. However, if we do start the
 frame from its earliest subframe again, particularly before finishing
-the frame, we are likely to need the oldest bricks which are present
+the frame, we are likely to need the oldest bricks that are present
 in the cache. Between frames, we rely on frame-to-frame coherence. If
 a brick was not used in the previous frame, and is not used in the
 current frame, it is likely to not be required in subsequent frames as
@@ -511,7 +505,7 @@ viewing parameters.
 \subsection{UI and networking library}
 
 To facilitate rapid development of other visualization applications,
-all those components built on top of Qt which are
+all those components built on top of Qt that are
 not specific to the application level were separated, allowing
 them to be shared and reused in future applications. These
 components can be roughly categorized as the UI and networking
@@ -597,7 +591,7 @@ mind. In particular, this means that the system must work
 with in-core, `unbricked' data sets of a single resolution.
 
 To support such an environment, Tuvok has a simplified
-API for existing systems which do not include level of detail
+API for existing systems that do not include level of detail
 or bricking concepts. The information flows one way from
 the controlling application to Tuvok, and includes a reference
 counted smart pointer to the data, as well as metadata
@@ -613,7 +607,7 @@ cannot guarantee interactive performance.
 
 \subsection{VisIt}
 
-VisIt is a data visualization and analysis application which is
+VisIt is a data visualization and analysis application that is
 well-suited to large scale data processing on leadership computing
 platforms. We have integrated the underlying rendering
 core as an option alongside VisIt's existing volume renderers.
@@ -626,7 +620,7 @@ limited to resampling the data or utilizing software rendering.
 Though data do not come directly from a data file in this
 and other integration work, the abstraction provided by Tuvok's
 IO layer allows the rendering core to remain ignorant
-about the source of the data. The metadata which must be
+about the source of the data. The metadata that must be
 supplied to Tuvok scales with the complexity of the application:
 in the unbricked, SCIRun case, Tuvok can be told only
 the brick size (assuming the brick lies centered on the origin);
@@ -640,7 +634,7 @@ optimizations.
 An issue that arose specifically in the VisIt integration
 was state management in large, established software systems.
 The OpenGL API is a global state machine, and VisIt
-has many sub-libraries which can and will change the global
+has many sub-libraries that can and will change the global
 state in ways we cannot predict. Tuvok therefore makes very
 few assumptions about OpenGL state. During the `setup'
 stage, Tuvok takes state information---camera and viewing
@@ -670,7 +664,7 @@ managing OpenGL state.
 
 Finally, we demonstrate the usability of Tuvok's components
 in a commercial environment. Numira Biosciences is a specialty
-contract research organization (CRO) which focuses
+contract research organization that focuses
 on high-resolution imaging and analysis of small animal
 specimens, provides researchers with quantifiable, visible
 evidence of disease progression, as well as drug efficacy and
