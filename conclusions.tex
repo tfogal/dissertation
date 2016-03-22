@@ -151,17 +151,18 @@ do effective buffering.
 %	. current APIs force everything into stream interface
 %	. middleware helps, but this needs to interact with VFS, at the core.
 
-\textit{In situ} visualization is playing an increasing role in
-simulation-based sciences.  The widening disparity between memory and
-disk speed necessitates the approach at large scales.  Furthermore, the
-increasingly multidisciplinary analyses performed on simulation runs
-encourages analysts at many different sites to participate, but the
-data are too large to be transferred between sites.  Using knowledge
-of the sampling rate required by the analysis method may be the best
-way of performing otherwise computationally-infeasible analyses.  All
-of these factors suggest a centralization of large-scale computing
-resources, in contrast to the decentralization that industry has been
-undergoing.  It is not difficult to imagine a future where analysis
+\textit{In situ} visualization is playing an increasing role
+in simulation-based sciences.  The widening disparity between
+memory and disk speed necessitates the approach at the largest
+scales.  Furthermore, the increasingly multidisciplinary analyses
+performed on simulation runs encourages analysts at many different
+sites to participate, but the data are too large to be transferred
+between sites.  Using knowledge of the sampling rate required by
+the analysis method may be the best way of performing otherwise
+computationally-infeasible analyses.  All of these factors suggest a
+centralization of large-scale computing resources, in contrast to the
+decentralization that industry has experienced.  It is not difficult to
+imagine a future where analysis
 \emph{is} simulation: that all analysis is performed by (re)running
 simulations, as opposed to (re)processing simulation outputs.
 
@@ -178,15 +179,15 @@ simulations, as opposed to (re)processing simulation outputs.
 %performed on data from a previous run: new analysis will imply a new
 %simulation run.
 
-In situ visualization is currently complex and difficult.
-\todo{
-\begin{itemize}
-	\item large APIs
-	\item instability
-	\item lots of metadata to convey
-	\item when to interrupt sim / balance of sim vs. vis time
-\end{itemize}
-}
+\textit{In situ} visualization is currently complex and difficult.
+Bespoke in situ visualization solutions abound, but there are presently
+only a
+couple visualization and analysis tools with \insitu{} APIs that
+cater to a wide variety of data models.  Stability is a problem with
+these large all-encompassing tools.  This is in addition to the many
+difficult
+issues inherent to \insitu{} visualization, such as balancing
+simulation time and visualization time.
 
 Despite the growing importance of \insitu{}, existing visualization
 tools couple with simulation software only with extreme difficulty.
