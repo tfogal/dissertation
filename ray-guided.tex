@@ -194,7 +194,7 @@ In contrast to previous renderers, ray-guided volume renderers couple
 the rendering process with the identification of which subvolumes
 (`bricks') must be loaded.  We describe the operation of ray-guided
 volume renderers, in Section~\ref{sec:algorithm}.
-In Section~\ref{sec:performance} we detail a plethora of benchmarks
+In Section~\ref{rg:sec:performance} we detail a plethora of benchmarks
 that demonstrate the performance of the renderer.
 
 In many prior volume renderer evaluations, results are generally
@@ -553,7 +553,7 @@ overall performance effects may be large, but the system remains
 responsive during this period.
 
 \section{Performance}
-\label{sec:performance}
+\label{rg:sec:performance}
 
 In this section, we give an overview of the various stages of the
 renderer and how they perform.  Unless otherwise noted, all timings
@@ -564,7 +564,7 @@ some specific relevant uses of SSDs.  In many cases, results were
 obtained from multiple screen resolutions, but we report results from
 an HD viewport ($1920\times1080$) unless noted otherwise.  Details of
 the data utilized and renderer timings are given in
-Appendix~\ref{sec:data}.
+Appendix~\ref{rg:sec:data}.
 
 \subsection{Benchmarks}
 
@@ -616,7 +616,7 @@ Renderer performance as measured by response time during such an
 interaction actually changes very little, and can even improve.
 However, quality suffers rather drastically.  This is evident in the
 time to convergence after a change in the transfer function: in a
-typical case with the RMI data set (see Section~\ref{sec:data}), time
+typical case with the RMI data set (see Section~\ref{rg:sec:data}), time
 to convergence increased over 6x after changing the transfer function
 (from $\sim$380ms to $\sim$2300ms).
 
@@ -1145,7 +1145,7 @@ in a much wider sense than that presented here.
 
 %\appendix
 \section{Data and Performance Details}
-\label{sec:data}
+\label{rg:sec:data}
 
 \begin{figure}
   \centering
