@@ -117,24 +117,24 @@ establish auto-tuned parameters.
 %\end{itemize}
 
 IO remains and will remain the major problem in large-scale
-visualization.  Figure~\todo{\ref{fixme}} shows that the rendering and
-compositing problems are dominated by IO at scale.  While this image
-was from a specific strong scaling study, the story changes little if
-we replace the X axis by year: rendering and compositing times have
-plummeted as hardware capabilities have increased and the fruits of
-research efforts have been realized.  Disk access has unfortunately not
-seen the same improvements.
+visualization.  Peterka et al. demonstrated~\cite{Peterka:2009:ETES}
+that rendering and even compositing are dominated by IO at both large
+and small scales.  The research community has made great strides
+in parallel rendering and compositing, however perhaps a larger
+contribution has come from the tremendous growth in compute and network
+hardware capabilities.  Disk access has unfortunately not seen the same
+improvements.
 
 We described a number of `best practices' for IO-heavy visualization
-code in Chapter~\ref{chp:io}.  One is to use large reads or writes to
-maximize throughput.  If and only if this is impossible should one
-turn to space-filling curve methods to minimize access times.  Despite
-conventional wisdom, the many files created by the `1 file per process'
-regime scales poorly.  Most IO calls involve implicit synchronization,
-and staggering these operations can have a large impact on performance.
-Along the same line, delaying file closures until necessary can provide
-filesystems---especially distributed filesystems---the time needed to
-do effective buffering.
+code in Chapter~\ref{chp:io}.  One is to use large reads or writes
+to maximize throughput.  If and only if this is impossible should
+one turn to space-filling curve methods to minimize access times.
+Despite conventional practice, the many files created by the `1 file
+per process' regime scales poorly.  Most IO calls involve implicit
+synchronization, and staggering these operations can have a large
+impact on performance.  Along the same line, delaying file closures
+until necessary can provide filesystems---especially distributed
+filesystems---the time needed to do effective buffering.
 
 % We have described a number of policies for IO code to perform well
 % \begin{itemize}
